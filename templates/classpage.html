@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>pg-{{i.id}}</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous">
+    <title>{{i.tema}}</title>
+
+    <style>
+        
+        #banner {
+            display:block;
+            margin-left:auto;
+            margin-right:auto;
+            width:100%;
+            height: 240px;
+            object-fit:cover;
+        }
+        .container{
+            margin-left:auto;
+            margin-right:auto;
+            text-align:justify;
+        }
+        .apertura{
+            padding:10px;
+            background-color:rgba(50, 250, 37, 0.5);
+        }
+        .desarrollo{
+            padding:10px;
+            background-color:rgba(247, 234, 47, 0.6);
+        }
+
+        .cierre{
+            padding:10px;
+            background-color:rgba(250, 117, 221, 0.5);
+            color:#B51767;
+        }
+        
+        .home-link1 {
+            position: fixed;
+            top: 30px;
+            right: 1px;
+            background-color: black;
+            color: yellow;
+            padding: 2px 5px;
+            text-decoration: none;
+            border-radius: 2px;
+            z-index: 1100; /* Ensures it stays on top */
+        }
+        .home-link:hover {
+            background-color: #CCFAFA;
+            color: #A0A0D0;
+        }
+
+        .navtxt{
+            color:rgb(120,120,120);
+            background-color: white;
+            padding: 1px;
+        }
+        .actividad {
+            background-color: rgba(161, 37, 250, 0.7);
+            margin: 10px;
+            padding: 5px;
+            color:#FED8F8;
+        }
+        .laboratorio {
+            background-color: rgb(220,220,220);
+            margin: 10px;
+            padding: 5px;
+        }
+        img{
+            max-width:100%;
+            min-width:50%;
+            height:auto;
+        }
+
+
+            a:link, a:visited {
+              background-color: #1A8F7B;
+              color: white;
+              padding-top: 1px;
+              padding-bottom: 1px;
+              padding-left: 5px;
+              padding-right: 5px;
+              text-align: center;
+              text-decoration: none;
+              display: inline-block;
+            }
+
+            a:hover, a:active {
+              background-color: #08CFAC;
+            }
+
+            .referencia{
+                padding:10px;
+                background-color:rgba(25, 11, 22, 0.8);
+                margin-bottom:1px;
+            }
+
+            .emoji{
+                background-color: none;
+                font-size: 25px
+        }
+
+    </style>
+</head>
+<body>
+    <main class="container">
+        
+        <nav class="navbar fixed-top bg-white shadow-sm mb-4">
+            <span class="navbar-brand mb-0 h1 navtxt">
+                <div class="container-fluid row">
+                        <text class='col-9'>{{i['tema']}}</text>
+                        <a onclick="history.back()" class="home-link1 col-3">&leftarrow; Back</a>
+                </div>
+            </span>
+        </nav>
+
+        <div>
+            height: 56px
+        </div>
+        <br>
+       
+    <div class="mt-3 mb-3">
+
+        {% set tiempo = 0 %}
+                {% set tiempo = tiempo + i['aperturaTiempoTotal'] + i['desarrolloTiempoTotal'] + i['laboratorioTiempoTotal'] + i['cierreTiempoTotal'] %}
+
+        <h3>{{i['pg']}} (Tiempo: {{tiempo}} minutos)</h3>
+        {{i['pgDesc'] | safe}}
+
+
+    <br>
+        </div>
+        <a href="#Aper" style="margin-bottom:1px;background-color:green;">Ir a Apertura</a><br>
+        <a href="#Desa" style="margin-bottom:1px;background-color:#FCF23C;color:#746F11;">Ir a Desarrollo</a><br>
+        <a href="#Cierr" style="margin-bottom:1px;background-color:#FA09B1;">Ir a Cierre</a>
+        <br>
+        <br>
+
+        
+                <div>
+                    {% if i['descargas'] %}
+                    Recursos<br>
+                      <a href="{{ url_for('static', filename=i.descargas) }}" download>
+                        Descargar archivo: {{ i['descargas'] }}
+                      </a>
+                    {% endif %}
+                </div>
+
+    
+        <div id='Aper'><br><br></div>
+        <div class="apertura" >
+    <h2 style="color:green;">Apertura ({{i['aperturaTiempoTotal']}} minutos)</h2>
+    {{i['apertura'] | safe}}
+            <br><br>
+            {% if i['caso'] %}
+            <p style="font-weight:bold; ">Caso {{i['id']}}:</p>
+            {{i['caso']  | safe}}
+            <br><br>
+            {% endif %}
+    <img class="mt-3 mb-3" src="{{i['src1']}}">
+            </div>
+
+        <div id='Desa'><br><br><br></div>
+        <div class="desarrollo">
+    <h2 style="color:orange;"">Desarrollo ({{i['desarrolloTiempoTotal']}} minutos)</h2>
+            
+    {{i['desarrollo'] | safe}}
+
+            
+                {% if i['laboratorioTiempoTotal'] > 0 %}
+            
+                <div class="laboratorio">
+                    <h2 style="color:#A11876;"">Laboratorio ({{i['laboratorioTiempoTotal']}} minutos)</h2>
+                        {{i['laboratorio'] | safe}}
+                {% endif %}
+                </div>
+        </div>
+        <div id='Cierr'><br><br><br></div>
+        <div class="cierre">
+            <h2 style="color:#B51767;"">Cierre ({{i['cierreTiempoTotal']}} minutos)</h2>
+
+            {{i['cierre'] | safe}}
+
+                    </div>
+        <br>
+        <br><br>
+        {% if i['retroalimentacion'] %}
+            {{ i['retroalimentacion'] | safe}}
+        {% endif %} <br><br>
+        <div class:'fuentes'>
+            <h2>
+                Fuentes:
+            </h2>
+          {% if i['fuente1'] %}  
+            <a class='referencia' href= '{{i["fuente1"] | safe}}' target="_blank"> link 1 </a><br>
+          {% endif %}  
+<br>
+          {% if i['fuente2'] %}  
+            <a class='referencia' href= '{{i["fuente2"] | safe}}' target="_blank"> link 2 </a><br>
+          {% endif %} 
+    
+          {% if i['fuente3'] %}  
+            <a class='referencia' href= '{{i["fuente3"] | safe}}' target="_blank"> link 3 </a>
+          {% endif %} 
+        </div>
+    
+        </main>
+    <footer>
+        <p class="mt-3 mb-5 text-center">&copy; 2025 DGETAyCM</p>
+    </footer>
+</body>
+</html>

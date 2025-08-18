@@ -1,0 +1,6 @@
+Flask
+gunicorn
+gevent
+sqlalchemy
+werkzeug
+pymysql
