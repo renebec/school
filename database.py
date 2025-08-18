@@ -13,7 +13,7 @@ engine = create_engine(db_connection_string,
 
 def load_pg_from_db():
   with engine.connect() as conn:
-    result = conn.execute(text("SELECT * FROM math1_2025"))
+    result = conn.execute(text("SELECT * FROM inocAgro"))
     pg = result.mappings().all()
     return pg
 
@@ -28,7 +28,7 @@ def load_pg_from_db():
 def load_pgn_from_db(id):
   with engine.connect() as conn:
     result = conn.execute(
-      text("SELECT * FROM math1_2025 WHERE id = :val"),
+      text("SELECT * FROM inocAgro WHERE id = :val"),
       {"val":id}
     )
     row = result.mappings().first()  # <- dict, no tupla
