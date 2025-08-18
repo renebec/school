@@ -12,10 +12,14 @@ engine = create_engine(db_connection_string,
             )
 
 def load_pg_from_db():
-  with engine.connect() as conn:
-    result = conn.execute(text("SELECT * FROM inocAgro"))
-    pg = result.mappings().all()
-    return pg
+    try:
+      with engine.connect() as conn:
+          result = conn.execute(text("SELECT * FROM inocAgro"))
+          pg = result.mappings().all()
+          return pg
+    except Exception as e:
+      print(f"DB ERROR: {e}")
+      return None
 
       #result_all = result.all()
       #tipo = type(result_all)
@@ -26,11 +30,15 @@ def load_pg_from_db():
     #otro comentario
 
 def load_pgn_from_db(id):
-  with engine.connect() as conn:
-    result = conn.execute(
-      text("SELECT * FROM inocAgro WHERE id = :val"),
-      {"val":id}
-    )
-    row = result.mappings().first()  # <- dict, no tupla
-    return dict(row) if row else None
+  try:
+    with engine.connect() as conn:
+      result = conn.execute(
+        text("SELECT * FROM inocAgro WHERE id = :val"),
+        {"val":id}
+      )
+      row = result.mappings().first()  # <- dict, no tupla
+      return dict(row) if row else None
+  except Exception as e:
+    print(f"DB ERROR: {e}")
+    return None
       
