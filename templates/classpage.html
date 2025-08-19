@@ -106,10 +106,92 @@
         .zoom:hover {
           transform: scale(2); /* (150% zoom -  */
           margin-left:25%;
+        }
+
+
+        .zoom2:hover {
+          transform: scale(3); 
+          margin-right:50%;
+        }
+
+        button{
+        background:purple;
+        color:white;
+        }
+
+        #more0 {display: none;background:none}
+        #more1 {display: none;background:none}
+        #more2 {display: none;background:none}
+        #more3 {display: none;background:none}
 
     </style>
 </head>
 <body>
+    <script>
+        function myFunction0() {
+          var dots0 = document.getElementById("dots0");
+          var moreText0 = document.getElementById("more0");
+          var btnText0 = document.getElementById("myBtn0");
+
+          if (dots0.style.display === "none") {
+            dots0.style.display = "inline";
+            btnText0.innerHTML = "Mostrar todo";
+            moreText0.style.display = "none";
+          } else {
+            dots0.style.display = "none";
+            btnText0.innerHTML = "Mostrar menos";
+            moreText0.style.display = "inline";
+          }
+        }
+
+        function myFunction1() {
+          var dots1 = document.getElementById("dots1");
+          var moreText1 = document.getElementById("more1");
+          var btnText1 = document.getElementById("myBtn1");
+
+          if (dots1.style.display === "none") {
+            dots1.style.display = "inline";
+            btnText1.innerHTML = "Mostrar todo";
+            moreText1.style.display = "none";
+          } else {
+            dots1.style.display = "none";
+            btnText1.innerHTML = "Mostrar menos";
+            moreText1.style.display = "inline";
+          }
+        }
+
+        function myFunction2() {
+          var dots2 = document.getElementById("dots2");
+          var moreText2 = document.getElementById("more2");
+          var btnText2 = document.getElementById("myBtn2");
+
+          if (dots2.style.display === "none") {
+            dots2.style.display = "inline";
+            btnText2.innerHTML = "Mostrar todo";
+            moreText2.style.display = "none";
+          } else {
+            dots2.style.display = "none";
+            btnText2.innerHTML = "Mostrar menos";
+            moreText2.style.display = "inline";
+          }
+        }
+
+        function myFunction3() {
+          var dots3 = document.getElementById("dots3");
+          var moreText3 = document.getElementById("more3");
+          var btnText3 = document.getElementById("myBtn3");
+
+          if (dots3.style.display === "none") {
+            dots3.style.display = "inline";
+            btnText3.innerHTML = "Mostrar todo";
+            moreText3.style.display = "none";
+          } else {
+            dots3.style.display = "none";
+            btnText3.innerHTML = "Mostrar menos";
+            moreText3.style.display = "inline";
+          }
+        }
+    </script>
     <main class="container">
         
         <nav class="navbar fixed-top bg-white shadow-sm mb-4">
@@ -159,13 +241,13 @@
     <h2 style="color:green;">Apertura ({{i['aperturaTiempoTotal']}} minutos)</h2>
     {{i['apertura'] | safe}}
             <br><br>
-            {% if i['caso'] %}
+<!--            {% if i['caso'] %}
             <p style="font-weight:bold; ">Caso {{i['id']}}:</p>
             {{i['caso']  | safe}}
             <br><br>
             {% endif %}
     <img class="mt-3 mb-3 zoom" src="{{i['src1']}}">
-            </div>
+-->            </div>
 
         <div id='Desa'><br><br><br></div>
         <div class="desarrollo">
