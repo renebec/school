@@ -106,14 +106,17 @@
             </h2>
             {% endif %}
         </div>
-        
         <div>
             {% for i in pg %}
                 {% if i['parcial'] == 'Parcial 1' %}
                     {% include 'temasitem.html' %}
                 {% endif %}
-            
+
             {% endfor %}
+        </div>
+        <br>
+        <text class= 'partial-footer-total'>Parcial 1</text>
+        <div>
 
             {% set ns = namespace(total=0) %}
 
@@ -128,9 +131,10 @@
                 {% endif %}
             {% endfor %}
 
-            <text class='partial-footer-total'>Total Ponderado: {{ ns.total }}%<text>              <br>
+            <text class='partial-footer-total'>Total Ponderado: {{ ns.total }}% </text>              
+                <br>
 
-            {% set ns = namespace(total=0) %}
+            {% set ts = namespace(total=0) %}
 
             {% for i in pg %}
                 {% if i['parcial'] == 'Parcial 1' %}
@@ -138,13 +142,13 @@
                     {% set tdesarrollo = i['desarrolloTiempoTotal'] | int %}
                     {% set tlaboratorio = i['laboratorioTiempoTotal'] | int %}
                     {% set tcierre = i['cierreTiempoTotal'] | int %}
-                    {% set parcial_sum = tapertura + tdesarrollo + laboratorio + tcierre %}
-                    {% set ns.total = ns.total + parcial_sum %}
+                    {% set tparcial_sum = tapertura + tdesarrollo + tlaboratorio + tcierre %}
+                    {% set ts.total = ts.total + tparcial_sum %}
                 {% endif %}
             {% endfor %}
 
-            <text class='partial-footer-total'>Total tiempo: {{ ns.total }}                         minutos</text>
-        </div>
+            <text class='partial-footer-total'>Total tiempo: {{ ts.total }} minutos</text>
+        </div>   
 
         <div>                     
                 {% set item = (pg | selectattr('parcial', 'equalto', 'Parcial 2') |                 first) %}
@@ -154,7 +158,9 @@
                 </h2>
                 {% endif %}
         </div>
-        
+        <br>
+            <text class= 'partial-footer-total'>Parcial 2</text>
+
         <div>
             {% for i in pg %}
                 {% if i['parcial'] == 'Parcial 2' %}
@@ -168,7 +174,7 @@
                 {% if i['parcial'] == 'Parcial 2' %}
                     {% set apertura = i['aperturaEvaPond'] | int %}
                     {% set desarrollo = i['desarrolloEvaPond'] | int %}
-                    {% set desarrollo = i['desarrolloEvaPond'] | int %}
+                    {% set laboratorio = i['laboratorioEvaPond'] | int %}
                     {% set cierre = i['cierreEvaPond'] | int %}
                     {% set parcial_sum = apertura + desarrollo + laboratorio + cierre %}
                     {% set ns.total = ns.total + parcial_sum %}
@@ -186,7 +192,7 @@
                     {% set tdesarrollo = i['desarrolloTiempoTotal'] | int %}
                     {% set tlaboratorio = i['laboratorioTiempoTotal'] | int %}
                     {% set tcierre = i['cierreTiempoTotal'] | int %}
-                    {% set parcial_sum = tapertura + tdesarrollo + laboratorio + tcierre %}
+                    {% set parcial_sum = tapertura + tdesarrollo + tlaboratorio + tcierre %}
                     {% set ns.total = ns.total + parcial_sum %}
                 {% endif %}
             {% endfor %}
@@ -203,7 +209,8 @@
                 </h2>
                 {% endif %}
         </div>
-
+        <br>
+            <text class= 'partial-footer-total'>Parcial 3</text>
         <div>
             {% for i in pg %}
                 {% if i['parcial'] == 'Parcial 3' %}
@@ -213,11 +220,11 @@
 
             {% set ns = namespace(total=0) %}
 
-            {% for i in temas %}
+            {% for i in pg %}
                 {% if i['parcial'] == 'Parcial 3' %}
                     {% set apertura = i['aperturaEvaPond'] | int %}
                     {% set desarrollo = i['desarrolloEvaPond'] | int %}
-                    {% set desarrollo = i['desarrolloEvaPond'] | int %}
+                    {% set laboratorio = i['laboratorioEvaPond'] | int %}
                     {% set cierre = i['cierreEvaPond'] | int %}
                     {% set parcial_sum = apertura + desarrollo + laboratorio + cierre %}
                     {% set ns.total = ns.total + parcial_sum %}
@@ -232,8 +239,9 @@
                 {% if i['parcial'] == 'Parcial 3' %}
                     {% set tapertura = i['aperturaTiempoTotal'] | int %}
                     {% set tdesarrollo = i['desarrolloTiempoTotal'] | int %}
+                    {% set tlaboratorio = i['laboratorioTiempoTotal'] | int %}
                     {% set tcierre = i['cierreTiempoTotal'] | int %}
-                    {% set parcial_sum = tapertura + tdesarrollo + tcierre %}
+                    {% set parcial_sum = tapertura + tdesarrollo + tlaboratorio + tcierre %}
                     {% set ns.total = ns.total + parcial_sum %}
                 {% endif %}
             {% endfor %}
@@ -244,9 +252,9 @@
         <div style="text-align:center;">
             <a class="btn btn-primary btn-lg"  type="button"                                       href="mailto:mc.renebec@gmail.com?                                        subject=Pregunta%20sobre%20el%20curso%20de%20Pensamiento%20Matemático%20I&body=Nombre%3A%20%3C%20escriba%20aqu%C3%AD%20su%20nombre%20completo%20%3E%0D%0ADatos%3A%20%3C%20escriba%20sus%20datos%20de%20Semestre%2C%20Grupo%20y%20Carrera%20%3E%0D%0APregunta%3A%20%3C%20escriba%20aqu%C3%AD%20su%20pregunta%20o%20comentario%20%3E%0D%0A">Contacto</a>
         </div>
-    </main>
-    <footer>
-        <p class="mt-3 mb-5 text-center">&copy; 2025 DGETAyCM</p>
-    </footer>
+        </main>
+        <footer>
+        <p class="mt-3 mb-5 text-center">&copy; 2025 HRBC</p>
+        </footer>
 </body>
 </html>
