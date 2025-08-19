@@ -15,19 +15,12 @@
             {% set tiempo = tiempo + i['aperturaTiempoTotal'] + i['desarrolloTiempoTotal'] + i['laboratorioTiempoTotal'] + i['cierreTiempoTotal'] %}
             Duración: {{tiempo}} minutos
         </div>
-
         <div> 
             {% set eva = 0 %}
                     {% set eva = eva + i['aperturaEvaPond'] + i['desarrolloEvaPond'] + i['laboratorioEvaPond'] + i['cierreEvaPond'] %}
 
         Evaluación: {{eva}} %
-
-
-            
         </div>
-
-
-
         <div>
             Contenido: {{i['contenido']}}
         </div>

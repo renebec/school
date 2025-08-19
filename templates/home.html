@@ -93,10 +93,10 @@
         <h2 class="text-center mt-4 mb-2" style="color:rgb(100,100,100);">
             Acerca del curso
         </h2>
-        <p class="lead">El Recurso Sociocognitivo de Pensamiento Matemático se concibe             de manera amplia, incluyendo la ejecución procedimental de algoritmos, la              interpretación de sus resultados, y abarcando procesos intuitivos y                    formales como la observación, el acto de conjeturar y la argumentación,                así como también la solución de problemas, la modelación de la realidad y              la comunicación en contextos matemáticos. 
+        <p class="lead">El Recurso Sociocognitivo de Pensamiento Matemático se concibe de manera amplia, incluyendo la ejecución procedimental de algoritmos, la interpretación de sus resultados, y abarcando procesos intuitivos y formales como la observación, el acto de conjeturar y la argumentación, así como también la solución de problemas, la modelación de la realidad y la comunicación en contextos matemáticos. 
             <br>
             <br>
-            En el programa de Pensamiento Matemático I se abordan 15 progresiones de               aprendizaje que tienen impacto en el logro de las metas de aprendizaje                 clasificadas utilizando las cuatro categorías y empleando algunas de sus               subcategorías. Las metas de aprendizaje de Pensamiento Matemático refieren             a lo que se espera que el estudiantado aprenda durante la trayectoria de               esta Unidad de Aprendizaje Curricular .</p>
+En el programa de Pensamiento Matemático I se abordan 15 progresiones de aprendizaje que tienen impacto en el logro de las metas de aprendizaje clasificadas utilizando las cuatro categorías y empleando algunas de sus subcategorías. Las metas de aprendizaje de Pensamiento Matemático refieren a lo que se espera que el estudiantado aprenda durante la trayectoria de esta Unidad de Aprendizaje Curricular .</p>
 
         <div>            
             {% set item = (pg | selectattr('parcial', 'equalto', 'Parcial 1') |                 first) %}
@@ -106,6 +106,7 @@
             </h2>
             {% endif %}
         </div>
+        
         <div>
             {% for i in pg %}
                 {% if i['parcial'] == 'Parcial 1' %}
@@ -114,8 +115,8 @@
 
             {% endfor %}
         </div>
-        <br>
-        <text class= 'partial-footer-total'>Parcial 1</text>
+
+        <text class='partial-footer-total'>Parcial 1</text>
         <div>
 
             {% set ns = namespace(total=0) %}
@@ -131,7 +132,7 @@
                 {% endif %}
             {% endfor %}
 
-            <text class='partial-footer-total'>Total Ponderado: {{ ns.total }}% </text>              
+            <text class='partial-footer-total'>Total ponderado: {{ ns.total }}% </text>              
                 <br>
 
             {% set ts = namespace(total=0) %}
@@ -167,7 +168,8 @@
                     {% include 'temasitem.html' %}
                 {% endif %}
             {% endfor %}
-
+        </div>
+        <div>
             {% set ns = namespace(total=0) %}
 
             {% for i in pg %}
@@ -181,9 +183,10 @@
                 {% endif %}
             {% endfor %}
 
-            <text class= 'partial-footer-total'>Total Ponderado: {{ ns.total }}%                   </text>        
+            <text class= 'partial-footer-total'>Total ponderado: {{ ns.total }}% 
+            </text>        
             <br>
-
+            
             {% set ns = namespace(total=0) %}
 
             {% for i in pg %}
@@ -197,10 +200,9 @@
                 {% endif %}
             {% endfor %}
 
-            <text class='partial-footer-total'>Total tiempo: {{ ns.total }}                         minutos</text>
+            <text class='partial-footer-total'>Total tiempo: {{ ns.total }} minutos</text>
         </div>
-
-
+        
         <div>                     
         {% set item = (pg | selectattr('parcial', 'equalto', 'Parcial 3') | first)          %}
                 {% if item %}
@@ -231,7 +233,8 @@
                 {% endif %}
             {% endfor %}
 
-            <text class='partial-footer-total'>Total Ponderado: {{ ns.total }}%</text>             <br>
+            <text class='partial-footer-total'>Total ponderado: {{ ns.total }}%</text>             
+            <br>
 
             {% set ns = namespace(total=0) %}
 
