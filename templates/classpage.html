@@ -103,6 +103,10 @@
                 font-size: 25px
         }
 
+        .zoom:hover {
+          transform: scale(2); /* (150% zoom -  */
+          margin-left:25%;
+
     </style>
 </head>
 <body>
@@ -160,7 +164,7 @@
             {{i['caso']  | safe}}
             <br><br>
             {% endif %}
-    <img class="mt-3 mb-3" src="{{i['src1']}}">
+    <img class="mt-3 mb-3 zoom" src="{{i['src1']}}">
             </div>
 
         <div id='Desa'><br><br><br></div>
