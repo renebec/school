@@ -4,7 +4,7 @@
         <h4 style="margin-bottom:4px;">                                 
             {{i['pg']}} 
         </h4>
-        <h4 style="margin-bottom:4px;color:rgb(155,155,155)">                                 
+        <h4 style="margin-bottom:4px;color:rgb(155,155,155);text-align:left;">                                 
             {{i['tema']}} 
         </h4>
 
@@ -13,7 +13,7 @@
         <div>
             {% set tiempo = 0 %}
             {% set tiempo = tiempo + i['aperturaTiempoTotal'] + i['desarrolloTiempoTotal'] + i['laboratorioTiempoTotal'] + i['cierreTiempoTotal'] %}
-            Duración: {{tiempo}} minutos
+            Duración: {{tiempo/60}} hrs
         </div>
         <div> 
             {% set eva = 0 %}
