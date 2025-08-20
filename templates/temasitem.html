@@ -24,6 +24,14 @@
         <div>
             Contenido: {{i['contenido']}}
         </div>
+        <div>
+            {% if i['descargas'] %}
+            Recursos<br>
+              <a href="{{ url_for('static', filename=i.descargas) }}" download>
+                Descargar archivo: {{ i['descargas'] }}
+              </a>
+            {% endif %}
+        </div>
 <!--
         <div>
             Caso: {{i['Caso']}}

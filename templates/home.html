@@ -65,7 +65,7 @@
     </head>
         <nav class="navbar fixed-top bg-white shadow-sm mb-4">
             <div class="container-fluid">
-                <span class="navbar-brand mb-0 h1 navtxt">Inocuidad en la Agricultura</span>
+                <span class="navbar-brand mb-0 h1 navtxt">M-IV Inocuidad Agropecuaria</span>
             </div>
         </nav>
         <img class="mt-5" id="banner" src= "https://inocagro-web.onrender.com/static/verdurasCanasta.jpg"> 
@@ -93,10 +93,9 @@
         <h2 class="text-center mt-4 mb-2" style="color:rgb(100,100,100);">
             Acerca del curso
         </h2>
-        <p class="lead">El Recurso Sociocognitivo de Pensamiento Matemático se concibe de manera amplia, incluyendo la ejecución procedimental de algoritmos, la interpretación de sus resultados, y abarcando procesos intuitivos y formales como la observación, el acto de conjeturar y la argumentación, así como también la solución de problemas, la modelación de la realidad y la comunicación en contextos matemáticos. 
-            <br>
-            <br>
-En el programa de Pensamiento Matemático I se abordan 15 progresiones de aprendizaje que tienen impacto en el logro de las metas de aprendizaje clasificadas utilizando las cuatro categorías y empleando algunas de sus subcategorías. Las metas de aprendizaje de Pensamiento Matemático refieren a lo que se espera que el estudiantado aprenda durante la trayectoria de esta Unidad de Aprendizaje Curricular .</p>
+        <p class="lead">
+            Aprenderemos diferentes principios, técnicas y procedimientos para alcanzar y garantizar los estándares fitosanitarios en el manejo de productos agrícolas de acuerdo a normas nacionales e internacionales.
+        </p>
 
         <div>            
             {% set item = (pg | selectattr('parcial', 'equalto', 'Parcial 1') |                 first) %}
@@ -132,7 +131,7 @@ En el programa de Pensamiento Matemático I se abordan 15 progresiones de aprend
                 {% endif %}
             {% endfor %}
 
-            <text class='partial-footer-total'>Total ponderado: {{ ns.total }}% </text>              
+            <text class='partial-footer-total'>Total ponderado: {{ ns.total }}% </text>
                 <br>
 
             {% set ts = namespace(total=0) %}
