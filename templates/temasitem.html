@@ -2,7 +2,7 @@
     <div class="col-9">
 
         <h4 style="margin-bottom:4px;">                                 
-            {{i['pg']}} 
+            {{i['pg']}}
         </h4>
         <h4 style="margin-bottom:4px;color:rgb(155,155,155);text-align:left;">                                 
             {{i['tema']}} 
@@ -13,7 +13,8 @@
         <div>
             {% set tiempo = 0 %}
             {% set tiempo = tiempo + i['aperturaTiempoTotal'] + i['desarrolloTiempoTotal'] + i['laboratorioTiempoTotal'] + i['cierreTiempoTotal'] %}
-            Duración: {{tiempo/60}} hrs
+            Duración: {{tiempo/60}} hrs<br>
+            Período: {{i['lapso']}}
         </div>
         <div> 
             {% set eva = 0 %}
