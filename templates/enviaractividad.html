@@ -1,6 +1,6 @@
 <h3>Enviar actividad:</h3>
 
-<form method="POST" enctype="multipart/form-data" action="{{ url_for('show_actividad', id=i['id']) }}">
+  <form method="POST" enctype="multipart/form-data" action="{{ url_for('show_actividad_inoc', id=i['id']) }}">
   <label>Título de actividad:</label> <br>
   <input type="text" name="actividad_num" placeholder="Actividad_1" required> <br>
 
