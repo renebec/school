@@ -58,43 +58,36 @@ def download_file(filename):
 
 
 
-@app.route("/actividad_inoc/<int:id>", methods=["GET", "POST"])
-def show_actividad_inoc(id):
-    actividad = load_pgn_from_db(id)
-
-    if not actividad:
-        return render_template("error.html", message="actividad no encontrada."), 404
-
-    show_form = True  # decide if you want to show the form here
-    i = actividad
-
+@app.route("/enviaractividad", methods=["GET", "POST"])
+def enviaractividad():
+    show_form = True
     if request.method == "POST":
         try:
-            # Obtener datos del formulario
+            # Obtener los datos del formulario
             actividad_num = request.form['actividad_num']
             apellido_paterno = request.form['apellido_paterno']
             apellido_materno = request.form['apellido_materno']
             nombres = request.form['nombres']
-            carrera = request.form['carrera'],
+            carrera = request.form['carrera']
             semestre = request.form['semestre']
             grupo = request.form['grupo']
             pdf_file = request.files['pdf_file']
 
-            # Validar PDF
+            # Validar que el archivo sea un PDF
             if not pdf_file or not pdf_file.filename.endswith('.pdf'):
                 flash("Debes subir un archivo PDF válido.", "danger")
                 return redirect(request.url)
 
-            # Subir a Cloudinary
+            # Subir el archivo PDF a Cloudinary
             result = cloudinary.uploader.upload(
                 pdf_file,
                 resource_type='raw',
                 folder='actividades_pdf'
             )
             pdf_url = result['secure_url']
-            print("✅ Upload to Cloudinary successful")
+            print("✅ Carga en Cloudinary exitosa")
 
-            # Guardar en base de datos
+            # Insertar los datos en la base de datos
             insert_actividad(
                 actividad_num,
                 apellido_paterno,
@@ -105,17 +98,20 @@ def show_actividad_inoc(id):
                 grupo,
                 pdf_url
             )
-            print("✅ Insert into DB successful")
+            print("✅ Inserción en DB exitosa")
+
             flash(f"Actividad {actividad_num} enviada correctamente.", "success")
-            return redirect("/")
-            #return redirect(url_for("show_actividad", id=id))
+            return redirect(url_for("hello_pm1"))  # Regresar a la página de inicio
 
         except Exception as e:
             print("❌ Error during submission:", e)
             flash(f"Ocurrió un error al procesar la actividad {actividad_num}.", "danger")
             return redirect("/")
 
-    return render_template("classpage.html", i=actividad, show_form=show_form)
+    return render_template("enviaractividad.html", show_form=show_form)
+
+
+
   
 
 if __name__ == '__main__':
