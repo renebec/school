@@ -10,11 +10,11 @@ from database import load_pgn_from_db, insert_actividad
 import cloudinary
 import cloudinary.uploader
 
-cloudinary.config( 
-  cloud_name = os.environ.get("CLOUDINARY_CLOUD_NAME"), 
-  api_key = os.environ.get("CLOUDINARY_API_KEY"), 
-  api_secret = os.environ.get("CLOUDINARY_API_SECRET")
-)
+#cloudinary.config( 
+#  cloud_name = os.environ.get("CLOUDINARY_CLOUD_NAME"), 
+#  api_key = os.environ.get("CLOUDINARY_API_KEY"), 
+#  api_secret = os.environ.get("CLOUDINARY_API_SECRET")
+#)
 
 app = Flask(__name__)
 app.config['JSONIFY_PRETTYPRINT_REGULAR'] = True
