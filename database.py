@@ -43,4 +43,24 @@ def load_pgn_from_db(id):
   except Exception as e:
     print(f"DB ERROR: {e}")
     return None
+
+
+
+def insert_actividad(actividad_num, apellido_paterno, apellido_materno, nombres, semestre, grupo, pdf_url):
+      mexico_time = datetime.now(pytz.timezone("America/Mexico_City"))
+      with engine.begin() as conn:
+        query = text("""
+            INSERT INTO actividades (actividad_num, apellido_paterno, apellido_materno, nombres, semestre, grupo, pdf_url, created_at)
+            VALUES (:actividad_num, :ap, :am, :nombres, :sem, :gpo, :pdf_url, :created_at)
+        """)
+        conn.execute(query, {
+            "actividad_num": actividad_num,
+            "ap": apellido_paterno,
+            "am": apellido_materno,
+            "nombres": nombres,
+            "sem": semestre,
+            "gpo": grupo,
+            "pdf_url": pdf_url,
+            "created_at": mexico_time
+        })
       
