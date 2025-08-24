@@ -5,3 +5,4 @@ sqlalchemy
 werkzeug
 pymysql
 pytz
+cloudinary
