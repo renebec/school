@@ -100,7 +100,7 @@ def enviaractividad():
             )
             print("✅ Inserción en DB exitosa")
 
-            flash(f"Actividad {actividad_num} enviada correctamente.", "success")
+            flash(f"Actividad {actividad_num} de {nombres} enviada correctamente.", "success")
             return redirect(url_for("hello_pm1"))  # Regresar a la página de inicio
 
         except Exception as e:
