@@ -7,6 +7,9 @@ from werkzeug.utils import secure_filename
 
 from database import load_pgn_from_db, insert_actividad
 
+import cloudinary
+import cloudinary.uploader
+
 app = Flask(__name__)
 app.config['JSONIFY_PRETTYPRINT_REGULAR'] = True
 app.secret_key = os.environ.get("SECRET_KEY", "dev-secret")
