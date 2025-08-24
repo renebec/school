@@ -5,6 +5,8 @@ from gevent.pywsgi import WSGIServer
 from database import load_pg_from_db, load_pgn_from_db
 from werkzeug.utils import secure_filename
 
+from database import load_pgn_from_db, insert_actividad
+
 app = Flask(__name__)
 app.config['JSONIFY_PRETTYPRINT_REGULAR'] = True
 
