@@ -52,8 +52,8 @@ def download_file(filename):
 
 
 
-@app.route("/actividad/<int:id>", methods=["GET", "POST"])
-def show_actividad(id):
+@app.route("/actividad_inoc/<int:id>", methods=["GET", "POST"])
+def show_actividad_inoc(id):
     actividad = load_pgn_from_db(id)
 
     if not actividad:
@@ -69,6 +69,7 @@ def show_actividad(id):
             apellido_paterno = request.form['apellido_paterno']
             apellido_materno = request.form['apellido_materno']
             nombres = request.form['nombres']
+            carrera = request.form['carrera'],
             semestre = request.form['semestre']
             grupo = request.form['grupo']
             pdf_file = request.files['pdf_file']
@@ -93,6 +94,7 @@ def show_actividad(id):
                 apellido_paterno,
                 apellido_materno,
                 nombres,
+                carrera,
                 semestre,
                 grupo,
                 pdf_url
