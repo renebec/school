@@ -303,6 +303,13 @@
     <h2 style="color:green;">Apertura ({{i['aperturaTiempoTotal']/60}} hrs)</h2>
     {{i['apertura'] | safe}}
             <br><br>
+          <!-- ANUNCIO EN CONSTRUCCIÓN -->
+          <text style="font-size:130px">
+            &#128679;
+          </text>
+          <br>
+          <text style="color:rgb(259,100,100);font-weight:bold;font-size:30px">En construcción...</text>
+          <br>
 <!--            {% if i['caso'] %}
             <p style="font-weight:bold; ">Caso {{i['id']}}:</p>
             {{i['caso']  | safe}}
@@ -317,6 +324,13 @@
             
     {{i['desarrollo'] | safe}}
           <br><br>
+          <!-- ANUNCIO EN CONSTRUCCIÓN -->
+          <text style="font-size:130px">
+            &#128679;
+          </text>
+          <br>
+          <text style="color:rgb(259,100,100);font-weight:bold;font-size:30px">En construcción...</text>
+          <br>
 
             
                 {% if i['laboratorioTiempoTotal'] > 0 %}
@@ -324,8 +338,14 @@
                 <div class="laboratorio">
                     <h2 style="color:#A11876;"">Laboratorio ({{i['laboratorioTiempoTotal']/60}} hrs)</h2>
                         {{i['laboratorio'] | safe}}</br>
-                 
-                  <br><br>
+                  <br>
+                  <!-- ANUNCIO EN CONSTRUCCIÓN -->
+                  <text style="font-size:130px">
+                    &#128679;
+                  </text>
+                  <br>
+                  <text style="color:rgb(259,100,100);font-weight:bold;font-size:30px">En construcción...</text>
+                  <br>
                 {% endif %}
                 </div>
         </div>
@@ -335,7 +355,14 @@
 
             {{i['cierre'] | safe}}</br>
           
-          <br><br>
+          <br>
+          <!-- ANUNCIO EN CONSTRUCCIÓN -->
+          <text style="font-size:130px">
+            &#128679;
+          </text>
+          <br>
+          <text style="color:rgb(259,100,100);font-weight:bold;font-size:30px">En construcción...</text>
+          <br>
 
                     </div>
       <br>
