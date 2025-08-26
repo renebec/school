@@ -8,6 +8,13 @@
     <title>{{i.tema}}</title>
 
     <style>
+
+       #btnCerrar {
+
+            margin-right:10px;
+         background-color:red;
+         
+       }
         
         #banner {
             display:block;
@@ -136,7 +143,7 @@
           /* Navbar Styling */
           .navbar2 {
             background-color: #333;
-            position: fixed;
+
             top: 50px;
             width: 100%;
             z-index: 1000;
@@ -182,6 +189,7 @@
           <li><a href="#Aper">Apertura</a></li>
           <li><a href="#Desa">Desarrollo</a></li>
           <li><a href="#Cierr">Cierre</a></li>
+          <li><a href="{{ url_for('logout') }}" class="btn btn-outline-danger btn-sm" id="btnCerrar">Cerrar Sesión</a></li>
         </ul>
       </nav>
            <!--"https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExanhlbHFqMGJoN3BsaGVtM3dyamUwbDE2eWE4aHNmd3ZqN3NlN3ZwZyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/l1J9yYblNRmcHXNok/giphy.gif"> 
@@ -260,12 +268,12 @@
                 <div class="container-fluid row align-items-center">
                         <text class='col-9'>{{i['id']}} {{i['tema']}}</text>
                         <div class="col-3 text-end">
-                            <a href="{{ url_for('logout') }}" class="btn btn-outline-danger btn-sm">Cerrar Sesión</a>
+                            
                         </div>
                 </div>
             </span>
         </nav>
-
+        
         <div height: 56px>
             
         </div>
