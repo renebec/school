@@ -141,33 +141,41 @@ def register():
 
 
 
-
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-        if request.method == 'POST':
-            username = request.form['username']
-            password = request.form['password']
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
 
-            with get_db_connection() as conn:
-                result = conn.execute(text('SELECT * FROM users WHERE username = :username'), {'username': username})
-                user = result.mappings().first()
+        # Connect to the database
+        conn = get_db_connection()
 
-            print("User found:", user)  # Debug
+        # Query to get the user by username
+        query = text('SELECT * FROM users WHERE username = :username')
+        result = conn.execute(query, {'username': username})
 
-            if user:
-                print("Checking password...")
-                if check_password_hash(user['password'], password):
-                    flash('Login successful!', 'success')
-                    return redirect(url_for('home'))
-                else:
-                    print("Password incorrect")
+        # Get the first result
+        user = result.mappings().first()
+
+        if user:
+            print(f"User found: {user}")
+            print("Checking password...")
+            if check_password_hash(user['password'], password):  # Check if password matches
+                # Set user session after successful login
+                session['user_id'] = user['numero_control']
+                session['username'] = user['username']
+                flash('Login successful!', 'success')
+                return redirect(url_for('home'))  # Redirect to home page or dashboard
             else:
-                print("User not found")
+                flash('Invalid password. Please try again.', 'danger')
+        else:
+            flash('Username not found. Please try again.', 'danger')
 
-            flash('Invalid username or password. Please try again.', 'danger')
+    return render_template('login.html')
 
-        return render_template('login.html')
-  
+
+
+
 
 if __name__ == '__main__':
     http_server = WSGIServer(('0.0.0.0', 8080), app)
