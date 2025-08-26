@@ -6,7 +6,7 @@ from gevent.pywsgi import WSGIServer
 from werkzeug.utils import secure_filename
 from werkzeug.security import generate_password_hash, check_password_hash
 
-from database import load_pg_from_db, load_pgn_from_db, get_db_connection, insert_actividad
+from database import load_pg_from_db, load_pgn_from_db, get_db_connection, insert_actividad, register_user
 
 import cloudinary
 import cloudinary.uploader

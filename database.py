@@ -3,6 +3,7 @@ from sqlalchemy import create_engine, text
 from datetime import datetime
 import pytz
 import mysql.connector
+import pymysql
 
 db_connection_string = os.environ['DB_CONNECTION_STRING']
 
@@ -76,4 +77,21 @@ def insert_actividad(actividad_num, apellido_paterno, apellido_materno, nombres,
             "pdf_url": pdf_url,
             "created_at": mexico_time
         })
+
+
+def register_user(numero_control, username, password):
+  connection = pymysql.connect(
+      host='tu_host',
+      user='tu_usuario',
+      password='tu_password',
+      database='tu_base_de_datos'
+  )
+
+  try:
+      with connection.cursor() as cursor:
+          sql = "INSERT INTO users (numero_control, username, password) VALUES (%s, %s, %s)"
+          cursor.execute(sql, (numero_control, username, password))
+          connection.commit()
+  finally:
+      connection.close()
       
