@@ -2,8 +2,20 @@ import os
 from sqlalchemy import create_engine, text
 from datetime import datetime
 import pytz
+import mysql.connector
 
 db_connection_string = os.environ['DB_CONNECTION_STRING']
+
+
+
+def get_db_connection():
+    conn = mysql.connector.connect(
+        host='localhost',
+        user='your_db_user',  # Replace with your MySQL username
+        password='your_db_password',  # Replace with your MySQL password
+        database='myClass'  # Your database name
+    )
+    return conn
 
 engine = create_engine(db_connection_string,
       connect_args={

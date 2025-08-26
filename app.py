@@ -2,10 +2,10 @@ import os
 from flask import Flask, render_template, jsonify, send_from_directory, current_app, request, redirect, url_for, flash
 from gevent import monkey; monkey.patch_all()
 from gevent.pywsgi import WSGIServer
-from database import load_pg_from_db, load_pgn_from_db
-from werkzeug.utils import secure_filename
+#from database import load_pg_from_db, load_pgn_from_db, get_db_connection
+from werkzeug.utils import secure_filename, generate_password_hash, check_password_hash
 
-from database import load_pgn_from_db, insert_actividad
+from database import load_pg_from_db, load_pgn_from_db, get_db_connection, insert_actividad
 
 import cloudinary
 import cloudinary.uploader
@@ -112,6 +112,68 @@ def enviaractividad():
 
 
 
+
+
+
+# Registration Route
+@app.route('/register', methods=['GET', 'POST'])
+def register():
+    if request.method == 'POST':
+        numero_control = request.form['numero_control']
+        username = request.form['username']
+        password = request.form['password']
+
+        # Connect to the database
+        conn = get_db_connection()
+        cursor = conn.cursor()
+
+        # Check if the student is pre-approved (exists in alumnos_preregistrados)
+        cursor.execute('SELECT * FROM alumnos_preregistrados WHERE numero_control = %s', (numero_control,))
+        student = cursor.fetchone()
+
+        if student:
+            # Student is pre-approved, hash the password and save the credentials in the users table
+            hashed_password = generate_password_hash(password)
+            cursor.execute('INSERT INTO users (numero_control, username, password) VALUES (%s, %s, %s)',
+                           (numero_control, username, hashed_password))
+            conn.commit()
+            flash('Registration successful. You can now log in.', 'success')
+            return redirect(url_for('login'))
+        else:
+            flash('Student not pre-approved. Please contact the administrator.', 'danger')
+
+        conn.close()
+
+    return render_template('register.html')
+
+
+
+
+
+# Login Route
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+
+        # Connect to the database
+        conn = get_db_connection()
+        cursor = conn.cursor()
+
+        # Check if the username exists in the users table
+        cursor.execute('SELECT * FROM users WHERE username = %s', (username,))
+        user = cursor.fetchone()
+
+        if user and check_password_hash(user[2], password):  # Check if password matches
+            flash('Login successful!', 'success')
+            return redirect(url_for('home'))  # Redirect to home page or dashboard
+        else:
+            flash('Invalid username or password. Please try again.', 'danger')
+
+        conn.close()
+
+    return render_template('login.html')
   
 
 if __name__ == '__main__':

@@ -6,3 +6,4 @@ werkzeug
 pymysql
 pytz
 cloudinary
+mysql-connector-python
