@@ -1,10 +1,13 @@
+from werkzeug.utils import secure_filename
+from werkzeug.security import generate_password_hash, check_password_hash
 import os
 from flask import Flask, render_template, jsonify, send_from_directory, current_app, request, redirect, url_for, flash, session
 from gevent import monkey; monkey.patch_all()
 from gevent.pywsgi import WSGIServer
 #from database import load_pg_from_db, load_pgn_from_db, get_db_connection
-from werkzeug.utils import secure_filename
-from werkzeug.security import generate_password_hash, check_password_hash
+
+
+
 
 from database import load_pg_from_db, load_pgn_from_db, get_db_connection, insert_actividad, register_user
 
@@ -26,10 +29,11 @@ app.secret_key = os.environ.get("SECRET_KEY", "dev-secret")
 
 @app.route("/")
 def hello_pm1():
-        if 'user' not in session:
+        if 'username' not in session:
             return redirect(url_for('login'))  # Redirige al login si no ha iniciado sesión
 
         pg = load_pg_from_db()
+        
         return render_template('home.html', pg=pg)
 
 
@@ -128,10 +132,18 @@ def register():
         username = request.form.get('username')
         password = request.form.get('password')
 
-        if not numero_control or not username or not password:
+        # Check if numero_control exists in alumnos_preregistrados table
+        conn = get_db_connection()
+        query = text('SELECT * FROM alumnos_preregistrados WHERE numero_control = :numero_control')
+        result = conn.execute(query, {'numero_control': numero_control}).fetchone()
+
+        if not result:
+            return "Número de control no registrado en la base de datos de alumnos preregistrados", 400
+
+        if not username or not password:
             return "Todos los campos son obligatorios", 400
 
-        # Aquí guardas en la base de datos
+        # Save the user in the 'users' table after checking numero_control exists
         register_user(numero_control, username, password)
 
         return redirect(url_for('login'))
@@ -147,25 +159,19 @@ def login():
         username = request.form['username']
         password = request.form['password']
 
-        # Connect to the database
+        # Connect to the database and fetch user data by username
         conn = get_db_connection()
-
-        # Query to get the user by username
         query = text('SELECT * FROM users WHERE username = :username')
-        result = conn.execute(query, {'username': username})
+        result = conn.execute(query, {'username': username}).fetchone()
 
-        # Get the first result
-        user = result.mappings().first()
-
-        if user:
-            print(f"User found: {user}")
-            print("Checking password...")
-            if check_password_hash(user['password'], password):  # Check if password matches
-                # Set user session after successful login
-                session['user_id'] = user['numero_control']
-                session['username'] = user['username']
+        if result:
+            # Check password hash
+            if check_password_hash(result['password'], password):  
+                # Set session and redirect
+                session['user_id'] = result['numero_control']
+                session['username'] = result['username']
                 flash('Login successful!', 'success')
-                return redirect(url_for('home'))  # Redirect to home page or dashboard
+                return redirect(url_for('hello_pm1'))  # Redirect to home page
             else:
                 flash('Invalid password. Please try again.', 'danger')
         else:
