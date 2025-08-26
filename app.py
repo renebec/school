@@ -122,30 +122,17 @@ def enviaractividad():
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     if request.method == 'POST':
-        numero_control = request.form['numero_control']
-        username = request.form['username']
-        password = request.form['password']
+        numero_control = request.form.get('numero_control')
+        username = request.form.get('username')
+        password = request.form.get('password')
 
-        # Connect to the database
-        conn = get_db_connection()
-        cursor = conn.cursor()
+        if not numero_control or not username or not password:
+            return "Todos los campos son obligatorios", 400
 
-        # Check if the student is pre-approved (exists in alumnos_preregistrados)
-        cursor.execute('SELECT * FROM alumnos_preregistrados WHERE numero_control = %s', (numero_control,))
-        student = cursor.fetchone()
+        # Aquí guardas en la base de datos
+        register_user(numero_control, username, password)
 
-        if student:
-            # Student is pre-approved, hash the password and save the credentials in the users table
-            hashed_password = generate_password_hash(password)
-            cursor.execute('INSERT INTO users (numero_control, username, password) VALUES (%s, %s, %s)',
-                           (numero_control, username, hashed_password))
-            conn.commit()
-            flash('Registration successful. You can now log in.', 'success')
-            return redirect(url_for('login'))
-        else:
-            flash('Student not pre-approved. Please contact the administrator.', 'danger')
-
-        conn.close()
+        return redirect(url_for('login'))
 
     return render_template('register.html')
 
