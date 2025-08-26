@@ -1,4 +1,4 @@
-from werkzeug.security import check_password_hash
+#from werkzeug.security import check_password_hash
 from werkzeug.utils import secure_filename
 import os
 from flask import Flask, render_template, jsonify, send_from_directory, current_app, request, redirect, url_for, flash, session
@@ -166,8 +166,8 @@ def login():
             return redirect(url_for('login'))
 
         if result:
-            # Check password hash
-            if check_password_hash(result['password'], password):  
+            # Compare plain password with stored plain password (not hashed)
+            if result['password'] == password:  
                 # Set session and redirect
                 session['user_id'] = result['numero_control']
                 session['username'] = result['username']
