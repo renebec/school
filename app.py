@@ -24,9 +24,11 @@ app.secret_key = os.environ.get("SECRET_KEY", "dev-secret")
 
 @app.route("/")
 def hello_pm1():
-  pg = load_pg_from_db()
-  return render_template('home.html',
-                        pg=pg)
+        if 'user' not in session:
+            return redirect(url_for('login'))  # Redirige al login si no ha iniciado sesión
+
+        pg = load_pg_from_db()
+        return render_template('home.html', pg=pg)
 
 
 
