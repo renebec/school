@@ -44,8 +44,8 @@
             
             position: sticky;
             top:0;
-            margin-top:54px;
-            margin-left:80%;
+            margin-top:0px;
+            margin-left:75%;
             z-index: 1000;
 
         }
@@ -76,14 +76,15 @@
 
         
     </style>
+
     </head>
         <nav class="navbar fixed-top bg-white shadow-sm mb-4">
-            <div class="container-fluid d-flex justify-content-between">
-                <span class="navbar-brand mb-0 h1 navtxt">Inocuidad alimentaria</span>
+            <div class="container-fluid d-flex justify-content-between row">
+                <span class="navbar-brand mb-0 h1 navtxt col-9">Inocuidad alimentaria</span><a href="{{ url_for('logout') }}" class="btn btn-outline-danger btn-sm col-3" id="btnCerrar">Cerrar Sesión</a>
             </div>
         </nav>
     
-        <a href="{{ url_for('logout') }}" class="btn btn-outline-danger btn-sm" id="btnCerrar">Cerrar Sesión</a>
+        
     
         <img class="mt-5" id="banner" src= "https://inocagro-web.onrender.com/static/verdurasCanasta.jpg">
 
