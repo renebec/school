@@ -75,11 +75,15 @@ def insert_actividad(actividad_num, apellido_paterno, apellido_materno, nombres,
 def get_user_from_database(username):
     try:
         with engine.connect() as conn:
-          result = conn.execute(
-            text("SELECT * FROM usuarios WHERE username = :val"),
-            {"val":username}
-          )
-    return {"username": username}  # Example return value
+            result = conn.execute(
+                text("SELECT * FROM users WHERE username = :val"),
+                {"val": username}
+            )
+            row = result.mappings().first()
+            return dict(row) if row else None
+    except Exception as e:
+        print(f"DB ERROR: {e}")
+        return None
 
 
 

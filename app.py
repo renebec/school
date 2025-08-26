@@ -154,25 +154,39 @@ def login():
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
-        #result = get_user_from_database(username)
-
-        # Connect to the database and fetch user data by username
-        conn = get_db_connection()
-        query = text('SELECT * FROM users WHERE username = :username')
-
+        
         try:
+            # Connect to the database and fetch user data by username
+            conn = get_db_connection()
+            query = text('SELECT * FROM users WHERE username = :username')
             result = conn.execute(query, {'username': username}).fetchone()
+            conn.close()
+            
+            if result:
+                # Check if password matches (you should use hashed passwords in production)
+                if result.password == password:
+                    session['username'] = username
+                    flash('Login successful!', 'success')
+                    return redirect(url_for('hello_pm1'))
+                else:
+                    flash('Invalid password. Please try again.', 'danger')
+            else:
+                flash('Username not found. Please try again.', 'danger')
+                
         except Exception as e:
             flash('Database error occurred. Please try again later.', 'danger')
-            return redirect(url_for('login'))
-
-        else:
-            flash('Username not found. Please try again.', 'danger')
 
     return render_template('login.html')
 
 
 
+
+
+@app.route('/logout')
+def logout():
+    session.pop('username', None)
+    flash('You have been logged out.', 'success')
+    return redirect(url_for('login'))
 
 
 if __name__ == '__main__':
