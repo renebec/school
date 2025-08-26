@@ -6,17 +6,11 @@ import mysql.connector
 import pymysql
 
 db_connection_string = os.environ['DB_CONNECTION_STRING']
-
+engine = create_engine(db_connection_string, connect_args={"ssl": {}})
 
 
 def get_db_connection():
-    conn = mysql.connector.connect(
-        host='localhost',
-        user='your_db_user',  # Replace with your MySQL username
-        password='your_db_password',  # Replace with your MySQL password
-        database='myClass'  # Your database name
-    )
-    return conn
+    return engine.connect()
 
 engine = create_engine(db_connection_string,
       connect_args={
@@ -80,18 +74,17 @@ def insert_actividad(actividad_num, apellido_paterno, apellido_materno, nombres,
 
 
 def register_user(numero_control, username, password):
-  connection = pymysql.connect(
-      host='tu_host',
-      user='tu_usuario',
-      password='tu_password',
-      database='tu_base_de_datos'
-  )
-
-  try:
-      with connection.cursor() as cursor:
-          sql = "INSERT INTO users (numero_control, username, password) VALUES (%s, %s, %s)"
-          cursor.execute(sql, (numero_control, username, password))
-          connection.commit()
-  finally:
-      connection.close()
+    hashed_password = generate_password_hash(password)
+    mexico_time = datetime.now(pytz.timezone("America/Mexico_City"))
+    with engine.begin() as conn:
+        sql = text("""
+            INSERT INTO users (numero_control, username, password, created_at)
+            VALUES (:num_ctrl, :user, :pwd, :created_at)
+        """)
+        conn.execute(sql, {
+            "num_ctrl": numero_control,
+            "user": username,
+            "pwd": password,
+            "created_at": mexico_time
+        })
       

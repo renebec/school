@@ -8,6 +8,8 @@ from werkzeug.security import generate_password_hash, check_password_hash
 
 from database import load_pg_from_db, load_pgn_from_db, get_db_connection, insert_actividad, register_user
 
+from sqlalchemy import text
+
 import cloudinary
 import cloudinary.uploader
 
@@ -140,30 +142,31 @@ def register():
 
 
 
-# Login Route
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-    if request.method == 'POST':
-        username = request.form['username']
-        password = request.form['password']
+        if request.method == 'POST':
+            username = request.form['username']
+            password = request.form['password']
 
-        # Connect to the database
-        conn = get_db_connection()
-        cursor = conn.cursor()
+            with get_db_connection() as conn:
+                result = conn.execute(text('SELECT * FROM users WHERE username = :username'), {'username': username})
+                user = result.mappings().first()
 
-        # Check if the username exists in the users table
-        cursor.execute('SELECT * FROM users WHERE username = %s', (username,))
-        user = cursor.fetchone()
+            print("User found:", user)  # Debug
 
-        if user and check_password_hash(user[2], password):  # Check if password matches
-            flash('Login successful!', 'success')
-            return redirect(url_for('home'))  # Redirect to home page or dashboard
-        else:
+            if user:
+                print("Checking password...")
+                if check_password_hash(user['password'], password):
+                    flash('Login successful!', 'success')
+                    return redirect(url_for('home'))
+                else:
+                    print("Password incorrect")
+            else:
+                print("User not found")
+
             flash('Invalid username or password. Please try again.', 'danger')
 
-        conn.close()
-
-    return render_template('login.html')
+        return render_template('login.html')
   
 
 if __name__ == '__main__':
