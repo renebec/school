@@ -72,19 +72,29 @@ def insert_actividad(actividad_num, apellido_paterno, apellido_materno, nombres,
             "created_at": mexico_time
         })
 
+def get_user_from_database(username):
+    try:
+        with engine.connect() as conn:
+          result = conn.execute(
+            text("SELECT * FROM usuarios WHERE username = :val"),
+            {"val":username}
+          )
+    return {"username": username}  # Example return value
+
+
 
 def register_user(numero_control, username, password):
-    hashed_password = generate_password_hash(password)
+    password = password
     mexico_time = datetime.now(pytz.timezone("America/Mexico_City"))
     with engine.begin() as conn:
         sql = text("""
             INSERT INTO users (numero_control, username, password, created_at)
-            VALUES (:num_ctrl, :user, :pwd, :created_at)
+            VALUES (:numero_control, :username, :password, :created_at)
         """)
         conn.execute(sql, {
-            "num_ctrl": numero_control,
-            "user": username,
-            "pwd": password,
+            "numero_control": numero_control,
+            "username": username,
+            "password": password,
             "created_at": mexico_time
         })
       

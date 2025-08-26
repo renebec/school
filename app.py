@@ -1,4 +1,4 @@
-#from werkzeug.security import check_password_hash
+
 from werkzeug.utils import secure_filename
 import os
 from flask import Flask, render_template, jsonify, send_from_directory, current_app, request, redirect, url_for, flash, session
@@ -6,7 +6,7 @@ from gevent import monkey; monkey.patch_all()
 from gevent.pywsgi import WSGIServer
 
 
-from database import load_pg_from_db, load_pgn_from_db, get_db_connection, insert_actividad, register_user
+from database import load_pg_from_db, load_pgn_from_db, get_db_connection, insert_actividad, register_user, get_user_from_database
 
 from sqlalchemy import text
 
@@ -154,6 +154,7 @@ def login():
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
+        #result = get_user_from_database(username)
 
         # Connect to the database and fetch user data by username
         conn = get_db_connection()
@@ -165,16 +166,6 @@ def login():
             flash('Database error occurred. Please try again later.', 'danger')
             return redirect(url_for('login'))
 
-        if result:
-            # Compare plain password with stored plain password (not hashed)
-            if result['password'] == password:  
-                # Set session and redirect
-                session['user_id'] = result['numero_control']
-                session['username'] = result['username']
-                flash('Login successful!', 'success')
-                return redirect(url_for('hello_pm1'))  # Redirect to home page
-            else:
-                flash('Invalid password. Please try again.', 'danger')
         else:
             flash('Username not found. Please try again.', 'danger')
 
