@@ -34,13 +34,13 @@ import cloudinary.uploader
 app = Flask(__name__)
 app.config['JSONIFY_PRETTYPRINT_REGULAR'] = True
 app.secret_key = os.environ.get("SECRET_KEY", "dev-secret")
-app.permanent_session_lifetime = timedelta(minutes=30)
+app.permanent_session_lifetime = timedelta(minutes=1)
 
 
 @app.route("/")
 def hello_pm1():
         if not check_session_timeout():
-            flash('Su sesión ha expirado. Por favor, inicie sesión nuevamente.', 'danger')
+            #flash('Su sesión ha expirado. Por favor, inicie sesión nuevamente.', 'danger')
             return redirect(url_for('login'))
 
         pg = load_pg_from_db()
