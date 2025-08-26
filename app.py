@@ -1,4 +1,4 @@
-from werkzeug.security import generate_password_hash, check_password_hash
+from werkzeug.security import check_password_hash
 from werkzeug.utils import secure_filename
 import os
 from flask import Flask, render_template, jsonify, send_from_directory, current_app, request, redirect, url_for, flash, session
