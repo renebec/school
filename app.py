@@ -52,7 +52,7 @@ def hello_pm1():
 @app.route('/pg/<int:pg_id>') 
 def show_pg(pg_id):
     if not check_session_timeout():
-        flash('Su sesión ha expirado. Por favor, inicie sesión nuevamente.', 'danger')
+        #flash('Su sesión ha expirado. Por favor, inicie sesión nuevamente.', 'danger')
         return redirect(url_for('login'))
         
     # Supongamos que TEMAS es tu estructura de datos (lista o dict)
