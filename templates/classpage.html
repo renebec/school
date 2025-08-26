@@ -257,9 +257,11 @@
         
         <nav class="navbar fixed-top bg-white shadow-sm mb-4">
             <span class="navbar-brand mb-0 h1 navtxt">
-                <div class="container-fluid row">
+                <div class="container-fluid row align-items-center">
                         <text class='col-9'>{{i['id']}} {{i['tema']}}</text>
-                        
+                        <div class="col-3 text-end">
+                            <a href="{{ url_for('logout') }}" class="btn btn-outline-danger btn-sm">Cerrar Sesión</a>
+                        </div>
                 </div>
             </span>
         </nav>

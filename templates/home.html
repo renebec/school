@@ -64,8 +64,9 @@
     </style>
     </head>
         <nav class="navbar fixed-top bg-white shadow-sm mb-4">
-            <div class="container-fluid">
+            <div class="container-fluid d-flex justify-content-between">
                 <span class="navbar-brand mb-0 h1 navtxt">Inocuidad alimentaria</span>
+                <a href="{{ url_for('logout') }}" class="btn btn-outline-danger btn-sm">Cerrar Sesión</a>
             </div>
         </nav>
         <img class="mt-5" id="banner" src= "https://inocagro-web.onrender.com/static/verdurasCanasta.jpg">
