@@ -190,7 +190,7 @@ def login():
                     session.permanent = True
                     session['username'] = username
                     session['last_activity'] = datetime.now().isoformat()
-                    flash(f'Bienvenido {username}', 'success')
+                    flash(f'{username} inició sesión', 'success')
                     return redirect(url_for('hello_pm1'))
                 else:
                     redirect(url_for('login.html'))
