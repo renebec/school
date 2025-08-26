@@ -4,11 +4,23 @@ import os
 from flask import Flask, render_template, jsonify, send_from_directory, current_app, request, redirect, url_for, flash, session
 from gevent import monkey; monkey.patch_all()
 from gevent.pywsgi import WSGIServer
+from datetime import datetime, timedelta
 
 
 from database import load_pg_from_db, load_pgn_from_db, get_db_connection, insert_actividad, register_user, get_user_from_database
 
 from sqlalchemy import text
+
+def check_session_timeout():
+    if 'username' in session:
+        if 'last_activity' in session:
+            last_activity = datetime.fromisoformat(session['last_activity'])
+            if datetime.now() - last_activity > timedelta(minutes=30):
+                session.clear()
+                return False
+        session['last_activity'] = datetime.now().isoformat()
+        return True
+    return False
 
 import cloudinary
 import cloudinary.uploader
@@ -22,12 +34,14 @@ import cloudinary.uploader
 app = Flask(__name__)
 app.config['JSONIFY_PRETTYPRINT_REGULAR'] = True
 app.secret_key = os.environ.get("SECRET_KEY", "dev-secret")
+app.permanent_session_lifetime = timedelta(minutes=30)
 
 
 @app.route("/")
 def hello_pm1():
-        if 'username' not in session:
-            return redirect(url_for('login'))  # Redirige al login si no ha iniciado sesión
+        if not check_session_timeout():
+            flash('Su sesión ha expirado. Por favor, inicie sesión nuevamente.', 'danger')
+            return redirect(url_for('login'))
 
         pg = load_pg_from_db()
         
@@ -37,6 +51,10 @@ def hello_pm1():
 
 @app.route('/pg/<int:pg_id>') 
 def show_pg(pg_id):
+    if not check_session_timeout():
+        flash('Su sesión ha expirado. Por favor, inicie sesión nuevamente.', 'danger')
+        return redirect(url_for('login'))
+        
     # Supongamos que TEMAS es tu estructura de datos (lista o dict)
     pg = load_pg_from_db()
     item = next((item for item in pg if item['id'] == pg_id), None)
@@ -66,6 +84,10 @@ def download_file(filename):
 
 @app.route("/enviaractividad", methods=["GET", "POST"])
 def enviaractividad():
+    if not check_session_timeout():
+        flash('Su sesión ha expirado. Por favor, inicie sesión nuevamente.', 'danger')
+        return redirect(url_for('login'))
+        
     show_form = True
     if request.method == "POST":
         try:
@@ -165,7 +187,9 @@ def login():
             if result:
                 # Check if password matches (you should use hashed passwords in production)
                 if result.password == password:
+                    session.permanent = True
                     session['username'] = username
+                    session['last_activity'] = datetime.now().isoformat()
                     flash(f'{username} inició sesión!', 'success')
                     return redirect(url_for('hello_pm1'))
                 else:
