@@ -1,11 +1,9 @@
+from werkzeug.security import generate_password_hash, check_password_hash
 from werkzeug.utils import secure_filename
 import os
 from flask import Flask, render_template, jsonify, send_from_directory, current_app, request, redirect, url_for, flash, session
 from gevent import monkey; monkey.patch_all()
 from gevent.pywsgi import WSGIServer
-#from database import load_pg_from_db, load_pgn_from_db, get_db_connection
-
-
 
 
 from database import load_pg_from_db, load_pgn_from_db, get_db_connection, insert_actividad, register_user
@@ -117,7 +115,6 @@ def enviaractividad():
             return redirect("/")
 
     return render_template("enviaractividad.html", show_form=show_form)
-
 
 
 
