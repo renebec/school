@@ -2,7 +2,7 @@ Flask
 gunicorn
 gevent
 sqlalchemy
-werkzeug
+werkzeug==2.0.3
 pymysql
 pytz
 cloudinary

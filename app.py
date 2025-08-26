@@ -1,5 +1,4 @@
 from werkzeug.utils import secure_filename
-from werkzeug.security import generate_password_hash, check_password_hash
 import os
 from flask import Flask, render_template, jsonify, send_from_directory, current_app, request, redirect, url_for, flash, session
 from gevent import monkey; monkey.patch_all()
@@ -162,7 +161,12 @@ def login():
         # Connect to the database and fetch user data by username
         conn = get_db_connection()
         query = text('SELECT * FROM users WHERE username = :username')
-        result = conn.execute(query, {'username': username}).fetchone()
+
+        try:
+            result = conn.execute(query, {'username': username}).fetchone()
+        except Exception as e:
+            flash('Database error occurred. Please try again later.', 'danger')
+            return redirect(url_for('login'))
 
         if result:
             # Check password hash
