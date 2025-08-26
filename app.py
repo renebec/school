@@ -166,7 +166,7 @@ def login():
                 # Check if password matches (you should use hashed passwords in production)
                 if result.password == password:
                     session['username'] = username
-                    flash('Login successful!', 'success')
+                    flash(f'{username} Login successful!', 'success')
                     return redirect(url_for('hello_pm1'))
                 else:
                     flash('Invalid password. Please try again.', 'danger')
