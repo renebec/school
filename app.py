@@ -193,12 +193,15 @@ def login():
                     flash(f'{username} inició sesión!', 'success')
                     return redirect(url_for('hello_pm1'))
                 else:
-                    flash('Invalid password. Please try again.', 'danger')
+                    redirect(url_for('login.html'))
+                    #flash('Invalid password. Please try again.', 'danger')
             else:
-                flash('Username not found. Please try again.', 'danger')
+                render_template('login.html')
+                #flash('Username not found. Please try again.', 'danger')
                 
         except Exception as e:
-            flash('Database error occurred. Please try again later.', 'danger')
+            render_template('login.html')
+            #flash('', 'danger')
 
     return render_template('login.html')
 
