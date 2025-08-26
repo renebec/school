@@ -13,24 +13,11 @@
     <form method="POST" enctype="multipart/form-data" action="{{ url_for('enviaractividad') }}">
     <label>Número de actividad:</label> <br>
     <input type="text" name="actividad_num" placeholder="7" required> <br>
+
+    <form method="POST" enctype="multipart/form-data" action="{{ url_for('enviaractividad') }}">
+    <label>Número de control:</label> <br>
+    <input type="text" name="numero_control" placeholder="20250001" required> <br>
   
-    <label>Apellido Paterno:</label> <br>
-    <input type="text" name="apellido_paterno" placeholder="FERNANDEZ" required> <br> 
-  
-    <label>Apellido Materno:</label> <br>
-    <input type="text" name="apellido_materno" placeholder="CRUZ"> <br> 
-  
-    <label>Nombre(s):</label> <br>
-    <input type="text" name="nombres" placeholder="JOSE MARIO" required> <br>
-  
-    <label>Carrera:</label> <br>
-    <input type="text" name="carrera" placeholder="SMEC" required> <br>
-  
-    <label>Semestre:</label> <br>
-    <input type="text" name="semestre" placeholder="3" required> <br>
-  
-    <label>Grupo:</label> <br>
-    <input type="text" name="grupo" placeholder="A" required> <br>
   
     <label>Archivo PDF:</label> 
     <input type="file" name="pdf_file" accept="application/pdf" required><br><br> 

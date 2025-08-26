@@ -7,7 +7,7 @@ from gevent.pywsgi import WSGIServer
 from datetime import datetime, timedelta
 
 
-from database import load_pg_from_db, load_pgn_from_db, get_db_connection, insert_actividad, register_user, get_user_from_database
+from database import load_pg_from_db, load_pgn_from_db, get_db_connection, register_user
 
 from sqlalchemy import text
 
@@ -22,8 +22,6 @@ def check_session_timeout():
         return True
     return False
 
-import cloudinary
-import cloudinary.uploader
 
 #cloudinary.config( 
 #  cloud_name = os.environ.get("CLOUDINARY_CLOUD_NAME"), 
@@ -73,70 +71,88 @@ def show_pgn(id):
 
 
 
-@app.route('/download/<path:filename>')
-def download_file(filename):
-    filename = secure_filename(filename)
-    static_folder = current_app.static_folder  # Usually 'static'
-    return send_from_directory(static_folder, filename, as_attachment=True)
-
-
-
-
 @app.route("/enviaractividad", methods=["GET", "POST"])
 def enviaractividad():
-    if not check_session_timeout():
-        flash('Su sesión ha expirado. Por favor, inicie sesión nuevamente.', 'danger')
-        return redirect(url_for('login'))
-        
-    show_form = True
-    if request.method == "POST":
-        try:
-            # Obtener los datos del formulario
-            actividad_num = request.form['actividad_num']
-            apellido_paterno = request.form['apellido_paterno']
-            apellido_materno = request.form['apellido_materno']
-            nombres = request.form['nombres']
-            carrera = request.form['carrera']
-            semestre = request.form['semestre']
-            grupo = request.form['grupo']
-            pdf_file = request.files['pdf_file']
+        if not check_session_timeout():
+            flash('Su sesión ha expirado. Por favor, inicie sesión nuevamente.', 'danger')
+            return redirect(url_for('login'))
 
-            # Validar que el archivo sea un PDF
-            if not pdf_file or not pdf_file.filename.endswith('.pdf'):
-                flash("Debes subir un archivo PDF válido.", "danger")
-                return redirect(request.url)
+        show_form = True
 
-            # Subir el archivo PDF a Cloudinary
-            result = cloudinary.uploader.upload(
-                pdf_file,
-                resource_type='raw',
-                folder='actividades_pdf'
-            )
-            pdf_url = result['secure_url']
-            print("✅ Carga en Cloudinary exitosa")
+        if request.method == "POST":
+            try:
+                actividad_num = request.form['actividad_num']
+                numero_control = request.form['numero_control']
+                pdf_file = request.files['pdf_file']
 
-            # Insertar los datos en la base de datos
-            insert_actividad(
-                actividad_num,
-                apellido_paterno,
-                apellido_materno,
-                nombres,
-                carrera,
-                semestre,
-                grupo,
-                pdf_url
-            )
-            print("✅ Inserción en DB exitosa")
+                # Validar PDF
+                if not pdf_file or not pdf_file.filename.endswith('.pdf'):
+                    flash("Debes subir un archivo PDF válido.", "danger")
+                    return redirect(request.url)
 
-            flash(f"Actividad {actividad_num} de {nombres} enviada correctamente.", "success")
-            return redirect(url_for("hello_pm1"))  # Regresar a la página de inicio
+                # Conexión a la base de datos para obtener datos del estudiante
+                conn = get_db_connection()
+                cursor = conn.cursor(dictionary=True)
 
-        except Exception as e:
-            print("❌ Error during submission:", e)
-            flash(f"Ocurrió un error al procesar la actividad {actividad_num}.", "danger")
-            return redirect("/")
+                cursor.execute("""
+                    SELECT apellido_paterno, apellido_materno, nombres, carrera, semestre, grupo
+                    FROM students
+                    WHERE numero_control = %s
+                """, (numero_control,))
+                student = cursor.fetchone()
 
-    return render_template("enviaractividad.html", show_form=show_form)
+                if not student:
+                    flash("Número de control no encontrado en la base de datos.", "danger")
+                    return redirect(request.url)
+
+                # Subir archivo PDF a Cloudinary
+                result = cloudinary.uploader.upload(
+                    pdf_file,
+                    resource_type='raw',
+                    folder='actividades_pdf'
+                )
+                pdf_url = result['secure_url']
+                print("✅ Carga en Cloudinary exitosa")
+
+                # Insertar en actividades_inoc
+                cursor.execute("""
+                    INSERT INTO actividades_inoc (
+                        actividad_num,
+                        numero_control,
+                        apellido_paterno,
+                        apellido_materno,
+                        nombres,
+                        carrera,
+                        semestre,
+                        grupo,
+                        pdf_url
+                    ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)
+                """, (
+                    actividad_num,
+                    numero_control,
+                    student['apellido_paterno'],
+                    student['apellido_materno'],
+                    student['nombres'],
+                    student['carrera'],
+                    student['semestre'],
+                    student['grupo'],
+                    pdf_url
+                ))
+
+                conn.commit()
+                cursor.close()
+                conn.close()
+                print("✅ Inserción en DB exitosa")
+
+                flash(f"Actividad {actividad_num} de {student['nombres']} enviada correctamente.", "success")
+                return redirect(url_for("hello_pm1"))
+
+            except Exception as e:
+                print("❌ Error durante el envío:", e)
+                flash(f"Ocurrió un error al procesar la actividad {actividad_num}.", "danger")
+                return redirect("/")
+
+        return render_template("enviaractividad.html", show_form=show_form)
 
 
 
@@ -147,8 +163,15 @@ def enviaractividad():
 def register():
     if request.method == 'POST':
         numero_control = request.form.get('numero_control')
+        username = request.form.get('apellido_paterno')
+        username = request.form.get('apellido_materno')
+        username = request.form.get('nombres')
         username = request.form.get('username')
         password = request.form.get('password')
+        username = request.form.get('carrera')
+        password = request.form.get('semestre')
+        username = request.form.get('grupo')
+
 
         # Check if numero_control exists in alumnos_preregistrados table
         conn = get_db_connection()
@@ -162,7 +185,7 @@ def register():
             return "Todos los campos son obligatorios", 400
 
         # Save the user in the 'users' table after checking numero_control exists
-        register_user(numero_control, username, password)
+        register_user(numero_control, apellido_paterno, apellido_materno, nombres, username, password, carrera, semestre, grupo)
 
         return redirect(url_for('login'))
 
@@ -199,7 +222,7 @@ def login():
                 render_template('login.html')
                 #flash('Username not found. Please try again.', 'danger')
                 
-        except Exception as e:
+        except Exception:
             render_template('login.html')
             #flash('', 'danger')
 

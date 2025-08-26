@@ -92,13 +92,19 @@ def register_user(numero_control, username, password):
     mexico_time = datetime.now(pytz.timezone("America/Mexico_City"))
     with engine.begin() as conn:
         sql = text("""
-            INSERT INTO users (numero_control, username, password, created_at)
-            VALUES (:numero_control, :username, :password, :created_at)
+            INSERT INTO users (numero_control, apellido_paterno, apellido_materno, nombres, username, password, carrera, semestre, grupo,created_at)
+            VALUES (:numero_control, :apellido_paterno :username, :apellido_materno, :nombres, :password, :carrera, :semestre, :grupo, :created_at)
         """)
         conn.execute(sql, {
             "numero_control": numero_control,
+            "apellido_paterno": apellido_paterno,
+            "apellido_materno": apellido_materno,
+            "nombres": nombres,
             "username": username,
             "password": password,
+            "carrera": carrera,
+            "semestre": semestre,
+            "grupo": grupo,
             "created_at": mexico_time
         })
       
