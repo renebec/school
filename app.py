@@ -111,6 +111,7 @@ def enviaractividad():
             carrera = user['carrera']
             semestre = user['semestre']
             grupo = user['grupo']
+            pdf_url = user['pdf_url']
 
             # Subir archivo a Cloudinary
             result = cloudinary.uploader.upload(
