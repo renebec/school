@@ -57,7 +57,7 @@ def load_pgn_from_db(id):
 
 # Insert a new actividad record
 def insert_actividad(session, actividad_num, apellido_paterno, apellido_materno, nombres, carrera, semestre, grupo, numero_control, pdf_url, created_at):
-    mexico_time = datetime.now(pytz.timezone("America/Mexico_City"))
+    created_at = datetime.now(pytz.timezone("America/Mexico_City"))
     try:
             query = text("""
                 INSERT INTO actividades_inoc (

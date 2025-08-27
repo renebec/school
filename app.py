@@ -27,13 +27,13 @@ def check_session_timeout():
         return True
     return False
 
-
+"""
 cloudinary.config( 
   cloud_name = os.environ.get("CLOUDINARY_CLOUD_NAME"), 
   api_key = os.environ.get("CLOUDINARY_API_KEY"), 
   api_secret = os.environ.get("CLOUDINARY_API_SECRET")
 )
-
+"""
 app = Flask(__name__)
 app.config['JSONIFY_PRETTYPRINT_REGULAR'] = True
 app.secret_key = os.environ.get("SECRET_KEY", "dev-secret")
