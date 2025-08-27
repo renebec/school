@@ -163,7 +163,9 @@ def register():
                 return render_template("register.html")
 
             # Call the function to register the user (make sure it handles the db insertion)
-            register_user(numero_control, apellido_paterno, apellido_materno, nombres, username, password, carrera, semestre, grupo)
+            db_session = get_db_session()
+            register_user(db_session, numero_control, apellido_paterno, apellido_materno, nombres, username, password, carrera, semestre, grupo)
+            db_session.close()
 
             flash(f"Registro exitoso para {nombres}!", "success")
             return redirect(url_for('login'))
@@ -186,14 +188,15 @@ def login():
         
         try:
             # Connect to the database and fetch user data by username
-            conn = get_db_connection()
+            session = get_db_session()
             query = text('SELECT * FROM users WHERE username = :username')
-            result = conn.execute(query, {'username': username}).fetchone()
-            conn.close()
+            result = session.execute(query, {'username': username})
+            user = result.mappings().first()
+            session.close()
             
-            if result:
+            if user:
                 # Check if password matches (you should use hashed passwords in production)
-                if result.password == password:
+                if user['password'] == password:
                     session.permanent = True
                     session['username'] = username
                     session['last_activity'] = datetime.now().isoformat()
