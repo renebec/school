@@ -1,7 +1,8 @@
-
+import pytz
 from werkzeug.utils import secure_filename
 import os
 from flask import Flask, render_template, jsonify, send_from_directory, current_app, request, redirect, url_for, flash, session
+from flask import session as flask_session
 from gevent import monkey; monkey.patch_all()
 from gevent.pywsgi import WSGIServer
 from datetime import datetime, timedelta
@@ -12,6 +13,8 @@ import cloudinary.uploader
 from database import load_pg_from_db, load_pgn_from_db,  register_user, get_db_session, insert_actividad
 
 from sqlalchemy import text
+
+created_at = datetime.now()
 
 def check_session_timeout():
     if 'username' in session:
@@ -79,6 +82,8 @@ def enviaractividad():
         flash('Su sesión ha expirado. Por favor, inicie sesión nuevamente.', 'danger')
         return redirect(url_for('login'))
 
+    show_form = request.method == "POST"
+
     if request.method == "POST":
         try:
             actividad_num = request.form['actividad_num']
@@ -89,53 +94,61 @@ def enviaractividad():
                 flash("Debes subir un archivo PDF válido.", "danger")
                 return redirect(request.url)
 
-            # Upload PDF to Cloudinary
+            # Obtener la sesión de base de datos
+            session_db = get_db_session()
+
+            # Obtener datos del usuario
+            query = text('SELECT * FROM users WHERE numero_control = :numero_control')
+            user = session_db.execute(query, {'numero_control': numero_control}).mappings().first()
+
+            if not user:
+                flash("Número de control no encontrado en la base de datos.", "danger")
+                return redirect(request.url)
+
+            apellido_paterno = user['apellido_paterno']
+            apellido_materno = user['apellido_materno']
+            nombres = user['nombres']
+            carrera = user['carrera']
+            semestre = user['semestre']
+            grupo = user['grupo']
+
+            # Subir archivo a Cloudinary
             result = cloudinary.uploader.upload(
                 pdf_file,
                 resource_type='raw',
                 folder='actividades_pdf'
             )
-            print("Cloudinary upload result:", result)
-            pdf_url = result['secure_url']
+            pdf_url = result.get('secure_url')
+            print("✅ Carga en Cloudinary exitosa")
 
-            # Get user info from DB using a session
-            session = get_db_session()
-            query = text("SELECT apellido_paterno, apellido_materno, nombres, carrera, semestre, grupo FROM users WHERE numero_control = :nc")
-            result = session.execute(query, {"nc": numero_control})
-            user = result.mappings().first()
-            session.close()
+            # Establecer la fecha y hora actual en zona horaria de México
+            created_at = datetime.now(pytz.timezone("America/Mexico_City"))
 
-            if not user:
-                flash("Número de control no encontrado.", "danger")
-                return redirect(request.url)
-
-
-
-            # Insert actividad in DB
-            db_session = get_db_session()
+            # Insertar en la tabla actividades_inoc
             insert_actividad(
-                db_session,
+                session_db,
                 actividad_num,
-                user['apellido_paterno'],
-                user['apellido_materno'],
-                user['nombres'],
-                user['carrera'],
-                user['semestre'],
-                user['grupo'],
+                apellido_paterno,
+                apellido_materno,
+                nombres,
+                carrera,
+                semestre,
+                grupo,
+                numero_control,
                 pdf_url,
-                result['created_at']
+                created_at
             )
-            db_session.close()
+            print("✅ Inserción en DB exitosa")
 
-            flash(f"Actividad {actividad_num} enviada correctamente.", "success")
+            flash(f"Actividad {actividad_num} de {nombres} enviada correctamente.", "success")
             return redirect(url_for("hello_pm1"))
 
         except Exception as e:
-            print("❌ Error durante el envío:", e)
-            flash("Error al enviar la actividad.", "danger")
-            return redirect(request.url)
+            print("❌ Error during submission:", e)
+            flash(f"Ocurrió un error al procesar la actividad {actividad_num}.", "danger")
+            return redirect(url_for('enviaractividad'))
 
-    return render_template("enviaractividad.html")
+    return render_template("enviaractividad.html", show_form=show_form)
 
 
 
@@ -185,33 +198,37 @@ def login():
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
-        
+        print(f"Trying login for user: {username}")
         try:
             # Connect to the database and fetch user data by username
-            session = get_db_session()
+            db_session = get_db_session()
             query = text('SELECT * FROM users WHERE username = :username')
-            result = session.execute(query, {'username': username})
+            result = db_session.execute(query, {'username': username})
             user = result.mappings().first()
-            session.close()
-            
+            db_session.close()
+
             if user:
-                # Check if password matches (you should use hashed passwords in production)
+                print("User found:", user)
+                # Check if password matches (you should hash passwords in production)
                 if user['password'] == password:
-                    session.permanent = True
-                    session['username'] = username
-                    session['last_activity'] = datetime.now().isoformat()
+                    print("Password correct")
+                    flask_session.permanent = True
+                    flask_session['username'] = username
+                    flask_session['last_activity'] = datetime.now().isoformat()
                     flash(f'{username} inició sesión', 'success')
-                    return redirect(url_for('hello_pm1'))
+                    return redirect(url_for('hello_pm1'))  # Redirect on success
                 else:
-                    redirect(url_for('login.html'))
-                    #flash('Invalid password. Please try again.', 'danger')
+                    print("Password incorrect")
+                    flash('Invalid password. Please try again.', 'danger')
+                    return render_template('login.html')
             else:
-                render_template('login.html')
-                #flash('Username not found. Please try again.', 'danger')
-                
-        except Exception:
-            render_template('login.html')
-            #flash('', 'danger')
+                flash('Username not found. Please try again.', 'danger')
+                return render_template('login.html')
+
+        except Exception as e:
+            print("Exception during login:", e)
+            flash('An error occurred. Please try again later.', 'danger')
+            return render_template('login.html')
 
     return render_template('login.html')
 

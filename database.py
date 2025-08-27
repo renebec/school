@@ -17,11 +17,10 @@ engine = create_engine(db_connection_string,
 
 Session = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
-# Function to get the session
+SessionLocal = sessionmaker(bind=engine)
+
 def get_db_session():
-    return Session()
-
-
+    return SessionLocal()
 
 def load_pg_from_db():
     try:
@@ -57,25 +56,48 @@ def load_pgn_from_db(id):
 
 
 # Insert a new actividad record
-def insert_actividad(session, actividad_num, apellido_paterno, apellido_materno, nombres, carrera, semestre, grupo, pdf_url, created_at):
+def insert_actividad(session, actividad_num, apellido_paterno, apellido_materno, nombres, carrera, semestre, grupo, numero_control, pdf_url, created_at):
     mexico_time = datetime.now(pytz.timezone("America/Mexico_City"))
     try:
-        query = text("""
-            INSERT INTO actividades_inoc (actividad_num, apellido_paterno, apellido_materno, nombres, carrera, semestre, grupo, pdf_url, created_at)
-            VALUES (:actividad_num, :ap, :am, :nombres, :carr, :sem, :gpo, :pdf_url, :created_at)
-        """)
-        session.execute(query, {
-            "actividad_num": actividad_num,
-            "ap": apellido_paterno,
-            "am": apellido_materno,
-            "nombres": nombres,
-            "carr": carrera,
-            "sem": semestre,
-            "gpo": grupo,
-            "pdf_url": pdf_url,
-            "created_at": mexico_time
-        })
-        session.commit()  # Make sure to commit the transaction
+            query = text("""
+                INSERT INTO actividades_inoc (
+                    actividad_num,
+                    apellido_paterno,
+                    apellido_materno,
+                    nombres,
+                    carrera,
+                    semestre,
+                    grupo,
+                    numero_control,
+                    pdf_url,
+                    created_at
+                )
+                VALUES (
+                    :actividad_num,
+                    :apellido_paterno,
+                    :apellido_materno,
+                    :nombres,
+                    :carrera,
+                    :semestre,
+                    :grupo,
+                    :numero_control,
+                    :pdf_url,
+                    :created_at
+                )
+            """)
+            session.execute(query, {
+                "actividad_num": actividad_num,
+                "apellido_paterno": apellido_paterno,
+                "apellido_materno": apellido_materno,
+                "nombres": nombres,
+                "carrera": carrera,
+                "semestre": semestre,
+                "grupo": grupo,
+                "numero_control": numero_control,
+                "pdf_url": pdf_url,
+                "created_at": created_at
+            })
+            session.commit()  # Make sure to commit the transaction
     except Exception as e:
         print(f"DB ERROR while inserting actividad: {e}")
         session.rollback()  # Rollback in case of error
@@ -118,8 +140,7 @@ def register_user(session, numero_control, apellido_paterno, apellido_materno, n
             "password": password,
             "carrera": carrera,
             "semestre": semestre,
-            "grupo": grupo,
-            "created_at": mexico_time
+            "grupo": grupo
         })
         session.commit()  # Commit the transaction
     except Exception as e:
