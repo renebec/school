@@ -112,7 +112,9 @@ def enviaractividad():
 
 
             # Insert actividad in DB
+            db_session = get_db_session()
             insert_actividad(
+                db_session,
                 actividad_num,
                 user['apellido_paterno'],
                 user['apellido_materno'],
@@ -121,8 +123,9 @@ def enviaractividad():
                 user['semestre'],
                 user['grupo'],
                 pdf_url,
-                
+                result['created_at']
             )
+            db_session.close()
 
             flash(f"Actividad {actividad_num} enviada correctamente.", "success")
             return redirect(url_for("hello_pm1"))
