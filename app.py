@@ -168,6 +168,7 @@ def register():
             carrera = request.form['carrera']
             semestre = request.form['semestre']
             grupo = request.form['grupo']
+            
 
             # Validate password (you can extend this validation)
             if len(password) < 8:
@@ -176,6 +177,7 @@ def register():
 
             # Call the function to register the user (make sure it handles the db insertion)
             db_session = get_db_session()
+            created_at = datetime.now(pytz.timezone("America/Mexico_City"))
             register_user(db_session, numero_control, apellido_paterno, apellido_materno, nombres, username, password, carrera, semestre, grupo)
             db_session.close()
 

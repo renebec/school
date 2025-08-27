@@ -123,11 +123,10 @@ def get_user_from_database(username):
 # Register a new user in the database
 def register_user(session, numero_control, apellido_paterno, apellido_materno, nombres, username, password, carrera, semestre, grupo):
     password = password  # You might want to hash this password
-    mexico_time = datetime.now(pytz.timezone("America/Mexico_City"))
     try:
         sql = text("""
-            INSERT INTO users (numero_control, apellido_paterno, apellido_materno, nombres, username, password, carrera, semestre, grupo, created_at)
-            VALUES (:numero_control, :apellido_paterno, :apellido_materno, :username,  :nombres, :password, :carrera, :semestre, :grupo, :created_at)
+            INSERT INTO users ( numero_control, apellido_paterno, apellido_materno, nombres, username, password, carrera, semestre, grupo)
+            VALUES (:numero_control, :apellido_paterno, :apellido_materno, :nombres, :username, :password, :carrera, :semestre, :grupo)
         """)
         session.execute(sql, {
             "numero_control": numero_control,
@@ -138,7 +137,7 @@ def register_user(session, numero_control, apellido_paterno, apellido_materno, n
             "password": password,
             "carrera": carrera,
             "semestre": semestre,
-            "grupo": grupo
+            "grupo": grupo,
         })
         session.commit()  # Commit the transaction
     except Exception as e:
