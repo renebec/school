@@ -134,7 +134,6 @@ def enviaractividad():
                 carrera,
                 semestre,
                 grupo,
-                numero_control,
                 pdf_url,
                 created_at
             )

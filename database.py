@@ -56,7 +56,7 @@ def load_pgn_from_db(id):
 
 
 # Insert a new actividad record
-def insert_actividad(session, actividad_num, apellido_paterno, apellido_materno, nombres, carrera, semestre, grupo, numero_control, pdf_url, created_at):
+def insert_actividad(session, actividad_num, apellido_paterno, apellido_materno, nombres, carrera, semestre, grupo, pdf_url, created_at):
     created_at = datetime.now(pytz.timezone("America/Mexico_City"))
     try:
             query = text("""
@@ -68,7 +68,6 @@ def insert_actividad(session, actividad_num, apellido_paterno, apellido_materno,
                     carrera,
                     semestre,
                     grupo,
-                    numero_control,
                     pdf_url,
                     created_at
                 )
@@ -80,7 +79,6 @@ def insert_actividad(session, actividad_num, apellido_paterno, apellido_materno,
                     :carrera,
                     :semestre,
                     :grupo,
-                    :numero_control,
                     :pdf_url,
                     :created_at
                 )
@@ -93,11 +91,11 @@ def insert_actividad(session, actividad_num, apellido_paterno, apellido_materno,
                 "carrera": carrera,
                 "semestre": semestre,
                 "grupo": grupo,
-                "numero_control": numero_control,
                 "pdf_url": pdf_url,
                 "created_at": created_at
             })
             session.commit()  # Make sure to commit the transaction
+            session.close()
     except Exception as e:
         print(f"DB ERROR while inserting actividad: {e}")
         session.rollback()  # Rollback in case of error
