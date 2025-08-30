@@ -1,7 +1,6 @@
 import pytz
-from werkzeug.utils import secure_filename
 import os
-from flask import Flask, render_template, jsonify, send_from_directory, current_app, request, redirect, url_for, flash, session
+from flask import Flask, render_template, jsonify, request, redirect, url_for, flash, session
 from flask import session as flask_session
 from gevent import monkey; monkey.patch_all()
 from gevent.pywsgi import WSGIServer
@@ -9,7 +8,7 @@ from datetime import datetime, timedelta
 import cloudinary
 import cloudinary.uploader
 
-from database import load_pg_from_db, load_pgn_from_db,  register_user, get_db_session, insert_actividad
+from database import load_pg_from_db, load_pgn_from_db,  register_user, get_db_session, insert_actividad, load_plan_from_db, insert_plan
 
 from sqlalchemy import text
 
@@ -46,9 +45,15 @@ def hello_pm1():
             return redirect(url_for('login'))
 
         pg = load_pg_from_db()
+        
 
         return render_template('home.html', pg=pg)
 
+
+
+
+
+#para extraer el contenido de la DB (cada pg) y mostralo en la página
 @app.route('/pg/<int:pg_id>') 
 def show_pg(pg_id):
     if not check_session_timeout():
@@ -63,6 +68,30 @@ def show_pg(pg_id):
     return render_template('classpage.html', i=item)
 
 
+
+
+#para extraer el contenido de la DB (cada plan) y mostralo en la página
+@app.route('/plan/<int:id>', methods=['GET']) 
+def show_plan(id):
+    if not check_session_timeout():
+        #flash('Su sesión ha expirado. Por favor, inicie sesión nuevamente.', 'danger')
+        return redirect(url_for('login'))
+
+    show_form = request.method == "GET"
+
+    # Supongamos que TEMAS es tu estructura de datos (lista o dict)
+    plan = load_plan_from_db(id)
+    #item = next((item for item in plan if item['cve'] == id), None)
+    item = plan
+    if item is None:
+        return "Not Found", 404
+    return render_template('plan.html', i=item, show_form=show_form)
+
+
+
+
+
+#para jsonificar el contenido mostrado en la página
 @app.route("/pgn/<int:id>")
 def show_pgn(id):
     pgn = load_pgn_from_db(id)
@@ -71,6 +100,10 @@ def show_pgn(id):
     else:
         return jsonify({'error': 'Not found'}), 404
 
+
+
+
+#para que el usuario envíe una nueva actividad y registrarla en la DB
 @app.route("/enviaractividad", methods=["GET", "POST"])
 def enviaractividad():
     if not check_session_timeout():
@@ -86,7 +119,7 @@ def enviaractividad():
             pdf_file = request.files['pdf_file']
 
             if not pdf_file or not pdf_file.filename.endswith('.pdf'):
-                flash("Debes subir un archivo PDF válido.", "danger")
+                flash("Debes subir un archivo PDF válido menor a 5MB.", "danger")
                 return redirect(request.url)
 
             # Obtener la sesión de base de datos
@@ -146,6 +179,190 @@ def enviaractividad():
     return render_template("enviaractividad.html", show_form=show_form)
 
 
+
+#para que el docente suba una planeación (anexo PDF de instrumentos) y registrarla en la DB
+@app.route("/plan_carga", methods=["GET", "POST"])
+def plan_carga():
+    if not check_session_timeout():
+        flash('Su sesión ha expirado. Por favor, inicie sesión nuevamente.', 'danger')
+        return redirect(url_for('login'))
+
+    show_form = request.method == "POST"
+
+    if request.method == "POST":
+        try:
+            asig = request.form['asig']
+            prop = request.form['prop']
+            temas = request.files['temas']
+            plantel = request.files['plantel']
+            ciclo = request.files['ciclo']
+            periodo = request.files['periodo']
+            carrera = request.files['carrera']
+            semestre = request.files['semestre']
+            grupos = request.files['grupos']
+            horas_sem = request.files['horas_sem']
+            docenteID = request.files['docenteID']
+            imparte = request.files['imparte']
+            trAsig1 = request.files['trAsig1']
+            trtema1 = request.files['trtema1']
+            trAsig2 = request.files['trAsig2']
+            trtema2 = request.files['trtema2']
+            trAsig3 = request.files['trAsig3']
+            trtema3 = request.files['trtema3']
+            apDur = request.files['apDur']
+            apEv = request.files['apEv']
+            apIns = request.files['apIns']
+            apPond = request.files['apPond']
+            apAct = request.files['apAct']
+            deDur = request.files['deDur']
+            deEv = request.files['deEv']
+            deIns = request.files['deIns']
+            dePond = request.files['dePond']
+            deAct = request.files['deAct']
+            ciDur = request.files['ciDur']
+            ciEv = request.files['ciEv']
+            ciIns = request.files['ciIns']
+            ciPond = request.files['ciPond']
+            ciAct = request.files['ciAct']
+            materiales = request.files['materiales']
+            equipo = request.files['equipo']
+            fuentes = request.files['fuentes']
+            elabora = request.files['elabora']
+            revisa = request.files['revisa']
+            avala = request.files['avala']
+            cve = request.files['cve']
+            created_at = request.files['created_at']
+            pdf_url = request.files['pdf_url']
+
+            if not pdf_file or not pdf_file.filename.endswith('.pdf'):
+                flash("Debes subir un archivo PDF válido menor a 5MB.", "danger")
+                return redirect(request.url)
+
+            # Obtener la sesión de base de datos
+            session_db = get_db_session()
+
+            # Obtener datos del usuario
+            query = text('SELECT * FROM planInocAgro WHERE cve = :cve')
+            user = session_db.execute(query, {'cve': cve}).mappings().first()
+
+            if not user:
+                flash("Registro no encontrada en la base de datos.", "danger")
+                return redirect(request.url)
+
+            asig = user['asig']
+            prop = user['prop']
+            temas = user['temas']
+            plantel = user['plantel']
+            ciclo = user['ciclo']
+            periodo = user['periodo']
+            carrera = user['carrera']
+            semestre = user['semestre']
+            grupos = user['grupos']
+            horas_sem = user['horas_sem']
+            docenteID = user['docenteID']
+            imparte = user['imparte']
+            trAsig1 = user['trAsig1']
+            trtema1 = user['trtema1']
+            trAsig2 = user['trAsig2']
+            trtema2 = user['trtema2']
+            trAsig3 = user['trAsig3']
+            trtema3 = user['trtema3']
+            apDur = user['apDur']
+            apEv = user['apEv']
+            apIns = user['apIns']
+            apPond = user['apPond']
+            apAct = user['apAct']
+            deDur = user['deDur']
+            deEv = user['deEv']
+            deIns = user['deIns']
+            dePond = user['dePond']
+            deAct = user['deAct']
+            ciDur = user['ciDur']
+            ciEv = user['ciEv']
+            ciIns = user['ciIns']
+            ciPond = user['ciPond']
+            ciAct = user['ciAct']
+            materiales = user['materiales']
+            equipo = user['equipo']
+            fuentes = user['fuentes']
+            elabora = user['elabora']
+            revisa = user['revisa']
+            avala = user['avala']
+            cve = user['cve']
+            created_at = user['created_at']
+            pdf_url = user['pdf_url']
+
+            # Subir archivo a Cloudinary
+            result = cloudinary.uploader.upload(
+                pdf_file,
+                resource_type='raw',
+                folder='instrumentos_pdf'
+            )
+            pdf_url = result.get('secure_url')
+            print("✅ Carga en Cloudinary exitosa")
+
+            # Establecer la fecha y hora actual en zona horaria de México
+            created_at = datetime.now(pytz.timezone("America/Mexico_City"))
+
+            # Insertar en la tabla planInocAgro
+            insert_plan(
+                asig,
+                prop,
+                temas,
+                plantel,
+                ciclo,
+                periodo,
+                carrera,
+                semestre,
+                grupos,
+                horas_sem,
+                docenteID, 
+                imparte,
+                trAsig1,
+                trtema1,
+                trAsig2,
+                trtema2,
+                trAsig3,
+                trtema3,
+                apDur,
+                apEv,
+                apIns,
+                apPond,
+                apAct,
+                deDur,
+                deEv,
+                deIns,
+                dePond,
+                deAct,
+                ciDur,
+                ciEv,
+                ciIns,
+                ciPond,
+                ciAct,
+                materiales,
+                equipo,
+                fuentes,
+                elabora,
+                revisa,
+                avala,
+                cve,
+                created_at,
+                pdf_url
+            )
+            print("✅ Inserción en DB exitosa")
+
+            flash(f"Planeación {cve} de {docenteID} enviada correctamente.", "success")
+            return redirect(url_for("hello_pm1"))
+
+        except Exception as e:
+            print("❌ Error during submission:", e)
+            flash(f"Ocurrió un error al procesar la planeación {cve}.", "danger")
+            return redirect(url_for('plan_carga'))
+
+    return render_template("plan_carga.html", show_form=show_form)
+
+
+#para registrar un nuevo usuario y almacenarlo en la DB
 @app.route("/register", methods=["GET", "POST"])
 def register():
     if request.method == "POST":

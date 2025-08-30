@@ -51,6 +51,22 @@
 
     <div class="col-3"> 
         <a href= "{{ url_for('show_pg', pg_id=i['id']) }}" type="button" class= "btn btn-outline-primary"> Entrar</a>
+    </div>
+
+    {% if session['username'] == 'hrene' %}
+        <div class="row">
+    
+            <a href="{{ url_for('plan_carga') }}">
+                  <button>Subir una planeación</button>
+            </a>
+            
+            <div class="col-3">
+                <a href= "{{ url_for('show_plan', id=i['id']) }}" type="button" class= "btn btn-outline-primary"> Ver planeación</a>
+            </div>
+        </div>
+    {% endif %}
+
+        
         <!--
         {% for tema in temas %}
         <a href= "{{ url_for('show_tema', tema_id=loop.index0) }}" type="button" class= "btn btn-outline-primary"> Ir al Tema</a>

@@ -22,6 +22,7 @@ SessionLocal = sessionmaker(bind=engine)
 def get_db_session():
     return SessionLocal()
 
+
 def load_pg_from_db():
     try:
       with engine.connect() as conn:
@@ -39,6 +40,23 @@ def load_pg_from_db():
       #print(tipo_2)
       #print(result_all)
     #otro comentario
+
+
+def load_plan_from_db(id):
+    try:
+      with engine.connect() as conn:
+          result = conn.execute(text("SELECT * FROM planInocAgro WHERE id = :val"),
+              {"val":id}
+            )
+          row = result.mappings().first()
+          return dict(row) if row else None
+    except Exception as e:
+      print(f"DB ERROR: {e}")
+      return None
+
+
+
+
 
 def load_pgn_from_db(id):
   try:
@@ -97,10 +115,165 @@ def insert_actividad(session, actividad_num, apellido_paterno, apellido_materno,
             session.commit()  # Make sure to commit the transaction
             session.close()
     except Exception as e:
-        print(f"DB ERROR while inserting actividad: {e}")
+        print(f"DB ERROR Error al cargar la actividad, intente más tarde: {e}")
         session.rollback()  # Rollback in case of error
         return False
     return True
+
+
+
+
+# Insert a new plan
+def insert_plan(session, asig, prop, temas, plantel, ciclo, periodo, carrera, semestre, grupos, horas_sem, docenteID, imparte, trAsig1, trtema1, trAsig2, trtema2, trAsig3, trtema3, apDur, apEv, apIns, apPond, apAct, deDur, deEv, deIns, dePond, deAct, ciDur, ciEv, ciIns, ciPond, ciAct, materiales, equipo, fuentes, elabora, revisa, avala, cve, created_at, pdf_url):
+    created_at = datetime.now(pytz.timezone("America/Mexico_City"))
+    try:
+            query = text("""
+                INSERT INTO planInocAgro (
+                    asig,
+                    prop,
+                    temas,
+                    plantel,
+                    ciclo,
+                    periodo,
+                    carrera,
+                    semestre,
+                    grupos,
+                    horas_sem,
+                    docenteID, 
+                    imparte,
+                    trAsig1,
+                    trtema1,
+                    trAsig2,
+                    trtema2,
+                    trAsig3,
+                    trtema3,
+                    apDur,
+                    apEv,
+                    apIns,
+                    apPond,
+                    apAct,
+                    deDur,
+                    deEv,
+                    deIns,
+                    dePond,
+                    deAct,
+                    ciDur,
+                    ciEv,
+                    ciIns,
+                    ciPond,
+                    ciAct,
+                    materiales,
+                    equipo,
+                    fuentes,
+                    elabora,
+                    revisa,
+                    avala,
+                    cve,
+                    created_at,
+                    pdf_url
+                    
+                    
+                )
+                VALUES (
+                    :asig,
+                    :prop,
+                    :temas,
+                    :plantel,
+                    :ciclo,
+                    :periodo,
+                    :carrera,
+                    :semestre,
+                    :grupos,
+                    :horas_sem,
+                    :docenteID, 
+                    :imparte,
+                    :trAsig1,
+                    :trtema1,
+                    :trAsig2,
+                    :trtema2,
+                    :trAsig3,
+                    :trtema3,
+                    :apDur,
+                    :apEv,
+                    :apIns,
+                    :apPond,
+                    :apAct,
+                    :deDur,
+                    :deEv,
+                    :deIns,
+                    :dePond,
+                    :deAct,
+                    :ciDur,
+                    :ciEv,
+                    :ciIns,
+                    :ciPond,
+                    :ciAct,
+                    :materiales,
+                    :equipo,
+                    :fuentes,
+                    :elabora,
+                    :revisa,
+                    :avala,
+                    :cve,
+                    :created_at,
+                    :pdf_url
+                )
+            """)
+            session.execute(query, {
+                "asig": asig,
+                "prop": prop,
+                "temas": temas,
+                "plantel": plantel,
+                "ciclo": ciclo,
+                "periodo": periodo,
+                "carrera": semestre,
+                "grupos": grupos,
+                "horas_sem": horas_sem,
+                "docenteID": docenteID,
+                "imparte": imparte,
+                "trAsig1": trAsig1,
+                "trtema1": trtema1,
+                "trAsig2": trAsig2,
+                "trtema2": trtema2,
+                "trAsig3": trAsig3,
+                "trtema3": trtema3,
+                "apDur": apDur,
+                "apEv": apEv,
+                "apIns": apIns,
+                "apPond": apPond,
+                "apAct": apAct,
+                "deDur": deDur,
+                "deEv": deEv,
+                "deIns": deIns,
+                "dePond": dePond,
+                "deAct": deAct,
+                "ciDur": ciDur,
+                "ciEv": ciEv,
+                "ciIns": ciIns,
+                "ciPond": ciPond,
+                "ciAct": ciAct,
+                "materiales": materiales,
+                "equipo": equipo,
+                "fuentes": fuentes,
+                "elabora": elabora,
+                "revisa": revisa,
+                "avala": avala,
+                "cve": cve,
+                "created_at": created_at,
+                "pdf_url": pdf_url
+                
+            })
+            session.commit()  # Make sure to commit the transaction
+            session.close()
+    except Exception as e:
+        print(f"DB ERROR al cargar la planeación, intente más tarde: {e}")
+        session.rollback()  # Rollback in case of error
+        return False
+    return True
+
+
+
+
 
 
 # Get user data by username (login verification)
