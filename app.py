@@ -166,6 +166,15 @@ def register():
             if len(password) < 8:
                 flash("La contraseña debe tener al menos 8 caracteres.", "danger")
                 return render_template("register.html")
+                
+
+                # Initialize DB session
+            db_session = get_db_session()
+            created_at = datetime.now(pytz.timezone("America/Mexico_City"))
+
+            if not register_user(db_session, numero_control, apellido_paterno, apellido_materno, nombres, username, password, carrera, semestre, grupo):
+                flash("Ese nombre de usuario ya está registrado. Por favor, elige otro.", "danger")
+                return render_template("register.html")
 
             # Call the function to register the user (make sure it handles the db insertion)
             db_session = get_db_session()
@@ -206,19 +215,19 @@ def login():
                     flask_session.permanent = True
                     flask_session['username'] = username
                     flask_session['last_activity'] = datetime.now().isoformat()
-                    flash(f'{username} inició sesión', 'success')
+                    flash(f'{username} inició sesión correctamente', 'success')
                     return redirect(url_for('hello_pm1'))  # Redirect on success
                 else:
                     print("Password incorrect")
-                    flash('Invalid password. Please try again.', 'danger')
+                    flash('Contraseña equivocada. Intente de nuevo.', 'danger')
                     return render_template('login.html')
             else:
-                flash('Username not found. Please try again.', 'danger')
+                flash('Nombre de usuario no existe. Intente de nuevo.', 'danger')
                 return render_template('login.html')
 
         except Exception as e:
             print("Exception during login:", e)
-            flash('An error occurred. Please try again later.', 'danger')
+            flash('Ocurrió un error. Intente más tarde.', 'danger')
             return render_template('login.html')
 
     return render_template('login.html')
@@ -227,8 +236,9 @@ def login():
 
 @app.route('/logout')
 def logout():
+    
     session.pop('username', None)
-    #flash('You have been logged out.', 'success')
+    
     return redirect(url_for('login'))
 
 

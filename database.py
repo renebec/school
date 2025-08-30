@@ -122,6 +122,12 @@ def get_user_from_database(username):
 
 # Register a new user in the database
 def register_user(session, numero_control, apellido_paterno, apellido_materno, nombres, username, password, carrera, semestre, grupo):
+    # Check if username already exists
+    existing_user = get_user_from_database(username)
+    if existing_user:
+        # If the user already exists, return False or an error message
+        return False
+
     password = password  # You might want to hash this password
     try:
         sql = text("""
