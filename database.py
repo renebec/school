@@ -145,4 +145,3 @@ def register_user(session, numero_control, apellido_paterno, apellido_materno, n
         session.rollback()  # Rollback in case of error
         return False
     return True
-      

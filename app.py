@@ -9,7 +9,6 @@ from datetime import datetime, timedelta
 import cloudinary
 import cloudinary.uploader
 
-
 from database import load_pg_from_db, load_pgn_from_db,  register_user, get_db_session, insert_actividad
 
 from sqlalchemy import text
@@ -47,17 +46,15 @@ def hello_pm1():
             return redirect(url_for('login'))
 
         pg = load_pg_from_db()
-        
+
         return render_template('home.html', pg=pg)
-
-
 
 @app.route('/pg/<int:pg_id>') 
 def show_pg(pg_id):
     if not check_session_timeout():
         #flash('Su sesión ha expirado. Por favor, inicie sesión nuevamente.', 'danger')
         return redirect(url_for('login'))
-        
+
     # Supongamos que TEMAS es tu estructura de datos (lista o dict)
     pg = load_pg_from_db()
     item = next((item for item in pg if item['id'] == pg_id), None)
@@ -65,7 +62,7 @@ def show_pg(pg_id):
         return "Not Found", 404
     return render_template('classpage.html', i=item)
 
-  
+
 @app.route("/pgn/<int:id>")
 def show_pgn(id):
     pgn = load_pgn_from_db(id)
@@ -73,8 +70,6 @@ def show_pgn(id):
         return jsonify(pgn)
     else:
         return jsonify({'error': 'Not found'}), 404
-
-
 
 @app.route("/enviaractividad", methods=["GET", "POST"])
 def enviaractividad():
@@ -151,10 +146,6 @@ def enviaractividad():
     return render_template("enviaractividad.html", show_form=show_form)
 
 
-
-
-
-
 @app.route("/register", methods=["GET", "POST"])
 def register():
     if request.method == "POST":
@@ -169,7 +160,7 @@ def register():
             carrera = request.form['carrera']
             semestre = request.form['semestre']
             grupo = request.form['grupo']
-            
+
 
             # Validate password (you can extend this validation)
             if len(password) < 8:
@@ -191,8 +182,6 @@ def register():
             return render_template("register.html")
 
     return render_template("register.html")
-
-
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -233,8 +222,6 @@ def login():
             return render_template('login.html')
 
     return render_template('login.html')
-
-
 
 
 

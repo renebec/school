@@ -185,7 +185,7 @@
     <!-- Top Navigation Bar -->
       <nav class="navbar2">
         <ul class="nav-list2">
-          <li><a href="https://inocagro-web.onrender.com">Inicio</a></li>
+          <li><a href="{{ url_for('hello_pm1') }}">Inicio</a></li>
           <li><a href="#Aper">Apertura</a></li>
           <li><a href="#Desa">Desarrollo</a></li>
           <li><a href="#Cierr">Cierre</a></li>
@@ -305,7 +305,10 @@
                     {% endif %}
                 </div>
 
-    
+
+
+      
+ 
         <div id='Aper'><br><br></div>
         <div class="apertura" >
     <h2 style="color:green;">Apertura ({{i['aperturaTiempoTotal']/60}} hrs)</h2>
@@ -325,6 +328,9 @@
             {% endif %}
     <img class="mt-3 mb-3 zoom" src="{{i['src1']}}">
 -->            </div>
+
+
+
 
         <div id='Desa'><br><br><br></div>
         <div class="desarrollo">
@@ -357,6 +363,10 @@
                 {% endif %}
                 </div>
         </div>
+  
+
+
+
         <div id='Cierr'><br><br><br></div>
         <div class="cierre">
             <h2 style="color:#B51767;"">Cierre ({{i['cierreTiempoTotal']/60}} hrs)</h2>
@@ -372,7 +382,13 @@
           <text style="color:rgb(259,100,100);font-weight:bold;font-size:30px">En construcción...</text>
           <br>
 
-                    </div>
+
+
+
+
+
+
+      
       <br>
       <br>
       <br>
