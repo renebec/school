@@ -155,13 +155,16 @@
         <label class="form-label mb-0" for="grupos" style="font-weight:bold;">Grupo(s)</label><br>
         <label class="field-short" type="text" class="form-control" name="grupos">{{ i.grupos }}</label>
         </div>
-
+        
+        <div class="col-sm-9">
+          <label class="form-label mb-0" style="font-weight:bold;">Asignatura </label><br>
         {% set asignaturas = {'PM1': 'Pensamiento Matemàtico 1', 'PM3': 'Pensamiento matemático 3', 'inocAgr': 'Inocuidad en la Agricultura'} %}
         <input type="text" 
                class="form-control" 
                value="{{ i.asig }}" 
                title="{{ asignaturas[i.asig|string] }}" 
                readonly>
+        </div>
 <!--
       <div class="col-sm-12">
         <label class="form-label mb-0" for="asig" style="font-weight:bold;">Asignatura</label>
@@ -209,7 +212,7 @@
 
         <div>
         <label for="trAsig1" class="form-label mb-0" style="font-weight:bold;">Asignatura 1</label><br>
-          {% set asignaturas = {'CD1': 'Cultura Digital 1', 'LCM': 'Lengua y Comunicación 1'} %}
+          {% set asignaturas = {'CD1': 'Cultura Digital 1', 'LCM1': 'Lengua y Comunicación 1'} %}
           <input type="text" 
                  class="form-control" 
                  value="{{ i.trAsig1 }}" 
@@ -223,7 +226,7 @@
 
     <div>
         <label for="trAsig2" class="form-label mb-0" style="font-weight:bold;">Asignatura 2</label><br>
-      {% set asignaturas = {'CD1': 'Cultura Digital 1', 'LCM': 'Lengua y Comunicación 1'} %}
+      {% set asignaturas = {'CD1': 'Cultura Digital 1', 'LCM1': 'Lengua y Comunicación 1'} %}
       <input type="text" 
              class="form-control" 
              value="{{ i.trAsig2 }}" 
@@ -236,7 +239,7 @@
     <div>
 
         <label for="trAsig3" class="form-label mb-0" style="font-weight:bold;">Asignatura 3</label><br>
-      {% set asignaturas = {'CD1': 'Cultura Digital 1', 'LCM': 'Lengua y Comunicación 1'} %}
+      {% set asignaturas = {'CD1': 'Cultura Digital 1', 'LCM1': 'Lengua y Comunicación 1'} %}
       <input type="text" 
              class="form-control" 
              value="{{ i.trAsig3 }}" 
