@@ -340,9 +340,10 @@
                     {% set tcierre = i.ciDur | int %}
                     {% set parcial_sum = tapertura + tdesarrollo + tcierre %}
                     {% set ns.total = ns.total + parcial_sum %}
+                    {% set horasem = i.horas_sem | int %}
 
 
-            {% if ns.total/60 != i.horas_semana %}
+            {% if ns.total/60 != horasem/1 %}
       
             <text class='partial-footer-total' style="color:red;">Total tiempo: {{ ns.total/60 }}                         hrs</text>
             {% else %}
