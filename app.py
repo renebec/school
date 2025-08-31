@@ -341,6 +341,14 @@ def plan_carga():
             flash(f"Planeación {cve} de {docenteID} enviada correctamente.", "success")
             return redirect(url_for("hello_pm1"))
 
+        except pymysql.err.IntegrityError as e:
+        if "1062" in str(e):  # Duplicate entry error
+            with connection.cursor() as cursor:
+                cursor.execute(update_query, data)
+            connection.commit()
+            return "Plan updated successfully"
+
+        
         except Exception as e:
             print("❌ Error during submission:", e)
             flash(f"Ocurrió un error al procesar la planeación {cve}.", "danger")
