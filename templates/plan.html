@@ -391,7 +391,9 @@
         </div>
     </div>
 
-  <button id="download-pdf">Descargar PDF</button>
+      <a href="{{ url_for('download_pdf', id=i['id']) }}" class="btn btn-success">
+        📥 Descargar como PDF
+      </a>
   
   <a href="{{ request.referrer }}">
       <button type="button">Cerrar</button>
@@ -411,7 +413,7 @@
 
   </div>
 </div>
-
+  
 </body>
 
 </html>

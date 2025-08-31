@@ -1,12 +1,14 @@
 import pytz
 import os
-from flask import Flask, render_template, jsonify, request, redirect, url_for, flash, session
+from flask import Flask, render_template, jsonify, request, redirect, url_for, flash, session, send_file, make_response
 from flask import session as flask_session
 from gevent import monkey; monkey.patch_all()
 from gevent.pywsgi import WSGIServer
 from datetime import datetime, timedelta
 import cloudinary
 import cloudinary.uploader
+import tempfile
+import pdfkit
 
 from database import load_pg_from_db, load_pgn_from_db,  register_user, get_db_session, insert_actividad, load_plan_from_db, insert_plan
 
@@ -418,7 +420,28 @@ def login():
 
 
 
+@app.route('/download_pdf/<int:id>')
+def download_pdf(id):
+        # Load the plan from DB
+        plan = load_plan_from_db(id)
+        if not plan:
+            return "Plan not found", 404
 
+        # Render HTML from a template using the plan data
+        rendered = render_template('plan_pdf.html', i=plan)
+
+        # Use a temporary file to write PDF
+        with tempfile.NamedTemporaryFile(delete=False, suffix='.pdf') as tmpfile:
+            pdfkit.from_string(rendered, tmpfile.name)
+
+            # Send the file to the browser as a download
+            response = send_file(
+                tmpfile.name,
+                as_attachment=True,
+                download_name=f"planeacion_{plan['cve']}.pdf",
+                mimetype='application/pdf'
+            )
+            return response
 
 
 
