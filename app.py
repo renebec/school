@@ -342,11 +342,11 @@ def plan_carga():
             return redirect(url_for("hello_pm1"))
 
         except pymysql.err.IntegrityError as e:
-        if "1062" in str(e):  # Duplicate entry error
-            with connection.cursor() as cursor:
-                cursor.execute(update_query, data)
-            connection.commit()
-            return "Plan updated successfully"
+            if "1062" in str(e):  # Duplicate entry error
+                with connection.cursor() as cursor:
+                    cursor.execute(update_query, data)
+                connection.commit()
+                return "Plan updated successfully"
 
         
         except Exception as e:
