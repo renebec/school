@@ -6,7 +6,7 @@
 <title>plan {{i.id}}</title>
 <meta name="plan" content="plan print" />
 <meta name="inocA" content="width=device-width, initial-scale=1.0" />
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 </head>
 
   <script>
@@ -16,7 +16,7 @@
 
       const options = {
         margin:       0.75,
-        filename:     'planX.pdf',
+        filename:     'plan.pdf',
         image:        { type: 'jpeg', quality: 0.98 },
         html2canvas:  { scale: 1 },
         jsPDF:        { unit: 'in', format: 'a4', orientation: 'landscape' }
@@ -27,21 +27,6 @@
     });
   </script>
 
-
-
-  <script>
-      document.addEventListener('DOMContentLoaded', function() {
-        const inputs = document.querySelectorAll('input[type="text"], input[type="number"], textarea');
-
-        inputs.forEach(function(input) {
-
-        input.addEventListener('input', function() {
-            input.value = input.value.toUpperCase();
-            });
-
-        });
-      });
-    </script>
 
 <style>
     table.grid-form {
