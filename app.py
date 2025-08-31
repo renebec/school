@@ -208,12 +208,22 @@ def plan_carga():
             horas_sem = request.form['horas_sem']
             docenteID = request.form['docenteID']
             imparte = request.form['imparte']
-            trAsig1 = request.form['trAsig1']
-            trtema1 = request.form['trtema1']
-            trAsig2 = request.form['trAsig2']
-            trtema2 = request.form['trtema2']
-            trAsig3 = request.form['trAsig3']
-            trtema3 = request.form['trtema3']
+            trAsigP1 = request.form['trAsigP1']
+            trtemaP1 = request.form['trtemaP1']
+            trAsigP2 = request.form['trAsigP2']
+            trtemaP2 = request.form['trtemaP2']
+            trAsigP3 = request.form['trAsigP3']
+            trtemaP3 = request.form['trtemaP3']
+            trAsigP4 = request.form['trAsigP4']
+            trtemaP4 = request.form['trtemaP4']
+            trAsigM1 = request.form['trAsigM1']
+            trtemaM1 = request.form['trtemaM1']
+            trAsigM2 = request.form['trAsigM2']
+            trtemaM2 = request.form['trtemaM2']
+            trAsigM3 = request.form['trAsigM3']
+            trtemaM3 = request.form['trtemaM3']
+            trAsigM4 = request.form['trAsigM4']
+            trtemaM4 = request.form['trtemaM4']
             apDur = request.form['apDur']
             apEv = request.form['apEv']
             apIns = request.form['apIns']
@@ -285,12 +295,22 @@ def plan_carga():
                 horas_sem,
                 docenteID, 
                 imparte,
-                trAsig1,
-                trtema1,
-                trAsig2,
-                trtema2,
-                trAsig3,
-                trtema3,
+                trAsigP1,
+                trtemaP1,
+                trAsigP2,
+                trtemaP2,
+                trAsigP3,
+                trtemaP3,
+                trAsigP4,
+                trtemaP4,
+                trAsigM1,
+                trtemaM1,
+                trAsigM2,
+                trtemaM2,
+                trAsigM3,
+                trtemaM3,
+                trAsigM4,
+                trtemaM4,
                 apDur,
                 apEv,
                 apIns,

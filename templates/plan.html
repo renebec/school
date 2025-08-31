@@ -169,55 +169,146 @@
 
 
     <div style="background-color:rgb(120,120,0,0.5)">
-        <h3>Asignaturas transversales:</h3> 
+        <h3>Asignaturas transversales con PEC (transdiciplinares):</h3> 
     </div>
 
-        {% if i.trAsig1 %}
+        {% if i.trAsigP1 %}
         <div>
-        <label for="trAsig1" class="form-label mb-0" style="font-weight:bold;">Asignatura 1</label>
-          {% set asignaturas = {'CD1': 'Cultura Digital 1', 'LCM': 'Lengua y Comunicación 1'} %}
+        <label for="trAsigP1" class="form-label mb-0" style="font-weight:bold;">Asignatura 1</label>
+          {% set asignaturas = {'CD1': 'Cultura Digital 1', 'LCM1': 'Lengua y Comunicación 1'} %}
           <input type="text" 
                  class="form-control" 
-                 value="{{ i.trAsig1 }}" 
-                 title="{{ asignaturas[i.trAsig1|string] }}" 
+                 value="{{ i.trAsigP1 }}" 
+                 title="{{ asignaturas[i.trAsigP1|string] }}" 
                  readonly>
       
-        <label for="trtema1" class="form-label mb-0" style="font-weight:bold;">Tema</label>
-          <label type="text" class="form-control mb-4" name="trtema1">{{ i.trtema1 }}</label>
+        <label for="trtemaP1" class="form-label mb-0" style="font-weight:bold;">Tema</label>
+          <label type="text" class="form-control mb-4" name="trtemaP1">{{ i.trtemaP1 }}</label>
         </div>
         {% endif %}
 
-        {% if i.trAsig2 %}
+        {% if i.trAsigP2 %}
     <div>
-        <label for="trAsig2" class="form-label mb-0" style="font-weight:bold;">Asignatura 2</label>
-      {% set asignaturas = {'CD1': 'Cultura Digital 1', 'LCM': 'Lengua y Comunicación 1'} %}
-      <input type="text" 
-             class="form-control" 
-             value="{{ i.trAsig2 }}" 
-             title="{{ asignaturas[i.trAsig1|string] }}" 
-             readonly>
-        <label for="trtema2" class="form-label mb-0" style="font-weight:bold;">Tema</label>
-          <label type="text" class="form-control mb-4" name="trtema2">{{ i.trtema2 }}</label>
-
-    </div>
-        {% endif %}
-
-        {% if i.trAsig3 %}
-    <div>
-
-        <label for="trAsig3" class="form-label mb-0" style="font-weight:bold;">Asignatura 3</label>
+        <label for="trAsigP2" class="form-label mb-0" style="font-weight:bold;">Asignatura 2</label>
       {% set asignaturas = {'CD1': 'Cultura Digital 1', 'LCM1': 'Lengua y Comunicación 1'} %}
       <input type="text" 
              class="form-control" 
-             value="{{ i.trAsig3 }}" 
-             title="{{ asignaturas[i.trAsig1|string] }}" 
+             value="{{ i.trAsigP2 }}" 
+             title="{{ asignaturas[i.trAsigP2|string] }}" 
              readonly>
-
-        <label for="trtema3" class="form-label mb-0" style="font-weight:bold;">Tema</label>
-          <label type="text" class="form-control mb-4" name="trtema3">{{ i.trtema3 }}</label>
+        <label for="trtemaP2" class="form-label mb-0" style="font-weight:bold;">Tema</label>
+          <label type="text" class="form-control mb-4" name="trtemaP2">{{ i.trtemaP2 }}</label>
 
     </div>
         {% endif %}
+
+        {% if i.trAsigP3 %}
+    <div>
+
+        <label for="trAsigP3" class="form-label mb-0" style="font-weight:bold;">Asignatura 3</label>
+      {% set asignaturas = {'CD1': 'Cultura Digital 1', 'LCM1': 'Lengua y Comunicación 1'} %}
+      <input type="text" 
+             class="form-control" 
+             value="{{ i.trAsigP3 }}" 
+             title="{{ asignaturas[i.trAsigP3|string] }}" 
+             readonly>
+
+        <label for="trtemaP3" class="form-label mb-0" style="font-weight:bold;">Tema</label>
+          <label type="text" class="form-control mb-4" name="trtemaP3">{{ i.trtemaP3 }}</label>
+
+    </div>
+        {% endif %}
+
+        {% if i.trAsigP4 %}
+        <div>
+
+            <label for="trAsigP4" class="form-label mb-0" style="font-weight:bold;">Asignatura 4</label>
+          {% set asignaturas = {'CD1': 'Cultura Digital 1', 'LCM1': 'Lengua y Comunicación 1'} %}
+          <input type="text" 
+                 class="form-control" 
+                 value="{{ i.trAsigP4 }}" 
+                 title="{{ asignaturas[i.trAsigP4|string] }}" 
+                 readonly>
+
+            <label for="trtemaP4" class="form-label mb-0" style="font-weight:bold;">Tema</label>
+              <label type="text" class="form-control mb-4" name="trtemaP4">{{ i.trtemaP4 }}</label>
+
+        </div>
+            {% endif %}
+
+
+
+
+
+      <div style="background-color:rgb(120,120,0,0.5)">
+        <h3>Asignaturas transversales (Multi o interdisciplinar)):</h3> 
+      </div>
+
+        {% if i.trAsigM1 %}
+        <div>
+        <label for="trAsigM1" class="form-label mb-0" style="font-weight:bold;">Asignatura 1</label>
+          {% set asignaturas = {'CD1': 'Cultura Digital 1', 'LCM1': 'Lengua y Comunicación 1'} %}
+          <input type="text" 
+                 class="form-control" 
+                 value="{{ i.trAsigM1 }}" 
+                 title="{{ asignaturas[i.trAsigM1|string] }}" 
+                 readonly>
+
+        <label for="trtemaM1" class="form-label mb-0" style="font-weight:bold;">Tema</label>
+          <label type="text" class="form-control mb-4" name="trtemaM1">{{ i.trtemaM1 }}</label>
+        </div>
+        {% endif %}
+
+        {% if i.trAsigM2 %}
+      <div>
+        <label for="trAsigM2" class="form-label mb-0" style="font-weight:bold;">Asignatura 2</label>
+      {% set asignaturas = {'CD1': 'Cultura Digital 1', 'LCM1': 'Lengua y Comunicación 1'} %}
+      <input type="text" 
+             class="form-control" 
+             value="{{ i.trAsigM2 }}" 
+             title="{{ asignaturas[i.trAsigM2|string] }}" 
+             readonly>
+        <label for="trtemaM2" class="form-label mb-0" style="font-weight:bold;">Tema</label>
+          <label type="text" class="form-control mb-4" name="trtemaM2">{{ i.trtemaM2 }}</label>
+
+      </div>
+        {% endif %}
+
+        {% if i.trAsigM3 %}
+      <div>
+
+        <label for="trAsigM3" class="form-label mb-0" style="font-weight:bold;">Asignatura 3</label>
+      {% set asignaturas = {'CD1': 'Cultura Digital 1', 'LCM1': 'Lengua y Comunicación 1'} %}
+      <input type="text" 
+             class="form-control" 
+             value="{{ i.trAsigM3 }}" 
+             title="{{ asignaturas[i.trAsigM3|string] }}" 
+             readonly>
+
+        <label for="trtemaM3" class="form-label mb-0" style="font-weight:bold;">Tema</label>
+          <label type="text" class="form-control mb-4" name="trtemaM3">{{ i.trtemaM3 }}</label>
+
+      </div>
+        {% endif %}
+
+          {% if i.trAsigM4 %}
+        <div>
+
+          <label for="trAsigM4" class="form-label mb-0" style="font-weight:bold;">Asignatura 4</label>
+        {% set asignaturas = {'CD1': 'Cultura Digital 1', 'LCM1': 'Lengua y Comunicación 1'} %}
+        <input type="text" 
+               class="form-control" 
+               value="{{ i.trAsigM4 }}" 
+               title="{{ asignaturas[i.trAsigM4|string] }}" 
+               readonly>
+
+          <label for="trtemaM4" class="form-label mb-0" style="font-weight:bold;">Tema</label>
+            <label type="text" class="form-control mb-4" name="trtemaM4">{{ i.trtemaM4 }}</label>
+
+        </div>
+          {% endif %}
+
+      
 
 
 
