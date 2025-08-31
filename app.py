@@ -429,10 +429,10 @@ def download_pdf(id):
     # Render HTML from template
     rendered = render_template('plan_pdf.html', i=plan)
 
-    # Define CSS for letter size and landscape orientation
+    # Define CSS for tabloid size and landscape orientation
     css = CSS(string='''
         @page {
-            size: letter landscape;
+            size: tabloid landscape;
             margin: 1cm;
         }
     ''')
