@@ -57,12 +57,16 @@
         <div class="row">
     
             <a href="{{ url_for('plan_carga') }}">
-                  <button>Subir una planeación</button>
+                  <button>Subir planeación</button>
             </a>
-            
+            <!--
             <div class="col-3">
-                <a href= "{{ url_for('show_plan', id=i['id']) }}" type="button" class= "btn btn-outline-primary"> Ver planeación</a>
+                <a href= "{{ url_for('show_plan', id=i['id']) }}" type="button"> Ver planeación</a>
             </div>
+            -->
+            <a href="{{ url_for('show_plan', id=i['id']) }}">
+                  <button>Ver planeación</button>
+            </a>
         </div>
     {% endif %}
 
