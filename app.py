@@ -432,7 +432,7 @@ def download_pdf(id):
     # Define CSS for tabloid size and landscape orientation
     css = CSS(string='''
         @page {
-            size: tabloid landscape;
+            size: 17in 11in;
             margin: 1cm;
         }
     ''')
