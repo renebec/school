@@ -422,17 +422,26 @@ def login():
 
 @app.route('/download_pdf/<int:id>')
 def download_pdf(id):
-                plan = load_plan_from_db(id)  # Make sure this fetches the plan dict
-                if not plan:
-                    return "Plan not found", 404
+    plan = load_plan_from_db(id)
+    if not plan:
+        return "Plan not found", 404
 
-                rendered = render_template('plan_pdf.html', i=plan)
+    # Render HTML from template
+    rendered = render_template('plan_pdf.html', i=plan)
 
-                # Create PDF from rendered HTML
-                with tempfile.NamedTemporaryFile(delete=False, suffix=".pdf") as tmpfile:
-                    HTML(string=rendered).write_pdf(tmpfile.name)
-                    tmpfile.seek(0)
-                    return send_file(tmpfile.name, as_attachment=True, download_name=f"plan_{id}.pdf")
+    # Define CSS for letter size and landscape orientation
+    css = CSS(string='''
+        @page {
+            size: letter landscape;
+            margin: 1cm;
+        }
+    ''')
+
+    # Generate PDF from HTML
+    with tempfile.NamedTemporaryFile(delete=False, suffix=".pdf") as tmpfile:
+        HTML(string=rendered).write_pdf(tmpfile.name, stylesheets=[css])
+        tmpfile.seek(0)
+        return send_file(tmpfile.name, as_attachment=True, download_name=f"plan_{id}.pdf")
 
 
 
