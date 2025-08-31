@@ -8,7 +8,7 @@ from datetime import datetime, timedelta
 import cloudinary
 import cloudinary.uploader
 import tempfile
-import pdfkit
+from weasyprint import HTML
 
 from database import load_pg_from_db, load_pgn_from_db,  register_user, get_db_session, insert_actividad, load_plan_from_db, insert_plan
 
@@ -422,26 +422,18 @@ def login():
 
 @app.route('/download_pdf/<int:id>')
 def download_pdf(id):
-        # Load the plan from DB
-        plan = load_plan_from_db(id)
-        if not plan:
-            return "Plan not found", 404
+                plan = load_plan_from_db(id)  # Make sure this fetches the plan dict
+                if not plan:
+                    return "Plan not found", 404
 
-        # Render HTML from a template using the plan data
-        rendered = render_template('plan_pdf.html', i=plan)
+                rendered = render_template('plan_pdf.html', i=plan)
 
-        # Use a temporary file to write PDF
-        with tempfile.NamedTemporaryFile(delete=False, suffix='.pdf') as tmpfile:
-            pdfkit.from_string(rendered, tmpfile.name)
+                # Create PDF from rendered HTML
+                with tempfile.NamedTemporaryFile(delete=False, suffix=".pdf") as tmpfile:
+                    HTML(string=rendered).write_pdf(tmpfile.name)
+                    tmpfile.seek(0)
+                    return send_file(tmpfile.name, as_attachment=True, download_name=f"plan_{id}.pdf")
 
-            # Send the file to the browser as a download
-            response = send_file(
-                tmpfile.name,
-                as_attachment=True,
-                download_name=f"planeacion_{plan['cve']}.pdf",
-                mimetype='application/pdf'
-            )
-            return response
 
 
 

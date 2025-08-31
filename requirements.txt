@@ -7,4 +7,4 @@ pymysql
 pytz
 cloudinary
 mysql-connector-python
-pdfkit
+weasyprint
