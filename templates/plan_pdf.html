@@ -138,12 +138,13 @@
         <div class="mb-3 row g-2">
           <div class="col-sm-6">
           <label for="prop" class="form-label mb-0" style="font-weight:bold;">Propósito formativo</label>
-            <textarea type="text" class="form-control" name="prop" rows="5">{{ i.prop }}</textarea>
-            </div>
+            <pre style="border:1px solid #ccc; padding:10px;">{{ i.prop }}</pre>
+          </div>
 
           <div class="col-sm-6">
           <label for="temas" class="form-label mb-0" style="font-weight:bold;">Temas</label>
-            <textarea type="text" class="form-control" name="temas" rows="5">{{ i.temas }}</textarea>
+            <pre style="border:1px solid #ccc; padding:10px;">{{ i.temas }}</pre>
+            
             </div>
       </div>
 
@@ -243,7 +244,7 @@
       <div class="mb-3 row g-1">
 
           <label for="apAct" class="form-label mb-0" style="font-weight:bold;">Actividades de apertura:</label>
-          <textarea class="form-control" name="apAct" rows="8">{{ i.apAct }}</textarea>
+          <pre style="border:1px solid #ccc; padding:10px;">{{ i.apAct }}</pre>
 
       </div>
 
@@ -274,7 +275,7 @@
         <div class="mb-3 row g-1">
 
             <label for="deAct" class="form-label mb-0" style="font-weight:bold;">Actividades de desarrollo:</label>
-            <textarea class="form-control" name="deAct" rows="10">{{ i.deAct }}</textarea>
+            <pre style="border:1px solid #ccc; padding:10px;">{{ i.deAct }}</pre>
 
         </div>
 
@@ -306,7 +307,7 @@
       <div class="mb-3 row g-1">
 
         <label for="ciAct" class="form-label mb-0" style="font-weight:bold;">Actividades de cierre:</label>
-        <textarea class="form-control" name="ciAct" rows="5">{{ i.ciAct }}</textarea>
+        <pre style="border:1px solid #ccc; padding:10px;">{{ i.ciAct }}</pre>
 
       </div>
       {% set ns = namespace(total=0) %}
@@ -358,15 +359,15 @@
     <div class="mb-3 row g-3">
         <div class="col-sm-4">
         <label for="materiales" class="form-label mb-0" style="font-weight:bold;">Materiales:</label>
-        <textarea type="text" class="form-control" name="materiales" rows="4">{{ i.materiales }}</textarea>
+          <pre style="border:1px solid #ccc; padding:10px;">{{ i.materiales }}</pre>
         </div>
         <div class="col-sm-4">
         <label for="equipo" class="form-label mb-0" style="font-weight:bold;">Equipo:</label>
-        <textarea type="text" class="form-control" name="equipo" rows="4">{{ i.equipo }}</textarea>
+          <pre style="border:1px solid #ccc; padding:10px;">{{ i.equipo }}</pre>
         </div>
         <div class="col-sm-4">
         <label for="fuentes" class="form-label mb-0" style="font-weight:bold;">Fuentes:</label>
-        <textarea type="text" class="form-control" name="fuentes" rows="4">{{ i.fuentes }}</textarea>
+          <pre style="border:1px solid #ccc; padding:10px;">{{ i.fuentes }}</pre>
         </div>
     </div>
 
