@@ -58,27 +58,39 @@
         {% endif %}
       {% endwith %}
 
-
+<style>
+  .form-control{
+    font-size:14px;
+  }
+  
+</style>
 
 <body>
   <div class="container">
-    <div>
-    <h2>Planeación {{ id }}</h2>
-    </div>
-    {% if cve %}
-    <div class="row g-2">
-      <div class="col-sm-6">
-        <input type="text" class="form-control" name="cve" value="{{ cve }}" readonly>
-      </div>
-      <div class="col-sm-6">
-        <label type="text" class="form-control" name="cve">{{ created_at }}</label>
-        </div>
-    </div>
-      {% else %}
-        <p>No CVEs found.</p>
-      {% endif %}
+
+    
+
+
+
+  
 
     <form>
+
+      <div>
+        <h2>Planeación {{ i.id }}</h2>
+      </div>
+
+      <div class="row g-2 mb-3">
+        <div class="col-sm-6">
+          <label for="cve" class="form-label">Clave:</label>
+          <input type="text" class="form-control" name="cve" value="{{ i.cve }}" readonly>
+        </div>
+        <div class="col-sm-6">
+          <label for="created_at" class="form-label">Fecha de creación:</label>
+          <input type="text" class="form-control" name="created_at" value="{{ i.created_at }}" readonly>
+        </div>
+      </div>
+      
     <div style="background-color:rgb(120,120,0,0.5)"> 
       <h3>Datos Generales</h3>
       </div>
@@ -120,12 +132,12 @@
         <div class="mb-3 row g-2">
           <div class="col-sm-6">
           <label for="prop" class="form-label mb-0" style="font-weight:bold;">Propósito formativo</label>
-            <textarea type="text" class="form-control" name="prop">{{ i.prop }}</textarea>
+            <textarea type="text" class="form-control" name="prop" rows="5">{{ i.prop }}</textarea>
             </div>
 
           <div class="col-sm-6">
           <label for="temas" class="form-label mb-0" style="font-weight:bold;">Temas</label>
-            <textarea type="text" class="form-control" name="temas">{{ i.temas }}</textarea>
+            <textarea type="text" class="form-control" name="temas" rows="5">{{ i.temas }}</textarea>
             </div>
       </div>
 
@@ -209,7 +221,7 @@
       <div class="mb-3 row g-1">
 
           <label for="apAct" class="form-label mb-0" style="font-weight:bold;">Actividades de apertura:</label>
-          <textarea class="form-control" name="apAct" rows="5">{{ i.apAct }}</textarea>
+          <textarea class="form-control" name="apAct" rows="8">{{ i.apAct }}</textarea>
 
       </div>
 
@@ -240,7 +252,7 @@
         <div class="mb-3 row g-1">
 
             <label for="deAct" class="form-label mb-0" style="font-weight:bold;">Actividades de desarrollo:</label>
-            <textarea class="form-control" name="deAct" rows="7">{{ i.deAct }}</textarea>
+            <textarea class="form-control" name="deAct" rows="10">{{ i.deAct }}</textarea>
 
         </div>
 
@@ -277,36 +289,44 @@
       </div>
       {% set ns = namespace(total=0) %}
 
-            {% for i in plan %}
 
-                    {% set apertura = i['apPond'] | int %}
-                    {% set desarrollo = i['dePond'] | int %}
-                    {% set cierre = i['ciPond'] | int %}
-                    {% set parcial_sum = apertura + desarrollo + laboratorio + cierre %}
+
+                    {% set apertura = i.apPond | int %}
+                    {% set desarrollo = i.dePond  | int %}
+                    {% set cierre =  i.ciPond  | int %}
+                    {% set parcial_sum = apertura + desarrollo + cierre %}
                     {% set ns.total = ns.total + parcial_sum %}
 
-            {% endfor %}
-
-            <text class='partial-footer-total'>Total ponderado: {{ ns.total }}%</text>             
-            <br>
 
 
+            {% if ns.total != 100 %}
+
+            <text class='partial-footer-total' style="color:red;">Total ponderado: {{ ns.total }}%</text>
+            {% else %}
+            <text class='partial-footer-total' style="color:green;">Total ponderado: {{ ns.total }}%</text>
+            {% endif %}
+<br>
 
 
 
       {% set ns = namespace(total=0) %}
 
-            {% for i in plan %}
 
-                    {% set tapertura = i['apDur'] | int %}
-                    {% set tdesarrollo = i['deDur'] | int %}
-                    {% set tcierre = i['ciDur'] | int %}
-                    {% set parcial_sum = tapertura + tdesarrollo + tlaboratorio + tcierre %}
+
+                    {% set tapertura = i.apDur | int %}
+                    {% set tdesarrollo = i.deDur | int %}
+                    {% set tcierre = i.ciDur | int %}
+                    {% set parcial_sum = tapertura + tdesarrollo + tcierre %}
                     {% set ns.total = ns.total + parcial_sum %}
 
-            {% endfor %}
 
-            <text class='partial-footer-total'>Total tiempo: {{ ns.total/60 }}                         hrs</text>
+            {% if ns.total/60 != i.horas_semana %}
+      
+            <text class='partial-footer-total' style="color:red;">Total tiempo: {{ ns.total/60 }}                         hrs</text>
+            {% else %}
+            <text class='partial-footer-total' style="color:green;">Total tiempo: {{ ns.total/60 }}                         hrs</text>
+            {% endif %}
+      
 <br><br><br>
 
     <div style="background-color:rgb(120,120,0,0.5)">

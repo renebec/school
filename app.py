@@ -202,7 +202,7 @@ def plan_carga():
             periodo = request.form['periodo']
             carrera = request.form['carrera']
             semestre = request.form['semestre']
-            grupos = request.form['grupos'].replace(",", "_").replace(" ", "")
+            grupos = request.form['grupos'].replace(",", "").replace(" ", "")
             horas_sem = request.form['horas_sem']
             docenteID = request.form['docenteID']
             imparte = request.form['imparte']
