@@ -122,13 +122,19 @@
         <label class="form-label mb-0" for="grupos" style="font-weight:bold;">Grupo(s)</label>
         <label type="text" class="form-control" name="grupos">{{ i.grupos }}</label>
         </div>
-        
 
+        {% set asignaturas = {'PM1': 'Pensamiento Matemàtico 1', 'PM3': 'Pensamiento matemático 3', 'inocAgr': 'Inocuidad en la Agricultura'} %}
+        <input type="text" 
+               class="form-control" 
+               value="{{ i.asig }}" 
+               title="{{ asignaturas[i.asig|string] }}" 
+               readonly>
+<!--
       <div class="col-sm-12">
         <label class="form-label mb-0" for="asig" style="font-weight:bold;">Asignatura</label>
         <label type="text" class="form-control" name="asig">{{ i.asig }}</label>
       </div>
-
+-->
         <div class="mb-3 row g-2">
           <div class="col-sm-6">
           <label for="prop" class="form-label mb-0" style="font-weight:bold;">Propósito formativo</label>
