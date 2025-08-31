@@ -175,7 +175,13 @@
 
         <div>
         <label for="trAsig1" class="form-label mb-0" style="font-weight:bold;">Asignatura 1</label>
-          <label type="text" class="form-control mb-4" name="trAsig1">{{ i.trAsig1 }}</label>
+          {% set asignaturas = {'CD1': 'Cultura Digital 1', 'LCM': 'Lengua y Comunicación 1'} %}
+          <input type="text" 
+                 class="form-control" 
+                 value="{{ i.trAsig1 }}" 
+                 title="{{ asignaturas[i.trAsig1|string] }}" 
+                 readonly>
+      
         <label for="trtema1" class="form-label mb-0" style="font-weight:bold;">Tema</label>
           <label type="text" class="form-control mb-4" name="trtema1">{{ i.trtema1 }}</label>
         </div>
@@ -183,7 +189,12 @@
 
     <div>
         <label for="trAsig2" class="form-label mb-0" style="font-weight:bold;">Asignatura 2</label>
-          <label type="text" class="form-control mb-4" name="trAsig2">{{ i.trAsig2 }}</label>
+      {% set asignaturas = {'CD1': 'Cultura Digital 1', 'LCM': 'Lengua y Comunicación 1'} %}
+      <input type="text" 
+             class="form-control" 
+             value="{{ i.trAsig2 }}" 
+             title="{{ asignaturas[i.trAsig1|string] }}" 
+             readonly>
         <label for="trtema2" class="form-label mb-0" style="font-weight:bold;">Tema</label>
           <label type="text" class="form-control mb-4" name="trtema2">{{ i.trtema2 }}</label>
 
@@ -191,7 +202,12 @@
     <div>
 
         <label for="trAsig3" class="form-label mb-0" style="font-weight:bold;">Asignatura 3</label>
-          <label type="text" class="form-control mb-4" name="trAsig3">{{ i.trAsig3 }}</label>
+      {% set asignaturas = {'CD1': 'Cultura Digital 1', 'LCM': 'Lengua y Comunicación 1'} %}
+      <input type="text" 
+             class="form-control" 
+             value="{{ i.trAsig3 }}" 
+             title="{{ asignaturas[i.trAsig1|string] }}" 
+             readonly>
 
         <label for="trtema3" class="form-label mb-0" style="font-weight:bold;">Tema</label>
           <label type="text" class="form-control mb-4" name="trtema3">{{ i.trtema3 }}</label>
