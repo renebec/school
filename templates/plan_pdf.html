@@ -115,11 +115,11 @@
 
       <div class="row g-2 mb-3">
         <div class="col-sm-6">
-          <label for="cve" class="form-label">Clave:</label>
+          <label for="cve" class="form-label">Clave:</label><br>
           <input class="field-short" type="text" class="form-control" name="cve" value="{{ i.cve }}" readonly>
         </div>
         <div class="col-sm-6">
-          <label for="created_at" class="form-label">Fecha de creación:</label>
+          <label for="created_at" class="form-label">Fecha de creación:</label><br>
           <input class="field-short" type="text" class="form-control" name="created_at" value="{{ i.created_at }}" readonly>
         </div>
       </div>
@@ -129,31 +129,31 @@
       </div>
       <div class="mb-3 row g-3">
         <div class="col-sm-4">
-        <label for="plantel" class="form-label mb-0" style="font-weight:bold;">Plantel</label>
+        <label for="plantel" class="form-label mb-0" style="font-weight:bold;">Plantel</label><br>
         <label class="field-short" type="text" class="form-control" name="plantel">{{ i.plantel}}</label>
         </div>
         <div class="col-sm-4">
-        <label for="ciclo" class="form-label  mb-0" style="font-weight:bold;">Ciclo</label>
+        <label for="ciclo" class="form-label  mb-0" style="font-weight:bold;">Ciclo</label><br>
         <label class="field-short" type="text" class="form-control" name="ciclo">{{ i.ciclo }}</label>
         </div>
         <div class="col-sm-4">
-        <label class="form-label mb-0" for="periodo" style="font-weight:bold;">Periodo</label>
+        <label class="form-label mb-0" for="periodo" style="font-weight:bold;">Periodo</label><br>
           <label class="field-short" type="text" class="form-control" name="periodo">{{ i.periodo }}</label>
         </div>
       </div>
       <div class="mb-3 row g-3">
         <div class="col-sm-4">
-        <label class="field-short" class="form-label  mb-0" for="carrera" style="font-weight:bold;">Carrera</label>
-          <label type="text" class="form-control" name="carrera">{{ i.carrera }}</label>
+        <label  class="form-label  mb-0" for="carrera" style="font-weight:bold;">Carrera</label><br>
+          <label class="field-short" type="text" class="form-control" name="carrera">{{ i.carrera }}</label>
         </select>
         </div>
         <div class="col-sm-4">
-        <label class="form-label mb-0" for="semestre" style="font-weight:bold;">Semestre</label>
+        <label class="form-label mb-0" for="semestre" style="font-weight:bold;">Semestre</label><br>
           <label class="field-short" type="text" class="form-control" name="semestre">{{ i.semestre }}</label>
         </div>
         <div class="col-sm-4">
-        <label class="field-short" class="form-label mb-0" for="grupos" style="font-weight:bold;">Grupo(s)</label>
-        <label type="text" class="form-control" name="grupos">{{ i.grupos }}</label>
+        <label class="form-label mb-0" for="grupos" style="font-weight:bold;">Grupo(s)</label><br>
+        <label class="field-short" type="text" class="form-control" name="grupos">{{ i.grupos }}</label>
         </div>
 
         {% set asignaturas = {'PM1': 'Pensamiento Matemàtico 1', 'PM3': 'Pensamiento matemático 3', 'inocAgr': 'Inocuidad en la Agricultura'} %}
@@ -170,12 +170,12 @@
 -->
         <div class="mb-3 row g-2">
           <div class="col-sm-6">
-          <label for="prop" class="form-label mb-0" style="font-weight:bold;">Propósito formativo</label>
+          <label for="prop" class="form-label mb-0" style="font-weight:bold;">Propósito formativo</label><br>
             <pre class="field-long" style="border:1px solid #ccc; padding:10px;">{{ i.prop }}</pre>
           </div>
 
           <div class="col-sm-6">
-          <label for="temas" class="form-label mb-0" style="font-weight:bold;">Temas</label>
+          <label for="temas" class="form-label mb-0" style="font-weight:bold;">Temas</label><br>
             <pre class="field-long" style="border:1px solid #ccc; padding:10px;">{{ i.temas }}</pre>
             
             </div>
@@ -186,17 +186,17 @@
       </div>
       <div class="mb-3 row g-3">
         <div class="col-sm-5">
-        <label for="horas_sem" class="form-label mb-0" style="font-weight:bold;">horas/semana</label>
+        <label for="horas_sem" class="form-label mb-0" style="font-weight:bold;">horas/semana</label><br>
           <label class="field-short" type="text" class="form-control" name="horas_sem">{{ i.horas_sem }}</label>
         </div>
         <div class="col-sm-7">
-        <label for="docenteID" class="form-label mb-0" style="font-weight:bold;">Docente</label>
+        <label for="docenteID" class="form-label mb-0" style="font-weight:bold;">Docente</label><br>
           <label class="field-short" type="text" class="form-control" name="docenteID">{{ i.docenteID }}</label>
         </div>
       </div>
       <div class="mb-3 row g-1">
         <div class="col-sm-12">
-        <label  for="imparte" class="form-label mb-0" style="font-weight:bold;">Período de impartición</label>
+        <label  for="imparte" class="form-label mb-0" style="font-weight:bold;">Período de impartición</label><br>
           <label class="field-short" type="text" class="form-control" name="imparte">{{ i.imparte }}</label>
         </div>
       </div>
@@ -208,7 +208,7 @@
 
 
         <div>
-        <label for="trAsig1" class="form-label mb-0" style="font-weight:bold;">Asignatura 1</label>
+        <label for="trAsig1" class="form-label mb-0" style="font-weight:bold;">Asignatura 1</label><br>
           {% set asignaturas = {'CD1': 'Cultura Digital 1', 'LCM': 'Lengua y Comunicación 1'} %}
           <input type="text" 
                  class="form-control" 
@@ -216,26 +216,26 @@
                  title="{{ asignaturas[i.trAsig1|string] }}" 
                  readonly>
 
-        <label for="trtema1" class="form-label mb-0" style="font-weight:bold;">Tema</label>
+        <label for="trtema1" class="form-label mb-0" style="font-weight:bold;">Tema</label><br>
           <label class="field-long" type="text" class="form-control mb-4" name="trtema1">{{ i.trtema1 }}</label>
         </div>
 
 
     <div>
-        <label for="trAsig2" class="form-label mb-0" style="font-weight:bold;">Asignatura 2</label>
+        <label for="trAsig2" class="form-label mb-0" style="font-weight:bold;">Asignatura 2</label><br>
       {% set asignaturas = {'CD1': 'Cultura Digital 1', 'LCM': 'Lengua y Comunicación 1'} %}
       <input type="text" 
              class="form-control" 
              value="{{ i.trAsig2 }}" 
              title="{{ asignaturas[i.trAsig1|string] }}" 
              readonly>
-        <label for="trtema2" class="form-label mb-0" style="font-weight:bold;">Tema</label>
+        <label for="trtema2" class="form-label mb-0" style="font-weight:bold;">Tema</label><br>
           <label class="field-long" type="text" class="form-control mb-4" name="trtema2">{{ i.trtema2 }}</label>
 
     </div>
     <div>
 
-        <label for="trAsig3" class="form-label mb-0" style="font-weight:bold;">Asignatura 3</label>
+        <label for="trAsig3" class="form-label mb-0" style="font-weight:bold;">Asignatura 3</label><br>
       {% set asignaturas = {'CD1': 'Cultura Digital 1', 'LCM': 'Lengua y Comunicación 1'} %}
       <input type="text" 
              class="form-control" 
@@ -243,7 +243,7 @@
              title="{{ asignaturas[i.trAsig1|string] }}" 
              readonly>
 
-        <label for="trtema3" class="form-label mb-0" style="font-weight:bold;">Tema</label>
+        <label for="trtema3" class="form-label mb-0" style="font-weight:bold;">Tema</label><br>
           <label class="field-long" type="text" class="form-control mb-4" name="trtema3">{{ i.trtema3 }}</label>
 
     </div>
