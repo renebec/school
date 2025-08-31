@@ -78,6 +78,7 @@ def show_plan(id):
         return redirect(url_for('login'))
 
     show_form = request.method == "GET"
+    
 
     # Supongamos que TEMAS es tu estructura de datos (lista o dict)
     plan = load_plan_from_db(id)
@@ -191,48 +192,51 @@ def plan_carga():
 
     if request.method == "POST":
         try:
+            print("📥 POST recibido")
+            print("Campos en el formulario:", request.form.keys())
             asig = request.form['asig']
             prop = request.form['prop']
-            temas = request.files['temas']
-            plantel = request.files['plantel']
-            ciclo = request.files['ciclo']
-            periodo = request.files['periodo']
-            carrera = request.files['carrera']
-            semestre = request.files['semestre']
-            grupos = request.files['grupos']
-            horas_sem = request.files['horas_sem']
-            docenteID = request.files['docenteID']
-            imparte = request.files['imparte']
-            trAsig1 = request.files['trAsig1']
-            trtema1 = request.files['trtema1']
-            trAsig2 = request.files['trAsig2']
-            trtema2 = request.files['trtema2']
-            trAsig3 = request.files['trAsig3']
-            trtema3 = request.files['trtema3']
-            apDur = request.files['apDur']
-            apEv = request.files['apEv']
-            apIns = request.files['apIns']
-            apPond = request.files['apPond']
-            apAct = request.files['apAct']
-            deDur = request.files['deDur']
-            deEv = request.files['deEv']
-            deIns = request.files['deIns']
-            dePond = request.files['dePond']
-            deAct = request.files['deAct']
-            ciDur = request.files['ciDur']
-            ciEv = request.files['ciEv']
-            ciIns = request.files['ciIns']
-            ciPond = request.files['ciPond']
-            ciAct = request.files['ciAct']
-            materiales = request.files['materiales']
-            equipo = request.files['equipo']
-            fuentes = request.files['fuentes']
-            elabora = request.files['elabora']
-            revisa = request.files['revisa']
-            avala = request.files['avala']
-            cve = request.files['cve']
-            created_at = request.files['created_at']
-            pdf_url = request.files['pdf_url']
+            temas = request.form['temas']
+            plantel = request.form['plantel']
+            ciclo = request.form['ciclo']
+            periodo = request.form['periodo']
+            carrera = request.form['carrera']
+            semestre = request.form['semestre']
+            grupos = request.form['grupos'].replace(",", "_").replace(" ", "")
+            horas_sem = request.form['horas_sem']
+            docenteID = request.form['docenteID']
+            imparte = request.form['imparte']
+            trAsig1 = request.form['trAsig1']
+            trtema1 = request.form['trtema1']
+            trAsig2 = request.form['trAsig2']
+            trtema2 = request.form['trtema2']
+            trAsig3 = request.form['trAsig3']
+            trtema3 = request.form['trtema3']
+            apDur = request.form['apDur']
+            apEv = request.form['apEv']
+            apIns = request.form['apIns']
+            apPond = request.form['apPond']
+            apAct = request.form['apAct']
+            deDur = request.form['deDur']
+            deEv = request.form['deEv']
+            deIns = request.form['deIns']
+            dePond = request.form['dePond']
+            deAct = request.form['deAct']
+            ciDur = request.form['ciDur']
+            ciEv = request.form['ciEv']
+            ciIns = request.form['ciIns']
+            ciPond = request.form['ciPond']
+            ciAct = request.form['ciAct']
+            materiales = request.form['materiales']
+            equipo = request.form['equipo']
+            fuentes = request.form['fuentes']
+            elabora = request.form['elabora']
+            revisa = request.form['revisa']
+            avala = request.form['avala']
+            cve = f"{docenteID}_{asig}_{semestre}_{grupos}"
+            pdf_file = request.files['pdf_file']
+
+            print("📋 Datos del formulario extraídos correctamente")
 
             if not pdf_file or not pdf_file.filename.endswith('.pdf'):
                 flash("Debes subir un archivo PDF válido menor a 5MB.", "danger")
@@ -242,57 +246,16 @@ def plan_carga():
             session_db = get_db_session()
 
             # Obtener datos del usuario
-            query = text('SELECT * FROM planInocAgro WHERE cve = :cve')
-            user = session_db.execute(query, {'cve': cve}).mappings().first()
+            #query = text('SELECT * FROM users WHERE numero_control = :numero_control')
+            #user = session_db.execute(query, {'numero_control': numero_control}).mappings().first()
 
-            if not user:
-                flash("Registro no encontrada en la base de datos.", "danger")
-                return redirect(request.url)
+            #if not user:
+            #    flash("Registro no encontrada en la base de datos.", "danger")
+            #    return redirect(request.url)
 
-            asig = user['asig']
-            prop = user['prop']
-            temas = user['temas']
-            plantel = user['plantel']
-            ciclo = user['ciclo']
-            periodo = user['periodo']
-            carrera = user['carrera']
-            semestre = user['semestre']
-            grupos = user['grupos']
-            horas_sem = user['horas_sem']
-            docenteID = user['docenteID']
-            imparte = user['imparte']
-            trAsig1 = user['trAsig1']
-            trtema1 = user['trtema1']
-            trAsig2 = user['trAsig2']
-            trtema2 = user['trtema2']
-            trAsig3 = user['trAsig3']
-            trtema3 = user['trtema3']
-            apDur = user['apDur']
-            apEv = user['apEv']
-            apIns = user['apIns']
-            apPond = user['apPond']
-            apAct = user['apAct']
-            deDur = user['deDur']
-            deEv = user['deEv']
-            deIns = user['deIns']
-            dePond = user['dePond']
-            deAct = user['deAct']
-            ciDur = user['ciDur']
-            ciEv = user['ciEv']
-            ciIns = user['ciIns']
-            ciPond = user['ciPond']
-            ciAct = user['ciAct']
-            materiales = user['materiales']
-            equipo = user['equipo']
-            fuentes = user['fuentes']
-            elabora = user['elabora']
-            revisa = user['revisa']
-            avala = user['avala']
-            cve = user['cve']
-            created_at = user['created_at']
-            pdf_url = user['pdf_url']
 
             # Subir archivo a Cloudinary
+            print("☁️ Subiendo archivo a Cloudinary...")
             result = cloudinary.uploader.upload(
                 pdf_file,
                 resource_type='raw',
@@ -305,7 +268,9 @@ def plan_carga():
             created_at = datetime.now(pytz.timezone("America/Mexico_City"))
 
             # Insertar en la tabla planInocAgro
+            print("📝 Insertando en base de datos...")
             insert_plan(
+                session_db,
                 asig,
                 prop,
                 temas,

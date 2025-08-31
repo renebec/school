@@ -3,8 +3,6 @@ from sqlalchemy import create_engine, text
 from sqlalchemy.orm import sessionmaker
 from datetime import datetime
 import pytz
-import mysql.connector
-import pymysql
 
 db_connection_string = os.environ['DB_CONNECTION_STRING']
 engine = create_engine(db_connection_string,
@@ -129,6 +127,7 @@ def insert_plan(session, asig, prop, temas, plantel, ciclo, periodo, carrera, se
     try:
             query = text("""
                 INSERT INTO planInocAgro (
+
                     asig,
                     prop,
                     temas,
@@ -226,7 +225,8 @@ def insert_plan(session, asig, prop, temas, plantel, ciclo, periodo, carrera, se
                 "plantel": plantel,
                 "ciclo": ciclo,
                 "periodo": periodo,
-                "carrera": semestre,
+                "carrera": carrera,
+                "semestre": semestre,
                 "grupos": grupos,
                 "horas_sem": horas_sem,
                 "docenteID": docenteID,

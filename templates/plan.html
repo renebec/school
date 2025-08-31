@@ -62,15 +62,16 @@
 
 <body>
   <div class="container">
-
-    <h2>Planeación {{i['id']}}</h2>
-    {% if i.cve %}
-    <div class="row">
-      <div class="col-sm-5">
-        <label type="text" class="form-control" name="cve">{{ i.cve }}</label>
+    <div>
+    <h2>Planeación {{ id }}</h2>
+    </div>
+    {% if cve %}
+    <div class="row g-2">
+      <div class="col-sm-6">
+        <input type="text" class="form-control" name="cve" value="{{ cve }}" readonly>
       </div>
-      <div class="col-sm-5">
-        <label type="text" class="form-control" name="cve">{{ i.created_at }}</label>
+      <div class="col-sm-6">
+        <label type="text" class="form-control" name="cve">{{ created_at }}</label>
         </div>
     </div>
       {% else %}
@@ -82,64 +83,67 @@
       <h3>Datos Generales</h3>
       </div>
       <div class="mb-3 row g-3">
-        <div class="col-sm-3">
+        <div class="col-sm-4">
         <label for="plantel" class="form-label mb-0" style="font-weight:bold;">Plantel</label>
         <label type="text" class="form-control" name="plantel">{{ i.plantel}}</label>
         </div>
-        <div class="col-sm-3">
+        <div class="col-sm-4">
         <label for="ciclo" class="form-label  mb-0" style="font-weight:bold;">Ciclo</label>
         <label type="text" class="form-control" name="ciclo">{{ i.ciclo }}</label>
         </div>
-        <div class="col-sm-3">
+        <div class="col-sm-4">
         <label class="form-label mb-0" for="periodo" style="font-weight:bold;">Periodo</label>
-          <label type="text" class="form-control" name="periodo">{{ i.carrera }}</label>
+          <label type="text" class="form-control" name="periodo">{{ i.periodo }}</label>
         </div>
       </div>
       <div class="mb-3 row g-3">
-        <div class="col-sm-3">
+        <div class="col-sm-4">
         <label class="form-label  mb-0" for="carrera" style="font-weight:bold;">Carrera</label>
           <label type="text" class="form-control" name="carrera">{{ i.carrera }}</label>
         </select>
         </div>
-        <div class="col-sm-3">
+        <div class="col-sm-4">
         <label class="form-label mb-0" for="semestre" style="font-weight:bold;">Semestre</label>
           <label type="text" class="form-control" name="semestre">{{ i.semestre }}</label>
         </div>
-        <div class="col-sm-3">
+        <div class="col-sm-4">
         <label class="form-label mb-0" for="grupos" style="font-weight:bold;">Grupo(s)</label>
         <label type="text" class="form-control" name="grupos">{{ i.grupos }}</label>
         </div>
-        <div class="col-sm-3">
-          <label class="form-label mb-0" for="asig" style="font-weight:bold;">Asignatura</label>
-          <label type="text" class="form-control" name="asig">{{ i.asig }}</label>
-        </div>
+        
 
-        <div class="mb-3 row g-3">
+      <div class="col-sm-12">
+        <label class="form-label mb-0" for="asig" style="font-weight:bold;">Asignatura</label>
+        <label type="text" class="form-control" name="asig">{{ i.asig }}</label>
+      </div>
+
+        <div class="mb-3 row g-2">
           <div class="col-sm-6">
           <label for="prop" class="form-label mb-0" style="font-weight:bold;">Propósito formativo</label>
             <textarea type="text" class="form-control" name="prop">{{ i.prop }}</textarea>
             </div>
-          </div>
+
           <div class="col-sm-6">
           <label for="temas" class="form-label mb-0" style="font-weight:bold;">Temas</label>
             <textarea type="text" class="form-control" name="temas">{{ i.temas }}</textarea>
             </div>
+      </div>
 
 
         
       </div>
       <div class="mb-3 row g-3">
-        <div class="col-sm-3">
+        <div class="col-sm-5">
         <label for="horas_sem" class="form-label mb-0" style="font-weight:bold;">horas/semana</label>
           <label type="text" class="form-control" name="horas_sem">{{ i.horas_sem }}</label>
         </div>
-        <div class="col-sm-4">
+        <div class="col-sm-7">
         <label for="docenteID" class="form-label mb-0" style="font-weight:bold;">Docente</label>
           <label type="text" class="form-control" name="docenteID">{{ i.docenteID }}</label>
         </div>
       </div>
-      <div class="mb-3 row g-3">
-        <div class="col-sm-9">
+      <div class="mb-3 row g-1">
+        <div class="col-sm-12">
         <label for="imparte" class="form-label mb-0" style="font-weight:bold;">Período de impartición</label>
           <label type="text" class="form-control" name="imparte">{{ i.imparte }}</label>
         </div>
@@ -181,19 +185,19 @@
     <div style="background-color:rgb(120,120,0,0.5)">
         <h3>Apertura:</h3> 
     </div>
-      <div class="mb-3 row g-1">
+      <div class="mb-3 row g-2">
 
         <div class="col-sm-5">
           <label for="apDur" class="form-label mb-0" style="font-weight:bold;">Duración<br>(minutos)</label>
           <label type="text" class="form-control" name="apDur">{{ i.apDur }}</label>
         </div>
-        <div class="col-sm-5">
+        <div class="col-sm-7">
           <label for="apEv" class="form-label mb-0" style="font-weight:bold;"><br>Evidencia</label>
           <label type="text" class="form-control" name="apEv">{{ i.apEv }}</label>
         </div>
       </div>
-      <div class="mb-3 row g-1">
-        <div class="col-sm-5">
+      <div class="mb-3 row g-2">
+        <div class="col-sm-7">
           <label for="apIns" class="form-label mb-0" style="font-weight:bold;"><br>Instrumento</label>
           <label type="text" class="form-control" name="apIns">{{ i.apIns }}</label>
         </div>
@@ -202,7 +206,7 @@
           <label type="text" class="form-control" name="apPond">{{ i.apPond }}</label>
         </div>
       </div>
-      <div class="mb-3 row g-3">
+      <div class="mb-3 row g-1">
 
           <label for="apAct" class="form-label mb-0" style="font-weight:bold;">Actividades de apertura:</label>
           <textarea class="form-control" name="apAct" rows="5">{{ i.apAct }}</textarea>
@@ -212,19 +216,19 @@
     <div style="background-color:rgb(120,120,0,0.5)">
         <h3>Desarrollo:</h3> 
     </div>
-      <div class="mb-3 row g-1">
+      <div class="mb-3 row g-2">
 
         <div class="col-sm-5">
             <label for="deDur" class="form-label mb-0" style="font-weight:bold;">Duración<br>(minutos)</label>
             <label type="text" class="form-control" name="deDur">{{ i.deDur }}</label>
         </div>
-        <div class="col-sm-5">
+        <div class="col-sm-7">
             <label for="deEv" class="form-label mb-0" style="font-weight:bold;"><br>Evidencia</label>
             <label type="text" class="form-control" name="deEv">{{ i.deEv }}</label>
         </div>
       </div>
-      <div class="mb-3 row g-1">
-        <div class="col-sm-5">
+      <div class="mb-3 row g-2">
+        <div class="col-sm-7">
             <label for="deIns" class="form-label mb-0" style="font-weight:bold;"><br>Instrumento</label>
             <label type="text" class="form-control" name="deIns">{{ i.deIns }}</label>
         </div>
@@ -233,7 +237,7 @@
             <label type="text" class="form-control" name="dePond">{{ i.dePond }}</label>
           </div>
         </div>
-        <div class="mb-3 row g-3">
+        <div class="mb-3 row g-1">
 
             <label for="deAct" class="form-label mb-0" style="font-weight:bold;">Actividades de desarrollo:</label>
             <textarea class="form-control" name="deAct" rows="7">{{ i.deAct }}</textarea>
@@ -244,19 +248,19 @@
         <h3>Cierre:</h3> 
     </div>
 
-        <div class="mb-3 row g-1">
+        <div class="mb-3 row g-2">
 
       <div class="col-sm-5">
         <label for="ciDur" class="form-label mb-0" style="font-weight:bold;">Duración<br>(minutos)</label>
         <label type="text" class="form-control" name="ciDur">{{ i.ciDur }}</label>
       </div>
-      <div class="col-sm-5">
+      <div class="col-sm-7">
         <label for="ciEv" class="form-label mb-0" style="font-weight:bold;"><br>Evidencia</label>
         <label type="text" class="form-control" name="ciEv">{{ i.ciEv }}</label>
       </div>
     </div>
-      <div class="mb-3 row g-1">
-      <div class="col-sm-5">
+      <div class="mb-3 row g-2">
+      <div class="col-sm-7">
         <label for="ciIns" class="form-label mb-0" style="font-weight:bold;"><br>Instrumento</label>
         <label type="text" class="form-control" name="ciIns">{{ i.ciIns }}</label>
       </div>
@@ -265,7 +269,7 @@
         <label type="text" class="form-control" name="ciPond">{{ i.ciPond }}</label>
       </div>
       </div>
-      <div class="mb-3 row g-3">
+      <div class="mb-3 row g-1">
      
         <label for="ciAct" class="form-label mb-0" style="font-weight:bold;">Actividades de cierre:</label>
         <textarea class="form-control" name="ciAct" rows="5">{{ i.ciAct }}</textarea>
@@ -363,6 +367,7 @@
 
 
   </div>
+</div>
 
 </body>
 
