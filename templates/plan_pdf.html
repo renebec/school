@@ -81,6 +81,14 @@
       background-color: #f9f9f9;
   }
 
+  .field-long {
+      width: 50%;
+      border: 1px solid #aaa;
+      padding: 6px;
+      white-space: pre-wrap;
+      background-color: #f9f9f9;
+  }
+
 </style>
 
 <body>
@@ -156,12 +164,12 @@
         <div class="mb-3 row g-2">
           <div class="col-sm-6">
           <label for="prop" class="form-label mb-0" style="font-weight:bold;">Propósito formativo</label>
-            <pre style="border:1px solid #ccc; padding:10px;">{{ i.prop }}</pre>
+            <pre class="field-long" style="border:1px solid #ccc; padding:10px;">{{ i.prop }}</pre>
           </div>
 
           <div class="col-sm-6">
           <label for="temas" class="form-label mb-0" style="font-weight:bold;">Temas</label>
-            <pre style="border:1px solid #ccc; padding:10px;">{{ i.temas }}</pre>
+            <pre class="field-long" style="border:1px solid #ccc; padding:10px;">{{ i.temas }}</pre>
             
             </div>
       </div>
@@ -262,7 +270,7 @@
       <div class="mb-3 row g-1">
 
           <label for="apAct" class="form-label mb-0" style="font-weight:bold;">Actividades de apertura:</label>
-          <pre style="border:1px solid #ccc; padding:10px;">{{ i.apAct }}</pre>
+          <pre class="field-long" style="border:1px solid #ccc; padding:10px;">{{ i.apAct }}</pre>
 
       </div>
 
@@ -293,7 +301,7 @@
         <div class="mb-3 row g-1">
 
             <label for="deAct" class="form-label mb-0" style="font-weight:bold;">Actividades de desarrollo:</label>
-            <pre style="border:1px solid #ccc; padding:10px;">{{ i.deAct }}</pre>
+            <pre class="field-long" style="border:1px solid #ccc; padding:10px;">{{ i.deAct }}</pre>
 
         </div>
 
@@ -325,7 +333,7 @@
       <div class="mb-3 row g-1">
 
         <label for="ciAct" class="form-label mb-0" style="font-weight:bold;">Actividades de cierre:</label>
-        <pre style="border:1px solid #ccc; padding:10px;">{{ i.ciAct }}</pre>
+        <pre class="field-long" style="border:1px solid #ccc; padding:10px;">{{ i.ciAct }}</pre>
 
       </div>
       {% set ns = namespace(total=0) %}
