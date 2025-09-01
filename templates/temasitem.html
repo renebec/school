@@ -8,7 +8,7 @@
         <h4 style="margin-bottom:4px;color:rgb(155,155,155);text-align:left;">                                 
             {{i['tema']}} 
         </h4>
-        {% if session['username'] != ['hrene', 'fercho85', 'user2', 'user3', 'user4'] %}
+        {% if session['username'] != ['hrene', 'fercho85'] %}
         <!-- Botón que redirige al formulario exclusivo -->
         <a href="{{ url_for('enviaractividad') }}">
               <button>Enviar una actividad</button>
