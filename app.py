@@ -482,7 +482,7 @@ def download_pdf(id):
 
 
 
-@app.route('/choice/<int:id>') methods=['GET', 'POST'])
+@app.route('/choice/<int:id>', methods=['GET', 'POST'])
 def handle_choice():
     opciones = None
     if request.method == 'POST':
