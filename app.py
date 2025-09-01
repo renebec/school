@@ -482,6 +482,13 @@ def download_pdf(id):
 
 
 
+@app.route('/choice/<int:id>') methods=['GET', 'POST'])
+def handle_choice():
+    opciones = None
+    if request.method == 'POST':
+        opciones = request.form.get('choice')  # 'value1' or 'value2' or None
+    return render_template('register.html', opciones=opciones)
+
 
 
 
