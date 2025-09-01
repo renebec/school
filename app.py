@@ -47,9 +47,12 @@ def hello_pm1():
             return redirect(url_for('login'))
 
         pg = load_pg_from_db()
+
+        es_profesor = flask_session.get('es_profesor', False)
+        username = flask_session.get('username', 'Invitado')
         
 
-        return render_template('home.html', pg=pg)
+        return render_template('home.html', pg=pg, es_profesor=es_profesor, username=username)
 
 
 
@@ -430,7 +433,7 @@ def login():
 
                     #  --- Lógica añadida para determinar tipo de usuario ---
                     school_id = user.get('numero_control', '')
-                    es_profesor = len(school_id) >= 4 and school_id[4].isalpha()
+                    es_profesor = len(school_id) >= 4 and school_id[5].isalpha()
                     flask_session['es_profesor'] = es_profesor
                     
                     flash(f'{username} inició sesión correctamente', 'success')
