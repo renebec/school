@@ -123,6 +123,19 @@
 <br><br>
 
 <table class="grid-form">
+  <thead>
+      <tr>
+          <th colspan="100%">
+              <img src="https://educacionsuperior.sep.gob.mx/inicio" alt="Header" style="width: 100%; height: 340px; display: block;">
+          </th>
+      </tr>
+      <tr>
+          <!-- Actual column headers go here -->
+          <th>Nombre</th>
+          <th>Fecha</th>
+          <th>Acción</th>
+      </tr>
+  </thead>
     <tr>
         <td class="label-cell"> <b>Plantel:</b> {{ i.plantel }}</td>
         <td class="value-cell"> <b>Ciclo:</b> {{ i.ciclo }}</td>
@@ -264,7 +277,12 @@
       <td class="value-cell" colspan="2"><pre style="margin: 0;"><b>Revisa:</b><br>{{ i.revisa }}</pre></td>
       <td class="value-cell" colspan="2"><pre style="margin: 0;"><b>Avala:</b><br>{{ i.avala }}</pre></td>
     </tr>
-
+    <tr>
+      <td class="value-cell" colspan="6"></td>
+    </tr>
+    <tr>
+      <td class="value-cell" colspan="2"><pre style="margin: 0;"><b>IDprof:</b><br>{{ i.IDprofe}}</pre></td>
+    </tr>
 
     </table>
 
