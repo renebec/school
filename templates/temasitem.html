@@ -17,8 +17,11 @@
         {% endif %}
 
         <div>
-            Período: {{i['imparte']}}<br>
             {% set tiempo = 0 %}
+            Período: {{i['imparte']}}<br>
+            {% set apertura = i['apDur'] | int %}
+            {% set desarrollo = i['deDur'] | int %}
+            {% set cierre = i['ciDur'] | int %}
             {% set tiempo = tiempo + i['apDur'] + i['deDur']  + i['ciDur'] %}
             Duración: {{tiempo/60}} hrs
         </div>
