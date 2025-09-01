@@ -27,7 +27,10 @@
         </div>
         <div> 
             {% set eva = 0 %}
-                    {% set eva = eva + i['apPond'] + i['dePond'] + i['ciPond'] %}
+            {% set apertura = i['apPond'] | int %}
+            {% set desarrollo = i['dePond'] | int %}
+            {% set cierre = i['ciPond'] | int %}
+            {% set eva = eva + apertura + desarrollo + cierre %}
 
         Evaluación: {{eva}} %
         </div>
