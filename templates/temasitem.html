@@ -19,7 +19,7 @@
         <div>
             Período: {{i['imparte']}}<br>
             {% set tiempo = 0 %}
-            {% set tiempo = tiempo + i['apDur'] + i['deDur'] + i['laboratorioTiempoTotal'] + i['ciDur'] %}
+            {% set tiempo = tiempo + i['apDur'] + i['deDur']  + i['ciDur'] %}
             Duración: {{tiempo/60}} hrs
         </div>
         <div> 
