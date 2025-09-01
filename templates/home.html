@@ -132,7 +132,7 @@
         </p>
 
         <div>            
-            {% set item = (pg | selectattr('parcial', 'equalto', 'Parcial 1') |                 first) %}
+            {% set item = (pg | selectattr('parcial', 'equalto', 'PARCIAL 1') |  first) %}
             {% if item %}
                 <h2 class="text-center mt-4 mb-2" style="padding-                                           bottom:16px;color:rgb(100,100,100);">
                     {{item['parcial']}}
@@ -142,7 +142,7 @@
         
         <div>
             {% for i in pg %}
-                {% if i['parcial'] == 'Parcial 1' %}
+                {% if i['parcial'] == 'PARCIALl 1' %}
                     {% include 'temasitem.html' %}
                 {% endif %}
 
@@ -155,7 +155,7 @@
             {% set ns = namespace(total=0) %}
 
             {% for i in pg %}
-                {% if i['parcial'] == 'Parcial 1' %}
+                {% if i['parcial'] == 'PARCIAL 1' %}
                     {% set apertura = i['apPond'] | int %}
                     {% set desarrollo = i['dePond'] | int %}
 
@@ -171,7 +171,7 @@
             {% set ts = namespace(total=0) %}
 
             {% for i in pg %}
-                {% if i['parcial'] == 'Parcial 1' %}
+                {% if i['parcial'] == 'PARCIAL 1' %}
                     {% set tapertura = i['apDur'] | int %}
                     {% set tdesarrollo = i['deDur'] | int %}
             
@@ -185,7 +185,7 @@
         </div>   
 
         <div>                     
-                {% set item = (pg | selectattr('parcial', 'equalto', 'Parcial 2') |                 first) %}
+                {% set item = (pg | selectattr('parcial', 'equalto', 'PARCIAL 2') |                 first) %}
                 {% if item %}
                 <h2 class="text-center mt-4 mb-2" style="padding-                                       bottom:16px;color:rgb(100,100,100);">
                     {{item['parcial']}}
@@ -197,7 +197,7 @@
 
         <div>
             {% for i in pg %}
-                {% if i['parcial'] == 'Parcial 2' %}
+                {% if i['parcial'] == 'PARCIAL 2' %}
                     {% include 'temasitem.html' %}
                 {% endif %}
             {% endfor %}
@@ -207,7 +207,7 @@
             {% set ns = namespace(total=0) %}
 
             {% for i in pg %}
-                {% if i['parcial'] == 'Parcial 2' %}
+                {% if i['parcial'] == 'PARCIAL 2' %}
                     {% set apertura = i['apPond'] | int %}
                     {% set desarrollo = i['dePond'] | int %}
                    
@@ -224,7 +224,7 @@
             {% set ns = namespace(total=0) %}
 
             {% for i in pg %}
-                {% if i['parcial'] == 'Parcial 2' %}
+                {% if i['parcial'] == 'PARCIAL 2' %}
                     {% set tapertura = i['apDur'] | int %}
                     {% set tdesarrollo = i['deDur'] | int %}
                    
@@ -238,7 +238,7 @@
         </div>
         
         <div>                     
-        {% set item = (pg | selectattr('parcial', 'equalto', 'Parcial 3') | first)          %}
+        {% set item = (pg | selectattr('parcial', 'equalto', 'PARCIAL 3') | first)          %}
                 {% if item %}
                 <h2 class="text-center mt-4 mb-2" style="padding-                                       bottom:16px;color:rgb(100,100,100);">
                     {{item['parcial']}}
@@ -249,7 +249,7 @@
             
         <div>
             {% for i in pg %}
-                {% if i['parcial'] == 'Parcial 3' %}
+                {% if i['parcial'] == 'PARCIAL 3' %}
                     {% include 'temasitem.html' %}
                 {% endif %}
             {% endfor %}
@@ -275,7 +275,7 @@
             {% set ns = namespace(total=0) %}
 
             {% for i in pg %}
-                {% if i['parcial'] == 'Parcial 3' %}
+                {% if i['parcial'] == 'PARCIAL 3' %}
                     {% set tapertura = i['apDur'] | int %}
                     {% set tdesarrollo = i['deDur'] | int %}
                    

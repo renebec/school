@@ -66,7 +66,7 @@ def show_pg(pg_id):
         return redirect(url_for('login'))
 
     # Supongamos que TEMAS es tu estructura de datos (lista o dict)
-    pg = load_pg_from_db()
+    pg = load_pg_from_db2()
     item = next((item for item in pg if item['id'] == pg_id), None)
     if item is None:
         return "Not Found", 404
