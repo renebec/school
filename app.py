@@ -427,6 +427,12 @@ def login():
                     flask_session.permanent = True
                     flask_session['username'] = username
                     flask_session['last_activity'] = datetime.now().isoformat()
+
+                    #  --- Lógica añadida para determinar tipo de usuario ---
+                    school_id = user.get('numero_control', '')
+                    es_profesor = len(school_id) >= 4 and school_id[4].isalpha()
+                    flask_session['es_profesor'] = es_profesor
+                    
                     flash(f'{username} inició sesión correctamente', 'success')
                     return redirect(url_for('hello_pm1'))  # Redirect on success
                 else:

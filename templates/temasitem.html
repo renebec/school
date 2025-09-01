@@ -9,7 +9,7 @@
             {{i['tema']}} 
         </h4>
         
-        {% if session['username'] != ['hrene', 'fercho85'] %}
+        {% if not es_profesor %}
         <!-- Botón que redirige al formulario exclusivo -->
         <a href="{{ url_for('enviaractividad') }}">
               <button>Enviar una actividad</button>
@@ -55,7 +55,7 @@
         <a href= "{{ url_for('show_pg', pg_id=i['id']) }}" type="button" class= "btn btn-outline-primary"> Entrar</a>
     </div>
 
-    {% if session['username'] in ['hrene', 'fercho85', 'user2', 'user3', 'user4'] %}
+    {% if es_profesor %}
         <div class="row">
     
             <a href="{{ url_for('plan_carga') }}">
