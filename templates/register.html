@@ -61,6 +61,7 @@
                 <label for="nombres" class="form-label">Nombres</label>
                 <input type="text" class="form-control" id="nombres" name="nombres" required>
             </div>
+            {% if not es_profesor %}
             <div class="mb-3">
                 <label for="carrera" class="form-label">Carrera</label>
                 <input type="text" class="form-control" id="carrera" name="carrera" required>
@@ -73,6 +74,7 @@
                 <label for="grupo" class="form-label">Grupo</label>
                 <input type="text" class="form-control" id="grupo" name="grupo" required>
             </div>
+            {% endif %}
             <div class="mb-3">
                 <label for="username" class="form-label">Nombre de Usuario</label>
                 <input type="text" class="form-control" id="username" name="username" required>
