@@ -363,7 +363,8 @@ def plan_carga():
 #para registrar un nuevo usuario y almacenarlo en la DB
 @app.route("/register", methods=["GET", "POST"])
 def register():
-    opciones = handle_choice()
+    from database import handle_choice
+    opciones = handle_choice('choice_value')
     if request.method == "POST":
         try:
             # Extract data from the form
