@@ -10,7 +10,7 @@ import cloudinary.uploader
 import tempfile
 from weasyprint import HTML, CSS
 
-from database import load_pg_from_db, load_pgn_from_db,  register_user, get_db_session, insert_actividad, load_plan_from_db, insert_plan,  load_pg_from_db2
+from database import load_pg_from_db, load_pgn_from_db,  register_user, get_db_session, insert_actividad, load_plan_from_db, insert_plan,  load_pg_from_db2, handle_choice
 
 from sqlalchemy import text
 
@@ -363,6 +363,7 @@ def plan_carga():
 #para registrar un nuevo usuario y almacenarlo en la DB
 @app.route("/register", methods=["GET", "POST"])
 def register():
+    opciones = handle_choice()
     if request.method == "POST":
         try:
             # Extract data from the form
@@ -482,12 +483,12 @@ def download_pdf(id):
 
 
 
-@app.route('/choice', methods=['GET', 'POST'])
-def handle_choice():
-    opciones = None
-    if request.method == 'POST':
-        opciones = request.form.get('choice')  # 'value1' or 'value2' or None
-    return render_template('register.html', opciones=opciones)
+#@app.route('/choice', methods=['GET', 'POST'])
+#def handle_choice():
+#    opciones = None
+#    if request.method == 'POST':
+#        opciones = request.form.get('choice')  # 'value1' or 'value2' or None
+#    return render_template('register.html', opciones=opciones)
 
 
 

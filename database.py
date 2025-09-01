@@ -21,6 +21,13 @@ def get_db_session():
     return SessionLocal()
 
 
+def handle_choice():
+    opciones = None
+    if request.method == 'POST':
+        opciones = request.form.get('choice')  # 'value1' or 'value2' or None
+    return render_template('register.html', opciones=opciones)
+
+
 def load_pg_from_db():
     try:
       with engine.connect() as conn:
