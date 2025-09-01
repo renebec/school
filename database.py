@@ -31,6 +31,17 @@ def load_pg_from_db():
       print(f"DB ERROR: {e}")
       return None
 
+def load_pg_from_db2():
+    try:
+      with engine.connect() as conn:
+          #result = conn.execute(text("SELECT * FROM planInocAgro ORDER BY created_at DESC"))
+          result = conn.execute(text("SELECT * FROM planInocAgro"))
+          pg = result.mappings().all()
+          return pg
+    except Exception as e:
+      print(f"DB ERROR: {e}")
+      return None
+
       #result_all = result.all()
       #tipo = type(result_all)
       #tipo_2 = type(result_all[0])

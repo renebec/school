@@ -282,10 +282,10 @@
     <div class="mt-3 mb-3">
 
         {% set tiempo = 0 %}
-                {% set tiempo = tiempo + i['aperturaTiempoTotal'] + i['desarrolloTiempoTotal'] + i['laboratorioTiempoTotal'] + i['cierreTiempoTotal'] %}
+                {% set tiempo = tiempo + i['apDur'] + i['deDur'] + i['ciDur'] %}
 
-        <h3>{{i['pg']}}</h3>
-        {{i['pgDesc'] | safe}}<br>
+        <h3>Planeación {{i['id']}}</h3>
+        {{i['prop'] | safe}}<br>
 <!-- ANUNCIO EN CONSTRUCCIÓN -->
       <text style="font-size:130px">
         &#128679;
@@ -311,8 +311,8 @@
  
         <div id='Aper'><br><br></div>
         <div class="apertura" >
-    <h2 style="color:green;">Apertura ({{i['aperturaTiempoTotal']/60}} hrs)</h2>
-    {{i['apertura'] | safe}}
+    <h2 style="color:green;">Apertura ({{i['apDur']/60}} hrs)</h2>
+    {{i['apAct'] | safe}}
             <br><br>
           <!-- ANUNCIO EN CONSTRUCCIÓN -->
           <text style="font-size:130px">
@@ -334,9 +334,9 @@
 
         <div id='Desa'><br><br><br></div>
         <div class="desarrollo">
-    <h2 style="color:orange;"">Desarrollo ({{i['desarrolloTiempoTotal']/60}} hrs)</h2>
+    <h2 style="color:orange;"">Desarrollo ({{i['deDur']/60}} hrs)</h2>
             
-    {{i['desarrollo'] | safe}}
+    {{i['deAct'] | safe}}
           <br><br>
           <!-- ANUNCIO EN CONSTRUCCIÓN -->
           <text style="font-size:130px">
@@ -369,9 +369,9 @@
 
         <div id='Cierr'><br><br><br></div>
         <div class="cierre">
-            <h2 style="color:#B51767;"">Cierre ({{i['cierreTiempoTotal']/60}} hrs)</h2>
+            <h2 style="color:#B51767;"">Cierre ({{i['ciDur']/60}} hrs)</h2>
 
-            {{i['cierre'] | safe}}</br>
+            {{i['ciAct'] | safe}}</br>
           
           <br>
           <!-- ANUNCIO EN CONSTRUCCIÓN -->
@@ -403,17 +403,11 @@
             <h2>
                 Fuentes:
             </h2>
-          {% if i['fuente1'] %}  
-            <a class='referencia' href= '{{i["fuente1"] | safe}}' target="_blank"> link 1 </a><br>
+          {% if i['fuentes'] %}  
+         <!-- <a class='referencia' href= '{{i["fuentes"] | safe}}' target="_blank"> i['fuentes'] </a><br>-->
+            <a class='referencia' href= '{{i["fuentes"] | safe}}' target="_blank"> i['fuentes'] </a><br>
           {% endif %}  
 <br>
-          {% if i['fuente2'] %}  
-            <a class='referencia' href= '{{i["fuente2"] | safe}}' target="_blank"> link 2 </a><br>
-          {% endif %} 
-    
-          {% if i['fuente3'] %}  
-            <a class='referencia' href= '{{i["fuente3"] | safe}}' target="_blank"> link 3 </a>
-          {% endif %} 
         </div>
     
         </main>

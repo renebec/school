@@ -156,11 +156,11 @@
 
             {% for i in pg %}
                 {% if i['parcial'] == 'Parcial 1' %}
-                    {% set apertura = i['aperturaEvaPond'] | int %}
-                    {% set desarrollo = i['desarrolloEvaPond'] | int %}
-                    {% set laboratorio = i['laboratorioEvaPond'] | int %}
-                    {% set cierre = i['cierreEvaPond'] | int %}
-                    {% set parcial_sum = apertura + desarrollo + laboratorio + cierre %}
+                    {% set apertura = i['apPond'] | int %}
+                    {% set desarrollo = i['dePond'] | int %}
+
+                    {% set cierre = i['ciPond'] | int %}
+                    {% set parcial_sum = apertura + desarrollo + cierre %}
                     {% set ns.total = ns.total + parcial_sum %}
                 {% endif %}
             {% endfor %}
@@ -172,11 +172,11 @@
 
             {% for i in pg %}
                 {% if i['parcial'] == 'Parcial 1' %}
-                    {% set tapertura = i['aperturaTiempoTotal'] | int %}
-                    {% set tdesarrollo = i['desarrolloTiempoTotal'] | int %}
-                    {% set tlaboratorio = i['laboratorioTiempoTotal'] | int %}
-                    {% set tcierre = i['cierreTiempoTotal'] | int %}
-                    {% set tparcial_sum = tapertura + tdesarrollo + tlaboratorio + tcierre %}
+                    {% set tapertura = i['apDur'] | int %}
+                    {% set tdesarrollo = i['deDur'] | int %}
+            
+                    {% set tcierre = i['ciDur'] | int %}
+                    {% set tparcial_sum = tapertura + tdesarrollo + tcierre %}
                     {% set ts.total = ts.total + tparcial_sum %}
                 {% endif %}
             {% endfor %}
@@ -208,11 +208,11 @@
 
             {% for i in pg %}
                 {% if i['parcial'] == 'Parcial 2' %}
-                    {% set apertura = i['aperturaEvaPond'] | int %}
-                    {% set desarrollo = i['desarrolloEvaPond'] | int %}
-                    {% set laboratorio = i['laboratorioEvaPond'] | int %}
-                    {% set cierre = i['cierreEvaPond'] | int %}
-                    {% set parcial_sum = apertura + desarrollo + laboratorio + cierre %}
+                    {% set apertura = i['apPond'] | int %}
+                    {% set desarrollo = i['dePond'] | int %}
+                   
+                    {% set cierre = i['ciPond'] | int %}
+                    {% set parcial_sum = apertura + desarrollo + cierre %}
                     {% set ns.total = ns.total + parcial_sum %}
                 {% endif %}
             {% endfor %}
@@ -225,11 +225,11 @@
 
             {% for i in pg %}
                 {% if i['parcial'] == 'Parcial 2' %}
-                    {% set tapertura = i['aperturaTiempoTotal'] | int %}
-                    {% set tdesarrollo = i['desarrolloTiempoTotal'] | int %}
-                    {% set tlaboratorio = i['laboratorioTiempoTotal'] | int %}
-                    {% set tcierre = i['cierreTiempoTotal'] | int %}
-                    {% set parcial_sum = tapertura + tdesarrollo + tlaboratorio + tcierre %}
+                    {% set tapertura = i['apDur'] | int %}
+                    {% set tdesarrollo = i['deDur'] | int %}
+                   
+                    {% set tcierre = i['ciDur'] | int %}
+                    {% set parcial_sum = tapertura + tdesarrollo + tcierre %}
                     {% set ns.total = ns.total + parcial_sum %}
                 {% endif %}
             {% endfor %}
@@ -260,11 +260,11 @@
 
             {% for i in pg %}
                 {% if i['parcial'] == 'Parcial 3' %}
-                    {% set apertura = i['aperturaEvaPond'] | int %}
-                    {% set desarrollo = i['desarrolloEvaPond'] | int %}
-                    {% set laboratorio = i['laboratorioEvaPond'] | int %}
-                    {% set cierre = i['cierreEvaPond'] | int %}
-                    {% set parcial_sum = apertura + desarrollo + laboratorio + cierre %}
+                    {% set apertura = i['apPond'] | int %}
+                    {% set desarrollo = i['dePond'] | int %}
+                    
+                    {% set cierre = i['ciPond'] | int %}
+                    {% set parcial_sum = apertura + desarrollo + cierre %}
                     {% set ns.total = ns.total + parcial_sum %}
                 {% endif %}
             {% endfor %}
@@ -276,11 +276,11 @@
 
             {% for i in pg %}
                 {% if i['parcial'] == 'Parcial 3' %}
-                    {% set tapertura = i['aperturaTiempoTotal'] | int %}
-                    {% set tdesarrollo = i['desarrolloTiempoTotal'] | int %}
-                    {% set tlaboratorio = i['laboratorioTiempoTotal'] | int %}
-                    {% set tcierre = i['cierreTiempoTotal'] | int %}
-                    {% set parcial_sum = tapertura + tdesarrollo + tlaboratorio + tcierre %}
+                    {% set tapertura = i['apDur'] | int %}
+                    {% set tdesarrollo = i['deDur'] | int %}
+                   
+                    {% set tcierre = i['ciDur'] | int %}
+                    {% set parcial_sum = tapertura + tdesarrollo + tcierre %}
                     {% set ns.total = ns.total + parcial_sum %}
                 {% endif %}
             {% endfor %}

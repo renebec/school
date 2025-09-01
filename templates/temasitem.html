@@ -2,11 +2,11 @@
     <div class="col-9">
         
         <h4 style="margin-bottom:4px;">                                 
-            {{i['pg']}}
+            Planeación {{i['id']}}
         </h4>
         
         <h4 style="margin-bottom:4px;color:rgb(155,155,155);text-align:left;">                                 
-            {{i['tema']}} 
+            
         </h4>
         
         {% if not es_profesor %}
@@ -17,19 +17,19 @@
         {% endif %}
 
         <div>
-            Período: {{i['lapso']}}<br>
+            Período: {{i['imparte']}}<br>
             {% set tiempo = 0 %}
-            {% set tiempo = tiempo + i['aperturaTiempoTotal'] + i['desarrolloTiempoTotal'] + i['laboratorioTiempoTotal'] + i['cierreTiempoTotal'] %}
+            {% set tiempo = tiempo + i['apDur'] + i['deDur'] + i['laboratorioTiempoTotal'] + i['ciDur'] %}
             Duración: {{tiempo/60}} hrs
         </div>
         <div> 
             {% set eva = 0 %}
-                    {% set eva = eva + i['aperturaEvaPond'] + i['desarrolloEvaPond'] + i['laboratorioEvaPond'] + i['cierreEvaPond'] %}
+                    {% set eva = eva + i['apPond'] + i['dePond'] + i['ciPond'] %}
 
         Evaluación: {{eva}} %
         </div>
         <div>
-            Contenido: {{i['contenido']}}
+            Contenido: {{i['temas']}}
         </div>
         
         <div>
