@@ -42,7 +42,7 @@
       });
     });
   </script>
-
+<!--
   <script>
       // Function to concatenate fields before submitting the form
       function concatenateFields() {
@@ -56,7 +56,7 @@
           document.getElementById("cve").value = docenteID + ciclo + periodo + carrera + semestre + grupos + asig
       }
   </script>
-
+-->
 
 {% with messages = get_flashed_messages(with_categories=true) %}
         {% if messages %}
@@ -473,8 +473,7 @@
           
         <input type="hidden" class="form-control" name="cve"></input>
         <br><br>
-        <input type="text" class="form-control" name="IDprofe" placeholder="C23"></input>
-          <br><br>
+  
           
           
         </div>

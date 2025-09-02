@@ -252,7 +252,7 @@ def plan_carga():
             avala = request.form['avala']
             cve = f"{docenteID}_{ciclo}_{periodo}_{semestre}_{grupos}_{asig}"
             pdf_file = request.files['pdf_file']
-            IDprofe = request.form['IDprofe']
+
 
             print("📋 Datos del formulario extraídos correctamente")
 
@@ -340,8 +340,7 @@ def plan_carga():
                 avala,
                 cve,
                 created_at,
-                pdf_url,
-                IDprofe
+                pdf_url
             )
             print("✅ Inserción en DB exitosa")
 
