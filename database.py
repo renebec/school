@@ -141,7 +141,7 @@ def insert_actividad(session, actividad_num, apellido_paterno, apellido_materno,
 
 
 def insert_plan(
-        session, asig, prop, temas, plantel, ciclo, periodo, carrera, semestre, grupos, horas_sem, docenteID, imparte,
+        session, asig, prop, temas, plantel, ciclo, periodo, carrera, semestre, grupos, horas_sem, docenteID, imparte, parcial,
         trAsigP1, trtemaP1, trAsigP2, trtemaP2, trAsigP3, trtemaP3, trAsigP4, trtemaP4,
         trAsigM1, trtemaM1, trAsigM2, trtemaM2, trAsigM3, trtemaM3, trAsigM4, trtemaM4,
         apDur, apEv, apIns, apPond, apAct, deDur, deEv, deIns, dePond, deAct,
@@ -154,7 +154,7 @@ def insert_plan(
     params = {
         "asig": asig, "prop": prop, "temas": temas, "plantel": plantel, "ciclo": ciclo,
         "periodo": periodo, "carrera": carrera, "semestre": semestre, "grupos": grupos,
-        "horas_sem": horas_sem, "docenteID": docenteID, "imparte": imparte,
+        "horas_sem": horas_sem, "docenteID": docenteID, "imparte": imparte, "parcial": parcial,
         "trAsigP1": trAsigP1, "trtemaP1": trtemaP1, "trAsigP2": trAsigP2, "trtemaP2": trtemaP2,
         "trAsigP3": trAsigP3, "trtemaP3": trtemaP3, "trAsigP4": trAsigP4, "trtemaP4": trtemaP4,
         "trAsigM1": trAsigM1, "trtemaM1": trtemaM1, "trAsigM2": trAsigM2, "trtemaM2": trtemaM2,
@@ -172,7 +172,7 @@ def insert_plan(
         insert_query = text("""
             INSERT INTO planInocAgro (
                 asig, prop, temas, plantel, ciclo, periodo, carrera, semestre, grupos,
-                horas_sem, docenteID, imparte,
+                horas_sem, docenteID, imparte, parcial,
                 trAsigP1, trtemaP1, trAsigP2, trtemaP2, trAsigP3, trtemaP3, trAsigP4, trtemaP4,
                 trAsigM1, trtemaM1, trAsigM2, trtemaM2, trAsigM3, trtemaM3, trAsigM4, trtemaM4,
                 apDur, apEv, apIns, apPond, apAct,
@@ -183,7 +183,7 @@ def insert_plan(
             )
             VALUES (
                 :asig, :prop, :temas, :plantel, :ciclo, :periodo, :carrera, :semestre, :grupos,
-                :horas_sem, :docenteID, :imparte,
+                :horas_sem, :docenteID, :imparte, :parcial,
                 :trAsigP1, :trtemaP1, :trAsigP2, :trtemaP2, :trAsigP3, :trtemaP3, :trAsigP4, :trtemaP4,
                 :trAsigM1, :trtemaM1, :trAsigM2, :trtemaM2, :trAsigM3, :trtemaM3, :trAsigM4, :trtemaM4,
                 :apDur, :apEv, :apIns, :apPond, :apAct,
@@ -194,7 +194,7 @@ def insert_plan(
             )
         """)
         
-        session.execute(insert_query, params)
+        result = session.execute(insert_query, params)
         session.commit()
         print("✅ Plan insertado correctamente")
         return result.lastrowid
@@ -206,7 +206,7 @@ def insert_plan(
                 UPDATE planInocAgro SET
                     asig = :asig, prop = :prop, temas = :temas, plantel = :plantel, ciclo = :ciclo,
                     periodo = :periodo, carrera = :carrera, semestre = :semestre, grupos = :grupos,
-                    horas_sem = :horas_sem, docenteID = :docenteID, imparte = :imparte,
+                    horas_sem = :horas_sem, docenteID = :docenteID, imparte = :imparte, parcial = :parcial,
                     trAsigP1 = :trAsigP1, trtemaP1 = :trtemaP1, trAsigP2 = :trAsigP2, trtemaP2 = :trtemaP2,
                     trAsigP3 = :trAsigP3, trtemaP3 = :trtemaP3, trAsigP4 = :trAsigP4, trtemaP4 = :trtemaP4,
                     trAsigM1 = :trAsigM1, trtemaM1 = :trtemaM1, trAsigM2 = :trAsigM2, trtemaM2 = :trtemaM2,

@@ -214,6 +214,7 @@ def plan_carga():
             horas_sem = request.form['horas_sem']
             docenteID = request.form['docenteID']
             imparte = request.form['imparte']
+            parcial = request.form['parcial']
             trAsigP1 = request.form['trAsigP1']
             trtemaP1 = request.form['trtemaP1']
             trAsigP2 = request.form['trAsigP2']
@@ -302,6 +303,7 @@ def plan_carga():
                 horas_sem,
                 docenteID, 
                 imparte,
+                parcial,
                 trAsigP1,
                 trtemaP1,
                 trAsigP2,
