@@ -289,7 +289,7 @@ def plan_carga():
 
             # Insertar en la tabla planInocAgro
             print("📝 Insertando en base de datos...")
-            insert_plan(
+            new_plan_id=insert_plan(
                 session_db,
                 asig,
                 prop,

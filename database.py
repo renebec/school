@@ -219,9 +219,10 @@ def insert_plan(
                     created_at = :created_at, pdf_url = :pdf_url
                 WHERE cve = :cve
             """)
-            
+            result = session.execute(insert_query, params)
             session.execute(update_query, params)
             session.commit()
+            return result.lastrowid
             print("✅ Plan actualizado correctamente")
         else:
             raise  # Rethrow if it's a different IntegrityError
