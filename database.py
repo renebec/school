@@ -197,7 +197,7 @@ def insert_plan(
         session.execute(insert_query, params)
         session.commit()
         print("✅ Plan insertado correctamente")
-    
+        return result.lastrowid
     except pymysql.err.IntegrityError as e:
         if "1062" in str(e):  # Duplicate key
             print("⚠️ Plan duplicado detectado. Actualizando...")

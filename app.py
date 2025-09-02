@@ -10,6 +10,7 @@ import cloudinary
 import cloudinary.uploader
 import tempfile
 from weasyprint import HTML, CSS
+import pymysql
 
 
 from database import load_pg_from_db, load_pgn_from_db,  register_user, get_db_session, insert_actividad, load_plan_from_db, insert_plan,  load_pg_from_db2
@@ -187,7 +188,7 @@ def enviaractividad():
     return render_template("enviaractividad.html", show_form=show_form)
 
 
-import pymysql
+
 #para que el docente suba una planeación (anexo PDF de instrumentos) y registrarla en la DB
 @app.route("/plan_carga", methods=["GET", "POST"])
 def plan_carga():
@@ -345,7 +346,7 @@ def plan_carga():
             print("✅ Inserción en DB exitosa")
 
             flash(f"Planeación {cve} de {docenteID} enviada correctamente.", "success")
-            return redirect(url_for("show_plan"))
+            return redirect(url_for("show_plan", id=new_plan_id))
 
         except pymysql.err.IntegrityError as e:
             if "1062" in str(e):  # Duplicate entry error
