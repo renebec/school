@@ -3,6 +3,7 @@ from sqlalchemy import create_engine, text
 from sqlalchemy.orm import sessionmaker
 from datetime import datetime
 import pytz
+import pymysql
 
 db_connection_string = os.environ['DB_CONNECTION_STRING']
 engine = create_engine(db_connection_string,
