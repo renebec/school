@@ -1,3 +1,4 @@
+import pymysql
 import pytz
 import os
 from flask import Flask, render_template, jsonify, request, redirect, url_for, flash, session, send_file, make_response
@@ -9,7 +10,7 @@ import cloudinary
 import cloudinary.uploader
 import tempfile
 from weasyprint import HTML, CSS
-import pymysql
+
 
 from database import load_pg_from_db, load_pgn_from_db,  register_user, get_db_session, insert_actividad, load_plan_from_db, insert_plan,  load_pg_from_db2
 
