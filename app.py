@@ -250,8 +250,9 @@ def plan_carga():
             elabora = request.form['elabora']
             revisa = request.form['revisa']
             avala = request.form['avala']
-            cve = f"{docenteID}_{asig}_{semestre}_{grupos}"
+            cve = f"{docenteID}_{ciclo}_{periodo}_{semestre}_{grupos}_{asig}"
             pdf_file = request.files['pdf_file']
+            IDprofe = request.form['IDprofe']
 
             print("📋 Datos del formulario extraídos correctamente")
 
@@ -339,12 +340,13 @@ def plan_carga():
                 avala,
                 cve,
                 created_at,
-                pdf_url
+                pdf_url,
+                IDprofe
             )
             print("✅ Inserción en DB exitosa")
 
             flash(f"Planeación {cve} de {docenteID} enviada correctamente.", "success")
-            return redirect(url_for("hello_pm1"))
+            return redirect(url_for("show_plan"))
 
         except pymysql.err.IntegrityError as e:
             if "1062" in str(e):  # Duplicate entry error
@@ -353,13 +355,18 @@ def plan_carga():
                 connection.commit()
                 return "Plan updated successfully"
 
+        except pymysql.MySQLError as e:
+            print("❌ Error MySQL:", e)
+            flash("Error al acceder a la base de datos.", "danger")
+            return redirect(url_for('plan_carga'))
+
         
         except Exception as e:
             print("❌ Error during submission:", e)
             flash(f"Ocurrió un error al procesar la planeación {cve}.", "danger")
             return redirect(url_for('plan_carga'))
 
-    return render_template("plan_carga.html", show_form=show_form)
+    return render_template("plan.html", show_form=show_form)
 
 """
 #para registrar un nuevo usuario y almacenarlo en la DB

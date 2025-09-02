@@ -53,7 +53,7 @@
           var grupos = document.getElementById("grupos").value;
 
           // Concatenate them and assign to the hidden full_name input
-          document.getElementById("cve").value = docenteID + ciclo + periodo + carrera + semestre + grupos + asig;
+          document.getElementById("cve").value = docenteID + ciclo + periodo + carrera + semestre + grupos + asig
       }
   </script>
 
@@ -484,7 +484,7 @@
         <!--<a href="{{ request.referrer }}">
             <button type="button" href="{{ url_for('register') }}">Cancelar</button>
         </a> -->
-        <a type="button" href="{{ url_for('hello_pm1') }}">Haz click para registrarte:</a>
+        <a class="btn btn-success" type="button" href="{{ url_for('hello_pm1') }}">Regresar al inicio:</a>
     </div>
 
 <!--
