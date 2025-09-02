@@ -62,14 +62,14 @@
             
             <form id="myform" method="POST" action="choice">
               <label>
-                <input type="checkbox" name="choice" value="D" class="single-checkbox"> Registrar docente
+                <input type="hidden" name="choice" value="D" class="single-checkbox"> Registrar docente
               </label>
               <br>
               <label>
-                <input type="checkbox" name="choice" value="A" class="single-checkbox"> Registrar alumno
+                <input type="hidden" name="choice" value="A" class="single-checkbox"> Registrar alumno
               </label>
               <br>
-              <a type="button" href="{{ url_for('register') }}">Ahora realiza tu registro aquí</a>
+              <a type="button" href="{{ url_for('register') }}">Haz click para registrarte:</a>
             </form>
                 <br><br>
 
