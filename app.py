@@ -363,7 +363,7 @@ def plan_carga():
 #para registrar un nuevo usuario y almacenarlo en la DB
 @app.route("/register", methods=["GET", "POST"])
 def register():
-    choice = request.args.get('choice')  # "D" or "A"
+    choice = request.form.get('choice') #or request.args.get('choice')
 
     if request.method == "POST":
         try:
