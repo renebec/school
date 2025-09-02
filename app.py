@@ -1,4 +1,4 @@
-import pymysql
+
 import pytz
 import os
 from flask import Flask, render_template, jsonify, request, redirect, url_for, flash, session, send_file, make_response
@@ -187,7 +187,7 @@ def enviaractividad():
     return render_template("enviaractividad.html", show_form=show_form)
 
 
-
+import pymysql
 #para que el docente suba una planeación (anexo PDF de instrumentos) y registrarla en la DB
 @app.route("/plan_carga", methods=["GET", "POST"])
 def plan_carga():
