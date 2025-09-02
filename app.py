@@ -363,8 +363,8 @@ def plan_carga():
 #para registrar un nuevo usuario y almacenarlo en la DB
 @app.route("/register", methods=["GET", "POST"])
 def register():
-    from database import handle_choice
-    opciones = handle_choice('choice_value')
+    choice = request.args.get('choice')  # "D" or "A"
+
     if request.method == "POST":
         try:
             # Extract data from the form
@@ -382,7 +382,7 @@ def register():
             # Validate password (you can extend this validation)
             if len(password) < 8:
                 flash("La contraseña debe tener al menos 8 caracteres.", "danger")
-                return render_template("register.html")
+                return render_template("register.html", choice=choice)
                 
 
                 # Initialize DB session
@@ -391,7 +391,7 @@ def register():
 
             if not register_user(db_session, numero_control, apellido_paterno, apellido_materno, nombres, username, password, carrera, semestre, grupo):
                 flash("Ese nombre de usuario ya está registrado. Por favor, elige otro.", "danger")
-                return render_template("register.html")
+                return render_template("register.html", choice=choice)
 
             # Call the function to register the user (make sure it handles the db insertion)
             db_session = get_db_session()
@@ -405,9 +405,9 @@ def register():
         except Exception as e:
             print(f"Error en el registro: {e}")
             flash("Hubo un problema al registrarte. Intenta nuevamente.", "danger")
-            return render_template("register.html")
+            return render_template("register.html", choice=choice)
 
-    return render_template("register.html")
+    return render_template("register.html", choice=choice)
 
 
 @app.route('/login', methods=['GET', 'POST'])

@@ -24,6 +24,8 @@
         });
       });
     </script>
+
+  
     
 <body>
     <div class="container mt-5">
@@ -42,7 +44,7 @@
 
 
         
-        <form method="POST">
+        <form id="myform" method="POST" action="choice">
             <div class="mb-3">
                 <label for="username" class="form-label">Username</label>
                 <input type="text" class="form-control" id="username" name="username" required>
@@ -57,7 +59,7 @@
             
             <a>No tienes una cuenta? <br>Primero selecciona una opción:</a>
             <br>
-            <form id="myform" method="POST" action="choice">
+            
                 <label>
                     <input type="checkbox" id="1" name="choice" value="D" class="single-checkbox">
                     Registrar docente
@@ -71,11 +73,39 @@
                 <!--<button type="submit">Submit</button>-->
 
                 <a type="button" href="{{ url_for('register') }}">Ahora realiza tu registro aquí &#128072;</a>
-            </form>
+
             <br>
              
         </form>
         
     </div>
+
+
+  <script>
+    // Only one checkbox can be selected
+    document.addEventListener('DOMContentLoaded', () => {
+      const checkboxes = document.querySelectorAll('.single-checkbox');
+      checkboxes.forEach(checkbox => {
+        checkbox.addEventListener('change', function () {
+          if (this.checked) {
+            checkboxes.forEach(other => {
+              if (other !== this) other.checked = false;
+            });
+          }
+        });
+      });
+
+      // Redirect with choice
+      document.getElementById('continueBtn').addEventListener('click', () => {
+        const checked = document.querySelector('input[name="choice"]:checked');
+        if (checked) {
+          const choice = checked.value;
+          window.location.href = `/register?choice=${choice}`;
+        } else {
+          alert("Por favor selecciona una opción primero.");
+        }
+      });
+    });
+  </script>
 </body>
 </html>
