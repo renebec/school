@@ -64,9 +64,11 @@
               <label>
                 <input type="checkbox" name="choice" value="D" class="single-checkbox"> Registrar docente
               </label>
+              <br>
               <label>
                 <input type="checkbox" name="choice" value="A" class="single-checkbox"> Registrar alumno
               </label>
+              <br>
               <a type="button" href="{{ url_for('register') }}">Ahora realiza tu registro aquí</a>
             </form>
                 <br><br>
@@ -79,7 +81,7 @@
 
 
 
-  <a href="#" id="register-link">Ahora realiza tu registro aquí &#128072;</a>
+  <a type="hidden" href="#" id="register-link">Ahora realiza tu registro aquí &#128072;</a>
 
   <script>
     document.getElementById("register-link").addEventListener("click", function (e) {
