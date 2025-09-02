@@ -25,8 +25,8 @@
 
 
 
-        
-        <form id="myform" method="POST" action="choice">
+        <form method="post" action="{{ url_for('login') }}">
+        <!--<form id="myform" method="POST" action="choice">-->
             <div class="mb-3">
                 <label for="username" class="form-label">Username</label>
                 <input type="text" class="form-control" id="username" name="username" required>
