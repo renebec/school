@@ -411,29 +411,54 @@ def register():
 """
 
 
-def handle_register_user(choice, template):
+def handle_register_user(choice):
+    template_map = {
+            "A": "register_alumno.html",
+            "D": "register_docente.html"
+        }
+
+    template = template_map.get(choice)
+
+    if not template:
+            flash("Tipo de usuario no válido.", "danger")
+            return redirect(url_for("home"))
+
     if request.method == "POST":
         try:
-            # Get form data
-            numero_control = request.form['numero_control']
-            apellido_paterno = request.form['apellido_paterno']
-            apellido_materno = request.form['apellido_materno']
-            nombres = request.form['nombres']
-            username = request.form['username']
-            password = request.form['password']
-            carrera = request.form['carrera']
-            semestre = request.form['semestre']
-            grupo = request.form['grupo']
+            # Get form data (use .get() to avoid KeyError if field is missing)
+            numero_control = request.form.get('numero_control', '').strip()
+            apellido_paterno = request.form.get('apellido_paterno', '').strip()
+            apellido_materno = request.form.get('apellido_materno', '').strip()
+            nombres = request.form.get('nombres', '').strip()
+            username = request.form.get('username', '').strip()
+            password = request.form.get('password', '')
+            carrera = request.form.get('carrera', '').strip()
+            semestre = request.form.get('semestre', '').strip()
+            grupo = request.form.get('grupo', '').strip()
 
+            # Simple validation
             if len(password) < 8:
                 flash("La contraseña debe tener al menos 8 caracteres.", "danger")
-                return render_template(template, choice=choice)
+                return render_template(template)
 
             db_session = get_db_session()
 
-            if not register_user(db_session, numero_control, apellido_paterno, apellido_materno, nombres, username, password, carrera, semestre, grupo):
+            success = register_user(
+                db_session,
+                numero_control,
+                apellido_paterno,
+                apellido_materno,
+                nombres,
+                username,
+                password,
+                carrera,
+                semestre,
+                grupo
+            )
+
+            if not success:
                 flash("Ese nombre de usuario ya está registrado. Por favor, elige otro.", "danger")
-                return render_template(template, choice=choice)
+                return render_template(template)
 
             flash(f"Registro exitoso para {nombres}!", "success")
             return redirect(url_for('login'))
@@ -441,17 +466,23 @@ def handle_register_user(choice, template):
         except Exception as e:
             print(f"Error en el registro: {e}")
             flash("Hubo un problema al registrarte. Intenta nuevamente.", "danger")
-            return render_template(template, choice=choice)
+            return render_template(template)
 
-    return render_template(template, choice=choice)
+    # GET method: show registration form
+    return render_template(template)
 
-@app.route("/register/docente", methods=["GET", "POST"])
-def register_docente():
-    return handle_register_user(choice="D", template="register_docente.html")
+
+
 
 @app.route("/register/alumno", methods=["GET", "POST"])
 def register_alumno():
-    return handle_register_user(choice="A", template="register_alumno.html")
+    return handle_register_user(choice="A")
+
+@app.route("/register/docente", methods=["GET", "POST"])
+def register_docente():
+    return handle_register_user(choice="D")
+
+
 
 
 @app.route('/login', methods=['GET', 'POST'])
