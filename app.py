@@ -10,7 +10,7 @@ import cloudinary.uploader
 import tempfile
 from weasyprint import HTML, CSS
 
-from database import load_pg_from_db, load_pgn_from_db,  register_user, get_db_session, insert_actividad, load_plan_from_db, insert_plan,  load_pg_from_db2, handle_choice
+from database import load_pg_from_db, load_pgn_from_db,  register_user, get_db_session, insert_actividad, load_plan_from_db, insert_plan,  load_pg_from_db2
 
 from sqlalchemy import text
 
@@ -359,7 +359,7 @@ def plan_carga():
 
     return render_template("plan_carga.html", show_form=show_form)
 
-
+"""
 #para registrar un nuevo usuario y almacenarlo en la DB
 @app.route("/register", methods=["GET", "POST"])
 def register():
@@ -408,6 +408,50 @@ def register():
             return render_template("register.html", choice=choice)
 
     return render_template("register.html", choice=choice)
+"""
+
+
+def handle_register_user(choice, template):
+    if request.method == "POST":
+        try:
+            # Get form data
+            numero_control = request.form['numero_control']
+            apellido_paterno = request.form['apellido_paterno']
+            apellido_materno = request.form['apellido_materno']
+            nombres = request.form['nombres']
+            username = request.form['username']
+            password = request.form['password']
+            carrera = request.form['carrera']
+            semestre = request.form['semestre']
+            grupo = request.form['grupo']
+
+            if len(password) < 8:
+                flash("La contraseña debe tener al menos 8 caracteres.", "danger")
+                return render_template(template, choice=choice)
+
+            db_session = get_db_session()
+
+            if not register_user(db_session, numero_control, apellido_paterno, apellido_materno, nombres, username, password, carrera, semestre, grupo):
+                flash("Ese nombre de usuario ya está registrado. Por favor, elige otro.", "danger")
+                return render_template(template, choice=choice)
+
+            flash(f"Registro exitoso para {nombres}!", "success")
+            return redirect(url_for('login'))
+
+        except Exception as e:
+            print(f"Error en el registro: {e}")
+            flash("Hubo un problema al registrarte. Intenta nuevamente.", "danger")
+            return render_template(template, choice=choice)
+
+    return render_template(template, choice=choice)
+
+@app.route("/register/docente", methods=["GET", "POST"])
+def register_docente():
+    return handle_register_user(choice="D", template="register_docente.html")
+
+@app.route("/register/alumno", methods=["GET", "POST"])
+def register_alumno():
+    return handle_register_user(choice="A", template="register_alumno.html")
 
 
 @app.route('/login', methods=['GET', 'POST'])

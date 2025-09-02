@@ -22,10 +22,10 @@ def get_db_session():
 
 
 def handle_choice():
-    opciones = None
+    choice = None
     if request.method == 'POST':
-        opciones = request.form.get('choice')  # 'value1' or 'value2' or None
-    return render_template('register.html', opciones=opciones)
+        choice = request.form.get('choice')  # 'value1' or 'value2' or None
+    return render_template('register.html', choice=choice)
 
 
 def load_pg_from_db():
