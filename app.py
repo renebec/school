@@ -48,7 +48,7 @@ def hello_pm1():
 
         pg = load_pg_from_db2()
 
-        es_profesor = flask_session.get('es_profesor', False)
+        #es_profesor = flask_session.get('es_profesor', False)
         username = flask_session.get('username', 'Invitado')
         
 
