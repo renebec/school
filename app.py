@@ -52,7 +52,7 @@ def hello_pm1():
         username = flask_session.get('username', 'Invitado')
         
 
-        return render_template('home.html', pg=pg, es_profesor=es_profesor, username=username)
+        return render_template('home.html', pg=pg, username=username)
 
 
 
