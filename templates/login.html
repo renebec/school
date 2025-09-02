@@ -57,9 +57,9 @@
             <br>
             <br>
             
-            <a>No tienes una cuenta? <br>Primero selecciona una opción:</a>
+            <a>No tienes una cuenta?</a>
             <br>
-            
+<!--            
             <form id="myform" method="POST" action="choice">
               <label>
                 <input type="hidden" name="choice" value="D" class="single-checkbox"> Registrar docente
@@ -69,7 +69,9 @@
                 <input type="hidden" name="choice" value="A" class="single-checkbox"> Registrar alumno
               </label>
               <br>
-              <a type="button" href="{{ url_for('register') }}">Haz click para registrarte:</a>
+-->
+              <a href="#" id="register-link">Ahora realiza tu registro aquí &#128072;</a>
+              <!--<a type="button" href="{{ url_for('register') }}">Haz click para registrarte:</a>-->
             </form>
                 <br><br>
 
@@ -81,7 +83,7 @@
 
 
 
-  <a type="hidden" href="#" id="register-link">Ahora realiza tu registro aquí &#128072;</a>
+  
 
   <script>
     document.getElementById("register-link").addEventListener("click", function (e) {
