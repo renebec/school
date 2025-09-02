@@ -77,7 +77,7 @@
     <form>
 
       <div>
-        <h2>Planeación {{ i.id }}</h2>
+        <h2>Planeación {{ i.plan }}</h2>
       </div>
 
       <div class="row g-2 mb-3">
@@ -139,6 +139,11 @@
         <label type="text" class="form-control" name="asig">{{ i.asig }}</label>
       </div>
 -->
+        <div class="col-sm-6">
+          <label for="meta" class="form-label mb-0" style="font-weight:bold;">Meta educativa</label>
+          <textarea type="text" class="form-control" name="meta" rows="5">{{ i.meta }}</textarea>
+          </div>
+        
         <div class="mb-3 row g-2">
           <div class="col-sm-6">
           <label for="prop" class="form-label mb-0" style="font-weight:bold;">Propósito formativo</label>
@@ -186,8 +191,8 @@
                  title="{{ asignaturas[i.trAsigP1|string] }}" 
                  readonly>
       
-        <label for="trtemaP1" class="form-label mb-0" style="font-weight:bold;">Tema</label>
-          <label type="text" class="form-control mb-4" name="trtemaP1">{{ i.trtemaP1 }}</label>
+        <label for="trtemaP1" class="form-label mb-0" style="font-weight:bold;">Contenidos</label>
+          <textarea type="text" class="form-control mb-4" name="trtemaP1">{{ i.trtemaP1 }}</textarea>
         </div>
         {% endif %}
 
@@ -200,8 +205,8 @@
              value="{{ i.trAsigP2 }}" 
              title="{{ asignaturas[i.trAsigP2|string] }}" 
              readonly>
-        <label for="trtemaP2" class="form-label mb-0" style="font-weight:bold;">Tema</label>
-          <label type="text" class="form-control mb-4" name="trtemaP2">{{ i.trtemaP2 }}</label>
+        <label for="trtemaP2" class="form-label mb-0" style="font-weight:bold;">Contenidos</label>
+          <textarea type="text" class="form-control mb-4" name="trtemaP2">{{ i.trtemaP2 }}</textarea>
 
     </div>
         {% endif %}
@@ -217,8 +222,8 @@
              title="{{ asignaturas[i.trAsigP3|string] }}" 
              readonly>
 
-        <label for="trtemaP3" class="form-label mb-0" style="font-weight:bold;">Tema</label>
-          <label type="text" class="form-control mb-4" name="trtemaP3">{{ i.trtemaP3 }}</label>
+        <label for="trtemaP3" class="form-label mb-0" style="font-weight:bold;">Contenidos</label>
+          <textarea type="text" class="form-control mb-4" name="trtemaP3">{{ i.trtemaP3 }}</textarea>
 
     </div>
         {% endif %}
@@ -234,8 +239,8 @@
                  title="{{ asignaturas[i.trAsigP4|string] }}" 
                  readonly>
 
-            <label for="trtemaP4" class="form-label mb-0" style="font-weight:bold;">Tema</label>
-              <label type="text" class="form-control mb-4" name="trtemaP4">{{ i.trtemaP4 }}</label>
+            <label for="trtemaP4" class="form-label mb-0" style="font-weight:bold;">Contenidos</label>
+              <textarea type="text" class="form-control mb-4" name="trtemaP4">{{ i.trtemaP4 }}</textarea>
 
         </div>
             {% endif %}
@@ -258,8 +263,8 @@
                  title="{{ asignaturas[i.trAsigM1|string] }}" 
                  readonly>
 
-        <label for="trtemaM1" class="form-label mb-0" style="font-weight:bold;">Tema</label>
-          <label type="text" class="form-control mb-4" name="trtemaM1">{{ i.trtemaM1 }}</label>
+        <label for="trtemaM1" class="form-label mb-0" style="font-weight:bold;">Contenidos</label>
+          <txtarea type="text" class="form-control mb-4" name="trtemaM1">{{ i.trtemaM1 }}</textarea>
         </div>
         {% endif %}
 
@@ -272,8 +277,8 @@
              value="{{ i.trAsigM2 }}" 
              title="{{ asignaturas[i.trAsigM2|string] }}" 
              readonly>
-        <label for="trtemaM2" class="form-label mb-0" style="font-weight:bold;">Tema</label>
-          <label type="text" class="form-control mb-4" name="trtemaM2">{{ i.trtemaM2 }}</label>
+        <label for="trtemaM2" class="form-label mb-0" style="font-weight:bold;">Contenidos</label>
+          <textarea type="text" class="form-control mb-4" name="trtemaM2">{{ i.trtemaM2 }}</textarea>
 
       </div>
         {% endif %}
@@ -289,8 +294,8 @@
              title="{{ asignaturas[i.trAsigM3|string] }}" 
              readonly>
 
-        <label for="trtemaM3" class="form-label mb-0" style="font-weight:bold;">Tema</label>
-          <label type="text" class="form-control mb-4" name="trtemaM3">{{ i.trtemaM3 }}</label>
+        <label for="trtemaM3" class="form-label mb-0" style="font-weight:bold;">Contenidos</label>
+          <textarea type="text" class="form-control mb-4" name="trtemaM3">{{ i.trtemaM3 }}</textarea>
 
       </div>
         {% endif %}
@@ -306,8 +311,8 @@
                title="{{ asignaturas[i.trAsigM4|string] }}" 
                readonly>
 
-          <label for="trtemaM4" class="form-label mb-0" style="font-weight:bold;">Tema</label>
-            <label type="text" class="form-control mb-4" name="trtemaM4">{{ i.trtemaM4 }}</label>
+          <label for="trtemaM4" class="form-label mb-0" style="font-weight:bold;">Contenidos</label>
+            <textarea type="text" class="form-control mb-4" name="trtemaM4">{{ i.trtemaM4 }}</textarea>
 
         </div>
           {% endif %}
@@ -327,13 +332,13 @@
         </div>
         <div class="col-sm-7">
           <label for="apEv" class="form-label mb-0" style="font-weight:bold;"><br>Evidencia</label>
-          <label type="text" class="form-control" name="apEv">{{ i.apEv }}</label>
+          <textarea type="text" class="form-control" name="apEv">{{ i.apEv }}</textarea>
         </div>
       </div>
       <div class="mb-3 row g-2">
         <div class="col-sm-7">
-          <label for="apIns" class="form-label mb-0" style="font-weight:bold;"><br>Instrumento</label>
-          <label type="text" class="form-control" name="apIns">{{ i.apIns }}</label>
+          <label for="apIns" class="form-label mb-0" style="font-weight:bold;"><br>Instrumentos</label>
+          <textarea type="text" class="form-control" name="apIns">{{ i.apIns }}</textarea>
         </div>
         <div class="col-sm-5">
           <label for="apPond" class="form-label mb-0" style="font-weight:bold;"><br>Ponderación (%)</label>
@@ -358,13 +363,13 @@
         </div>
         <div class="col-sm-7">
             <label for="deEv" class="form-label mb-0" style="font-weight:bold;"><br>Evidencia</label>
-            <label type="text" class="form-control" name="deEv">{{ i.deEv }}</label>
+            <textarea type="text" class="form-control" name="deEv">{{ i.deEv }}</textarea>
         </div>
       </div>
       <div class="mb-3 row g-2">
         <div class="col-sm-7">
-            <label for="deIns" class="form-label mb-0" style="font-weight:bold;"><br>Instrumento</label>
-            <label type="text" class="form-control" name="deIns">{{ i.deIns }}</label>
+            <label for="deIns" class="form-label mb-0" style="font-weight:bold;"><br>Instrumentos</label>
+            <textarea type="text" class="form-control" name="deIns">{{ i.deIns }}</textarea>
         </div>
           <div class="col-sm-5">
             <label for="dePond" class="form-label mb-0" style="font-weight:bold;"><br>Ponderación (%)</label>
@@ -390,13 +395,13 @@
       </div>
       <div class="col-sm-7">
         <label for="ciEv" class="form-label mb-0" style="font-weight:bold;"><br>Evidencia</label>
-        <label type="text" class="form-control" name="ciEv">{{ i.ciEv }}</label>
+        <textarea type="text" class="form-control" name="ciEv">{{ i.ciEv }}</textarea>
       </div>
     </div>
       <div class="mb-3 row g-2">
       <div class="col-sm-7">
-        <label for="ciIns" class="form-label mb-0" style="font-weight:bold;"><br>Instrumento</label>
-        <label type="text" class="form-control" name="ciIns">{{ i.ciIns }}</label>
+        <label for="ciIns" class="form-label mb-0" style="font-weight:bold;"><br>Instrumentos</label>
+        <textarea type="text" class="form-control" name="ciIns">{{ i.ciIns }}</textarea>
       </div>
       <div class="col-sm-5">
         <label for="ciPond" class="form-label mb-0" style="font-weight:bold;"><br>Ponderación (%)</label>

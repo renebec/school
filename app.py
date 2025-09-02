@@ -202,7 +202,9 @@ def plan_carga():
         try:
             print("📥 POST recibido")
             print("Campos en el formulario:", request.form.keys())
+            plan = request.form['plan']
             asig = request.form['asig'].replace(" ", "_")
+            meta = request.form['meta']
             prop = request.form['prop']
             temas = request.form['temas']
             plantel = request.form['plantel']
@@ -291,7 +293,9 @@ def plan_carga():
             print("📝 Insertando en base de datos...")
             new_plan_id=insert_plan(
                 session_db,
+                plan,
                 asig,
+                meta,
                 prop,
                 temas,
                 plantel,

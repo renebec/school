@@ -121,16 +121,12 @@
   <div class="page-break">
 
 <br><br>
-<h3> {{ i.parcial }} </h3>
+<h3> {{ i.parcial }} </h3><br>
+<h4>Planeación #{{ i.plan }}</h4>
+Planeación registrada el {{ i.reated_at }}
 <table class="grid-form">
   <thead>
-      <tr>
-          
-          <!-- Actual column headers go here -->
-          <th>i.plantel</th>
-          <th>i.elabora</th>
-          <th>i.ciclo</th>
-      </tr>
+
   </thead>
     <tr>
         <td class="label-cell"> <b>Plantel:</b> {{ i.plantel }}</td>
@@ -148,6 +144,10 @@
         <td colspan="1" class="value-cell"><b>Horas/Semana:</b> {{ i.horas_sem }}</td>
     </tr>
     <tr>
+        <td colspan="1" class="label-cell">Meta<br>educativa</td>
+        <td colspan="2" class="value-cell">
+            <pre style="margin: 0;">{{ i.meta }}</pre>
+        </td>
         <td colspan="1" class="label-cell">Propósito<br>formativo</td>
         <td colspan="2" class="value-cell">
             <pre style="margin: 0;">{{ i.prop }}</pre>
@@ -169,16 +169,22 @@
   </tr>
   <tr>
         <td colspan="2" class="value-cell"><b>Asignatura 1:</b><br> {{ i.trAsigP1 }}</td>
-        <td colspan="1" class="label-cell"><b>Tema:</b><br> {{ i.trtemaP1 }}</td>
+        <td colspan="1" class="label-cell"><b>Contenidos:</b><br>
+            <pre style="margin: 0;">{{ i.trtemaP1 }}</pre>
+        </td>
         <td colspan="2" class="value-cell"><b>Asignatura 2:</b><br> {{ i.trAsigP2 }}</td>
-        <td colspan="1" class="label-cell"><b>Tema:</b><br> {{ i.trtemaP2 }}</td>
+        <td colspan="1" class="label-cell"><b>Contenidos:</b><br> 
+            <pre style="margin: 0;">{{ i.trtemaP2 }}</pre>
         </td>
     </tr>
     <tr>
         <td colspan="2" class="value-cell"><b>Asignatura 3:</b><br> {{ i.trAsigP3 }}</td>
-        <td colspan="1" class="label-cell"><b>Tema:</b><br> {{ i.trtema3P }}</td>
+        <td colspan="1" class="label-cell"><b>Contenidos:</b><br>
+            <pre style="margin: 0;">{{ i.trtemaP3 }}</pre>
+        </td>
         <td colspan="2" class="value-cell"><b>Asignatura 4:</b><br> {{ i.trAsigP4 }}</td>
-        <td colspan="1" class="label-cell"><b>Tema:</b><br> {{ i.trtema4P }}</td>
+        <td colspan="1" class="label-cell"><b>Contenidos:</b><br>
+            <pre style="margin: 0;">{{ i.trtemaP4 }}</pre></td>
         </td>
     </tr>
     <tr>
@@ -186,16 +192,22 @@
   </tr>
   <tr>
         <td colspan="2" class="value-cell"><b>Asignatura 1:</b><br> {{ i.trAsigM1 }}</td>
-        <td colspan="1" class="label-cell"><b>Tema:</b><br> {{ i.trtemaM1 }}</td>
+        <td colspan="1" class="label-cell"><b>Contenidos:</b><br>
+            <pre style="margin: 0;">{{ i.trtemaM1 }}</pre>
+        </td>
         <td colspan="2" class="value-cell"><b>Asignatura 2:</b><br> {{ i.trAsigM2 }}</td>
-        <td colspan="1" class="label-cell"><b>Tema:</b><br> {{ i.trtemaM2 }}</td>
+        <td colspan="1" class="label-cell"><b>Contenidos:</b><br> 
+            <pre style="margin: 0;">{{ i.trtemaM2 }}</pre>
         </td>
     </tr>
     <tr>
         <td colspan="2" class="value-cell"><b>Asignatura 3:</b><br> {{ i.trAsigM3 }}</td>
-        <td colspan="1" class="label-cell"><b>Tema:</b><br> {{ i.trtemaM3 }}</td>
+        <td colspan="1" class="label-cell"><b>Contenidos:</b><br>
+            <pre style="margin: 0;">{{ i.trtemaM3 }}</pre>
+        </td>
         <td colspan="2" class="value-cell"><b>Asignatura 4:</b><br> {{ i.trAsigM4 }}</td>
-        <td colspan="1" class="label-cell"><b>Tema:</b><br> {{ i.trtemaM4 }}</td>
+        <td colspan="1" class="label-cell"><b>Contenidos:</b><br>
+            <pre style="margin: 0;">{{ i.trtemaM4 }}</pre>
         </td>
     </tr>
     </table>
@@ -209,8 +221,12 @@
   <tr>
         <td colspan="1" class="label-cell">Apertura</td>
         <td colspan="1" class="value-cell">{{ i.apDur }}<br> minutos</td>
-        <td colspan="1" class="label-cell"><b>Evidencia:</b><br> {{ i.apEv }}</td>
-        <td colspan="2" class="value-cell"><b>Instrumento:</b><br> {{ i.apIns }}</td>
+        <td colspan="1" class="label-cell"><b>Evidencia:</b><br> 
+            <pre style="margin: 0;">{{ i.apEv }}</pre>
+        </td>
+        <td colspan="2" class="value-cell"><b>Instrumentos:</b><br>
+            <pre style="margin: 0;">{{ i.apIns }}</pre>
+        </td>
         <td colspan="1" class="value-cell"><b>Ponderación (%):</b><br> {{ i.apPond }}</td>
     </tr>
     <tr>
@@ -222,9 +238,14 @@
 
     <tr>
         <td colspan="1" class="label-cell">Desarrollo</td>
-        <td colspan="1" class="value-cell">{{ i.deDur }}<br> minutos</td>
-        <td colspan="1" class="label-cell"><b>Evidencia:</b><br> {{ i.deEv }}</td>
-        <td colspan="2" class="value-cell"><b>Instrumento:</b><br> {{ i.deIns }}</td>
+        <td colspan="1" class="value-cell">{{ i.deDur }}<br> minutos
+        </td>
+        <td colspan="1" class="label-cell"><b>Evidencia:</b><br> 
+            <pre style="margin: 0;">{{ i.deEv }}</pre>
+        </td>>
+        <td colspan="2" class="value-cell"><b>Instrumentos:</b><br> 
+            <pre style="margin: 0;">{{ i.deIns }}</pre>
+        </td>
         <td colspan="1" class="value-cell"><b>Ponderación (%):</b><br> {{ i.dePond }}</td>
     </tr>
     <tr>
@@ -237,8 +258,12 @@
     <tr>
         <td colspan="1" class="label-cell">Cierre</td>
         <td colspan="1" class="value-cell">{{ i.ciDur }}<br> minutos</td>
-        <td colspan="1" class="label-cell"><b>Evidencia:</b><br> {{ i.ciEv }}</td>
-        <td colspan="2" class="value-cell"><b>Instrumento:</b><br> {{ i.ciIns }}</td>
+        <td colspan="1" class="label-cell"><b>Evidencia:</b><br> 
+            <pre style="margin: 0;">{{ i.ciEv }}</pre>
+        </td>
+        <td colspan="2" class="value-cell"><b>Instrumentos:</b><br> 
+            <pre style="margin: 0;">{{ i.ciIns }}</pre>
+        </td>
         <td colspan="1" class="value-cell"><b>Ponderación (%):</b><br> {{ i.ciPond }}</td>
     </tr>
     <tr>

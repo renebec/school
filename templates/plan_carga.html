@@ -117,6 +117,7 @@
         </div>
       </div>
 
+      <div class="mb-3 row g-2">
       <div class="col-sm-4">
         <label class="form-label" for="parcial" style="font-weight:bold;">Parcial</label>
         <select type="text" class="form-select" name="parcial">
@@ -124,9 +125,14 @@
           <option value="PARCIAL 1">PARCIAL 1</option>
           <option value="PARCIAL 2">PARCIAL 2</option>
           <option value="PARCIAL 3">PARCIAL 3</option>
-          <option value="Recursamiento inter">Recursamiento inter</option>
-
+          <option value="Recursamiento intersemestral">Recursamiento intersemestral</option>
         </select>
+      </div>
+        
+      <div class="col-sm-4">
+        <label class="form-label" for="plan" style="font-weight:bold;">Planeación #No:</label>
+        <input type="number" class="form-control" name="plan" placeholder="Ej: 11">
+      </div>
       </div>
       
       <div class="mb-3 row g-3">
@@ -156,20 +162,33 @@
         </div>
         <div class="col-sm-4">
         <label class="form-label" for="grupos" style="font-weight:bold;">Grupo(s)</label>
-        <input type="text" class="form-control" name="grupos" placeholder="A,B,C,D,E,F,G">
+        <input type="text" class="form-control" name="grupos" placeholder="Ej: A,B,C,D,E,F,G">
         </div>
       </div>
       <div class="col-sm-12">
         <label class="form-label" for="asig" style="font-weight:bold;">Asignatura</label>
-        <input type="text" class="form-control" name="asig" placeholder="PM1">
+        <select type="text" class="form-select" name="asig">
+          <option selected>Seleccione...</option>
+          <option value="CULTURA DIGITAL 1">CULTURA DIGITAL 1</option>
+          <option value="LENGUA Y COMUNICACIÓN 1">LENGUA Y COMUNICACIÓN 1</option>
+          <option value="PENSAMIENTO MATEMÁTICO 1">PENSAMIENTO MATEMÁTICO 1</option>
+        </select>
         </div>
+
+      <div class="mb-3 row g-1">
+        <div class="col-sm-6">
+          <label class="form-label" for="meta" style="font-weight:bold;">Meta educativaa</label>
+          <textarea type="text" class="form-control" name="meta"></textarea>
+        </div>
+      </div>
+      
       <div class="mb-3 row g-2">
         <div class="col-sm-6">
         <label for="prop" class="form-label" style="font-weight:bold;">Propósito formativo</label>
         <textarea type="text" class="form-control" name="prop"></textarea>
         </div>
         <div class="col-sm-6">
-        <label for="temas" class="form-label" style="font-weight:bold;">Contenidos</label>
+        <label for="temas" class="form-label" style="font-weight:bold;">Contenidos formativos</label>
         <textarea type="text" class="form-control" name="temas"></textarea>
         </div>
       </div>
@@ -177,17 +196,17 @@
       <div class="mb-3 row g-3">
         <div class="col-sm-5">
         <label for="horas_sem" class="form-label" style="font-weight:bold;">horas/semana</label>
-        <input type="number" class="form-control" name="horas_sem" placeholder="8">
+        <input type="number" class="form-control" name="horas_sem" placeholder="Ej: 8">
         </div>
         <div class="col-sm-7">
         <label for="docenteID" class="form-label" style="font-weight:bold;">Docente ID</label>
-        <input type="text" class="form-control" name="docenteID" placeholder="205RODSH750621">
+        <input type="text" class="form-control" name="docenteID" placeholder="Ej: 205RODSH750621">
         </div>
       </div>
       <div class="mb-3 row g-1">
         <div class="col-sm-8">
         <label for="imparte" class="form-label" style="font-weight:bold;">Período de aplicación</label>
-        <input type="text" class="form-control" name="imparte" placeholder="DEL 17 DE DICIEMBRE AL 21 DE DICIEMBRE">
+        <input type="text" class="form-control" name="imparte" placeholder="Ej: DEL 17 DE DICIEMBRE AL 21 DE DICIEMBRE">
         </div>
       </div>
 
@@ -202,8 +221,8 @@
         <input type="text" class="form-control" name="trAsigP1">
         </div>
         <div class="col-sm-6">
-        <label for="trtemaP1" class="form-label" style="font-weight:bold;">Tema</label>
-        <input type="text" class="form-control" name="trtemaP1">
+        <label for="trtemaP1" class="form-label" style="font-weight:bold;">Contenidos</label>
+        <txtarea type="text" class="form-control" name="trtemaP1"></txtarea>
         </div>
     </div>
     <div class="mb-3 row g-2">
@@ -212,8 +231,8 @@
         <input type="text" class="form-control" name="trAsigP2">
         </div>
         <div class="col-sm-6">
-        <label for="trtemaP2" class="form-label" style="font-weight:bold;">Tema</label>
-        <input type="text" class="form-control" name="trtemaP2">
+        <label for="trtemaP2" class="form-label" style="font-weight:bold;">Contenidos</label>
+        <txtarea type="text" class="form-control" name="trtemaP2"></txtarea>
         </div>
     </div>
     <div class="mb-3 row g-2">
@@ -222,8 +241,8 @@
         <input type="text" class="form-control" name="trAsigP3">
         </div>
         <div class="col-sm-6">
-        <label for="trtemaP3" class="form-label" style="font-weight:bold;">Tema</label>
-        <input type="text" class="form-control" name="trtemaP3">
+        <label for="trtemaP3" class="form-label" style="font-weight:bold;">Contenidos</label>
+        <txtarea type="text" class="form-control" name="trtemaP3"></txtarea>
         </div>
     </div>
       <div class="mb-3 row g-2">
@@ -232,8 +251,8 @@
           <input type="text" class="form-control" name="trAsigP4">
           </div>
           <div class="col-sm-6">
-          <label for="trtemaP4" class="form-label" style="font-weight:bold;">Tema</label>
-          <input type="text" class="form-control" name="trtemaP4">
+          <label for="trtemaP4" class="form-label" style="font-weight:bold;">Contenidos</label>
+          <txtarea type="text" class="form-control" name="trtemaP4"></txtarea>
           </div>
       </div>
 
@@ -249,8 +268,8 @@
         <input type="text" class="form-control" name="trAsigM1">
         </div>
         <div class="col-sm-6">
-        <label for="trtemaM1" class="form-label" style="font-weight:bold;">Tema</label>
-        <input type="text" class="form-control" name="trtemaM1">
+        <label for="trtemaM1" class="form-label" style="font-weight:bold;">Contenidos</label>
+        <txtarea type="text" class="form-control" name="trtemaM1"></txtarea>
         </div>
       </div>
       <div class="mb-3 row g-2">
@@ -259,8 +278,8 @@
         <input type="text" class="form-control" name="trAsigM2">
         </div>
         <div class="col-sm-6">
-        <label for="trtemaM2" class="form-label" style="font-weight:bold;">Tema</label>
-        <input type="text" class="form-control" name="trtemaM2">
+        <label for="trtemaM2" class="form-label" style="font-weight:bold;">Contenidos</label>
+        <txtarea type="text" class="form-control" name="trtemaM2"></txtarea>
         </div>
       </div>
       <div class="mb-3 row g-2">
@@ -269,8 +288,8 @@
         <input type="text" class="form-control" name="trAsigM3">
         </div>
         <div class="col-sm-6">
-        <label for="trtemaM3" class="form-label" style="font-weight:bold;">Tema</label>
-        <input type="text" class="form-control" name="trtemaM3">
+        <label for="trtemaM3" class="form-label" style="font-weight:bold;">Contenidos</label>
+        <txtarea type="text" class="form-control" name="trtemaM3"></txtarea>
         </div>
       </div>
       <div class="mb-3 row g-2">
@@ -279,8 +298,8 @@
           <input type="text" class="form-control" name="trAsigM4">
           </div>
           <div class="col-sm-6">
-          <label for="trtemaM4" class="form-label" style="font-weight:bold;">Tema</label>
-          <input type="text" class="form-control" name="trtemaM4">
+          <label for="trtemaM4" class="form-label" style="font-weight:bold;">Contenidos</label>
+          <txtarea type="text" class="form-control" name="trtemaM4"></txtarea>
           </div>
       </div>
 
@@ -297,20 +316,13 @@
         </div>
         <div class="col-sm-7">
           <label for="apEv" class="form-label" style="font-weight:bold;"><br>Evidencia</label>
-          <input type="text" class="form-control" name="apEv">
+          <txtarea type="text" class="form-control" name="apEv"></txtarea>
         </div>
       </div>
       <div class="mb-3 row g-2">
         <div class="col-sm-7">
-          <label for="apIns" class="form-label" style="font-weight:bold;"><br>Instrumento</label>
-          <select type="text" class="form-select" name="apIns">
-            <option selected>Seleccione...</option>
-            <option value="NA">NA</option>
-            <option value="LISTA DE COTEJO">LISTA DE COTEJO</option>
-            <option value="RÚBRICA">RÚBRICA</option>
-            <option value="GUÍA DE OBSERVACIÓN">GUÍA DE OBSERVACIÓN</option>
-            <option value="CUESTIONARIO">CUESTIONARIO</option> 
-        </select>
+          <label for="apIns" class="form-label" style="font-weight:bold;"><br>Instrumentos</label>
+          <txtarea type="text" class="form-control" name="apIns"></txtarea>
         </div>
         <div class="col-sm-5">
           <label for="apPond" class="form-label" style="font-weight:bold;"><br>Ponderación (%)</label>
@@ -335,21 +347,14 @@
         </div>
         <div class="col-sm-7">
             <label for="deEv" class="form-label" style="font-weight:bold;"><br>Evidencia</label>
-            <input type="text" class="form-control" name="deEv">
+            <textarea type="text" class="form-control" name="deEv"></textarea>
         </div>
       </div>
       <div class="mb-3 row g-2">
         <div class="col-sm-7">
-            <label for="deIns" class="form-label" style="font-weight:bold;"><br>Instrumento</label>
-            <select type="text" class="form-select" name="deIns">
-              <option selected>Seleccione...</option>
-              <option value="NA">NA</option>
-              <option value="LISTA DE COTEJO">LISTA DE COTEJO</option>
-              <option value="RÚBRICA">RÚBRICA</option>
-              <option value="GUÍA DE OBSERVACIÓN">GUÍA DE OBSERVACIÓN</option>
-              <option value="CUESTIONARIO">CUESTIONARIO</option>
-            </select>
-        </div>
+            <label for="deIns" class="form-label" style="font-weight:bold;"><br>Instrumentos</label>
+            <txtarea type="text" class="form-control" name="deIns"></txtarea>
+          </div>
           <div class="col-sm-5">
             <label for="dePond" class="form-label" style="font-weight:bold;"><br>Ponderación (%)</label>
             <input type="number" class="form-control" name="dePond" placeholder="80">
@@ -374,20 +379,13 @@
       </div>
       <div class="col-sm-7">
         <label for="ciEv" class="form-label" style="font-weight:bold;"><br>Evidencia</label>
-        <input type="text" class="form-control" name="ciEv">
+        <textarea type="text" class="form-control" name="ciEv"></textarea>
       </div>
         </div>
       <div class="mb-3 row g-2">
       <div class="col-sm-7">
-        <label for="ciIns" class="form-label" style="font-weight:bold;"><br>Instrumento</label>
-        <select type="text" class="form-select" name="ciIns">
-          <option selected>Seleccione...</option>
-          <option value="NA">NA</option>
-          <option value="LISTA DE COTEJO">LISTA DE COTEJO</option>
-          <option value="RÚBRICA">RÚBRICA</option>
-          <option value="GUÍA DE OBSERVACIÓN">GUÍA DE OBSERVACIÓN</option>
-          <option value="CUESTIONARIO">CUESTIONARIO</option>
-        </select>
+        <label for="ciIns" class="form-label" style="font-weight:bold;"><br>Instrumentos</label>
+        <txtarea type="text" class="form-control" name="ciIns"></txtarea>
       </div>
       <div class="col-sm-5">
         <label for="ciPond" class="form-label" style="font-weight:bold;"><br>Ponderación (%)</label>

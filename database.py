@@ -141,7 +141,7 @@ def insert_actividad(session, actividad_num, apellido_paterno, apellido_materno,
 
 
 def insert_plan(
-        session, asig, prop, temas, plantel, ciclo, periodo, carrera, semestre, grupos, horas_sem, docenteID, imparte, parcial,
+        session, plan, asig, meta, prop, temas, plantel, ciclo, periodo, carrera, semestre, grupos, horas_sem, docenteID, imparte, parcial,
         trAsigP1, trtemaP1, trAsigP2, trtemaP2, trAsigP3, trtemaP3, trAsigP4, trtemaP4,
         trAsigM1, trtemaM1, trAsigM2, trtemaM2, trAsigM3, trtemaM3, trAsigM4, trtemaM4,
         apDur, apEv, apIns, apPond, apAct, deDur, deEv, deIns, dePond, deAct,
@@ -152,7 +152,7 @@ def insert_plan(
     
     # Define all values once for reuse in INSERT and UPDATE
     params = {
-        "asig": asig, "prop": prop, "temas": temas, "plantel": plantel, "ciclo": ciclo,
+        "plan": plan, "asig": asig, "meta":meta, "prop": prop, "temas": temas, "plantel": plantel, "ciclo": ciclo,
         "periodo": periodo, "carrera": carrera, "semestre": semestre, "grupos": grupos,
         "horas_sem": horas_sem, "docenteID": docenteID, "imparte": imparte, "parcial": parcial,
         "trAsigP1": trAsigP1, "trtemaP1": trtemaP1, "trAsigP2": trAsigP2, "trtemaP2": trtemaP2,
@@ -171,7 +171,7 @@ def insert_plan(
         # Attempt to insert
         insert_query = text("""
             INSERT INTO planInocAgro (
-                asig, prop, temas, plantel, ciclo, periodo, carrera, semestre, grupos,
+                plan, asig, prop, temas, plantel, ciclo, meta, periodo, carrera, semestre, grupos,
                 horas_sem, docenteID, imparte, parcial,
                 trAsigP1, trtemaP1, trAsigP2, trtemaP2, trAsigP3, trtemaP3, trAsigP4, trtemaP4,
                 trAsigM1, trtemaM1, trAsigM2, trtemaM2, trAsigM3, trtemaM3, trAsigM4, trtemaM4,
@@ -204,7 +204,7 @@ def insert_plan(
             
             update_query = text("""
                 UPDATE planInocAgro SET
-                    asig = :asig, prop = :prop, temas = :temas, plantel = :plantel, ciclo = :ciclo,
+                    plan = :plan, asig = :asig, meta= :meta, prop = :prop, temas = :temas, plantel = :plantel, ciclo = :ciclo,
                     periodo = :periodo, carrera = :carrera, semestre = :semestre, grupos = :grupos,
                     horas_sem = :horas_sem, docenteID = :docenteID, imparte = :imparte, parcial = :parcial,
                     trAsigP1 = :trAsigP1, trtemaP1 = :trtemaP1, trAsigP2 = :trAsigP2, trtemaP2 = :trtemaP2,
