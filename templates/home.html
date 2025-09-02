@@ -246,7 +246,7 @@
         <div>                     
         {% set item = (pg | selectattr('parcial', 'equalto', 'PARCIAL 3') | first)          %}
                 {% if item %}
-                <h2 class="text-center mt-4 mb-2" style="padding-                                       bottom:16px;color:rgb(100,100,100);">
+                <h2 class="text-center mt-4 mb-2" style="padding-bottom:16px;color:rgb(100,100,100);">
                     {{item['parcial']}}
                 </h2>
                 {% endif %}
