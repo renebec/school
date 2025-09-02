@@ -7,24 +7,6 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 
-    <script>
-      document.addEventListener('DOMContentLoaded', () => {
-        const checkboxes = document.querySelectorAll('.single-checkbox');
-
-        checkboxes.forEach(checkbox => {
-          checkbox.addEventListener('change', function () {
-            if (this.checked) {
-              checkboxes.forEach(other => {
-                if (other !== this) {
-                  other.checked = false;
-                }
-              });
-            }
-          });
-        });
-      });
-    </script>
-
   
     
 <body>
