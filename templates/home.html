@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>inAgro</title>
+    <title>NEM</title>
     <link             href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -80,7 +80,7 @@
     </head>
         <nav class="navbar fixed-top bg-white shadow-sm mb-4">
             <div class="container-fluid d-flex justify-content-between row">
-                <span class="navbar-brand mb-0 h1 navtxt col-9">Inocuidad alimentaria</span><a href="{{ url_for('logout') }}" class="btn btn-outline-danger btn-sm col-3" id="btnCerrar">Cerrar Sesión</a>
+                <span class="navbar-brand mb-0 h1 navtxt col-9">NEM</span><a href="{{ url_for('logout') }}" class="btn btn-outline-danger btn-sm col-3" id="btnCerrar">Cerrar Sesión</a>
             </div>
         </nav>
     
@@ -111,14 +111,15 @@
 <body>
     <header>
         <div>            
-            {% set item = (pg 
+            <!--{% set item = (pg 
             | selectattr('carrera', 'equalto', 'TA') 
             | selectattr('semestre', 'equalto', 1) 
-            | first) %}
+            | first) %}-->
+            {% set item = (pg | selectattr('parcial', 'equalto', 'PARCIAL 1') |                 first) %}
             
             {% if item %} 
             <h1 class="text-center mt-4 mb-2" style="color:rgb(100,100,100);">
-                {{item['carrera']}}{{item['asig']}} {{item['semestre']}}
+                {{item['asig']}}
             </h1>
             {% endif %} 
         </div>
@@ -137,7 +138,7 @@
         </h2>
 
         <p class="lead">
-           <!-- <br> {{ item.meta }}<br><br> -->
+            <br> {{item['meta']}}<br><br>
             <i style="color:rgb(150,150,150);font-size:16px">M.C. Héctor René Becerril Cejudo</i><br><i style="color:rgb(150,150,150);font-size:16px">Aguascalientes, México.</i>
         </p>
 
@@ -151,14 +152,11 @@
 
         
         <div>            
-            {% set item = (pg 
-            | selectattr('carrera', 'equalto', 'TA') 
-            | selectattr('semestre', 'equalto', 3) 
-            | first) %}
+            {% set item = (pg | selectattr('parcial', 'equalto', 'PARCIAL 2') |                 first) %}
             
             {% if item %}
                 <h2 class="text-center mt-4 mb-2" style="padding-                                           bottom:16px;color:rgb(100,100,100);">
-                    {{item['carrera']}}{{item['asig']}} {{item['semestre']}}
+                    {{item['parcial']}}
             </h2>
             {% endif %}
         </div>
@@ -208,14 +206,11 @@
         </div>   
 
         <div>                     
-            {% set item = (pg 
-            | selectattr('carrera', 'equalto', 'TA') 
-            | selectattr('semestre', 'equalto', 5) 
-            | first) %}
+                {% set item = (pg | selectattr('parcial', 'equalto', 'PARCIAL 2') |                 first) %}
             
                 {% if item %}
                 <h2 class="text-center mt-4 mb-2" style="padding-                                       bottom:16px;color:rgb(100,100,100);">
-                    {{item['carrera']}}{{item['asig']}} {{item['semestre']}}
+                    {{item['parcial']}}
                 </h2>
                 {% endif %}
         </div>
