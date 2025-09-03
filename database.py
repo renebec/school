@@ -32,7 +32,7 @@ def handle_choice():
 def load_pg_from_db():
     try:
       with engine.connect() as conn:
-          result = conn.execute(text("SELECT * FROM inocAgro"))
+          result = conn.execute(text("SELECT * FROM mat1"))
           pg = result.mappings().all()
           return pg
     except Exception as e:
@@ -43,7 +43,7 @@ def load_pg_from_db2():
     try:
       with engine.connect() as conn:
           #result = conn.execute(text("SELECT * FROM planInocAgro ORDER BY created_at DESC"))
-          result = conn.execute(text("SELECT * FROM planInocAgro"))
+          result = conn.execute(text("SELECT * FROM mat1"))
           pg = result.mappings().all()
           return pg
     except Exception as e:
@@ -62,7 +62,7 @@ def load_pg_from_db2():
 def load_plan_from_db(id):
     try:
       with engine.connect() as conn:
-          result = conn.execute(text("SELECT * FROM planInocAgro WHERE id = :val"),
+          result = conn.execute(text("SELECT * FROM mat1 WHERE id = :val"),
               {"val":id}
             )
           row = result.mappings().first()
@@ -79,7 +79,7 @@ def load_pgn_from_db(id):
   try:
     with engine.connect() as conn:
       result = conn.execute(
-        text("SELECT * FROM planInocAgro WHERE id = :val"),
+        text("SELECT * FROM mat1 WHERE id = :val"),
         {"val":plan}
       )
       row = result.mappings().first()  # <- dict, no tupla
@@ -183,7 +183,7 @@ def insert_plan(
     try:
         # Definición de la sentencia INSERT
         insert_query = text("""
-            INSERT INTO planInocAgro (
+            INSERT INTO mat1 (
                 plan, asig, prop, temas, plantel, ciclo, meta, periodo, carrera,
                 semestre, grupos, horas_sem, docenteID, imparte, parcial,
                 trAsigP1, trtemaP1, trAsigP2, trtemaP2, trAsigP3, trtemaP3,
@@ -214,7 +214,7 @@ def insert_plan(
             print("⚠️ Plan duplicado detectado. Actualizando...")
 
             update_query = text("""
-                UPDATE planInocAgro SET
+                UPDATE mat1 SET
                     plan = :plan, asig = :asig, meta = :meta, prop = :prop, temas = :temas,
                     plantel = :plantel, ciclo = :ciclo, periodo = :periodo, carrera = :carrera,
                     semestre = :semestre, grupos = :grupos, horas_sem = :horas_sem,
