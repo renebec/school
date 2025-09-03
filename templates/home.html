@@ -111,7 +111,11 @@
 <body>
     <header>
         <h1 class="text-center mt-4 mb-2" style="color:rgb(100,100,100);">
-            {{ i.asig }}
+            {% for i in pg %}
+                {% if i['parcial'] == 'PARCIAL 1' %}
+                    {{ i.asig }}
+                {% endif %}
+            {% endfor %}
         </h1>
     </header>
 
@@ -127,10 +131,18 @@
         <h2 class="text-center mt-4 mb-2" style="color:rgb(100,100,100);">
             Acerca del curso
         </h2>
+        {% for i in pg %}
+            {% if i['plan'] == 1 %}
+                {{ i.asig }}
+           
         <p class="lead">
             <br>{{ i.meta }}
             <i style="color:rgb(150,150,150);font-size:16px">M.C. Héctor René Becerril Cejudo</i><br><i style="color:rgb(150,150,150);font-size:16px">Aguascalientes, México.</i>
         </p>
+        {% endif %}
+        {% endfor %}
+
+        
         {% if es_profesor %}
         <a  href="{{ url_for('plan_carga') }}">
               <button type="submit" class="btn btn-warning">Subir una planeación</button>
