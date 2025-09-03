@@ -141,101 +141,118 @@ def insert_actividad(session, actividad_num, apellido_paterno, apellido_materno,
 
 
 def insert_plan(
-        session, plan, asig, meta, prop, temas, plantel, ciclo, periodo, carrera, semestre, grupos, horas_sem, docenteID, imparte, parcial,
-        trAsigP1, trtemaP1, trAsigP2, trtemaP2, trAsigP3, trtemaP3, trAsigP4, trtemaP4,
-        trAsigM1, trtemaM1, trAsigM2, trtemaM2, trAsigM3, trtemaM3, trAsigM4, trtemaM4,
-        apDur, apEv, apIns, apPond, apAct, deDur, deEv, deIns, dePond, deAct,
-        ciDur, ciEv, ciIns, ciPond, ciAct, materiales, equipo, fuentes,
-        elabora, revisa, avala, cve, created_at, pdf_url):
+    session, plan, asig, meta, prop, temas, plantel, ciclo, periodo,
+    carrera, semestre, grupos, horas_sem, docenteID, imparte, parcial,
+    trAsigP1, trtemaP1, trAsigP2, trtemaP2, trAsigP3, trtemaP3,
+    trAsigP4, trtemaP4, trAsigM1, trtemaM1, trAsigM2, trtemaM2,
+    trAsigM3, trtemaM3, trAsigM4, trtemaM4,
+    apDur, apEv, apIns, apPond, apAct,
+    deDur, deEv, deIns, dePond, deAct,
+    ciDur, ciEv, ciIns, ciPond, ciAct,
+    materiales, equipo, fuentes,
+    elabora, revisa, avala, cve,
+    created_at=None, pdf_url=None
+):
+    # Si no se proporciona created_at, se asigna la hora actual de México
+    if created_at is None:
+        created_at = datetime.now(pytz.timezone("America/Mexico_City"))
 
-    created_at = datetime.now(pytz.timezone("America/Mexico_City"))
-    
-    # Define all values once for reuse in INSERT and UPDATE
+    # Preparación de parámetros para INSERT y UPDATE
     params = {
-        "plan": plan, "asig": asig, "meta":meta, "prop": prop, "temas": temas, "plantel": plantel, "ciclo": ciclo,
-        "periodo": periodo, "carrera": carrera, "semestre": semestre, "grupos": grupos,
-        "horas_sem": horas_sem, "docenteID": docenteID, "imparte": imparte, "parcial": parcial,
-        "trAsigP1": trAsigP1, "trtemaP1": trtemaP1, "trAsigP2": trAsigP2, "trtemaP2": trtemaP2,
-        "trAsigP3": trAsigP3, "trtemaP3": trtemaP3, "trAsigP4": trAsigP4, "trtemaP4": trtemaP4,
-        "trAsigM1": trAsigM1, "trtemaM1": trtemaM1, "trAsigM2": trAsigM2, "trtemaM2": trtemaM2,
-        "trAsigM3": trAsigM3, "trtemaM3": trtemaM3, "trAsigM4": trAsigM4, "trtemaM4": trtemaM4,
-        "apDur": apDur, "apEv": apEv, "apIns": apIns, "apPond": apPond, "apAct": apAct,
-        "deDur": deDur, "deEv": deEv, "deIns": deIns, "dePond": dePond, "deAct": deAct,
-        "ciDur": ciDur, "ciEv": ciEv, "ciIns": ciIns, "ciPond": ciPond, "ciAct": ciAct,
+        "plan": plan, "asig": asig, "meta": meta, "prop": prop, "temas": temas,
+        "plantel": plantel, "ciclo": ciclo, "periodo": periodo, "carrera": carrera,
+        "semestre": semestre, "grupos": grupos, "horas_sem": horas_sem,
+        "docenteID": docenteID, "imparte": imparte, "parcial": parcial,
+        "trAsigP1": trAsigP1, "trtemaP1": trtemaP1, "trAsigP2": trAsigP2,
+        "trtemaP2": trtemaP2, "trAsigP3": trAsigP3, "trtemaP3": trtemaP3,
+        "trAsigP4": trAsigP4, "trtemaP4": trtemaP4,
+        "trAsigM1": trAsigM1, "trtemaM1": trtemaM1, "trAsigM2": trAsigM2,
+        "trtemaM2": trtemaM2, "trAsigM3": trAsigM3,
+        "trtemaM3": trtemaM3, "trAsigM4": trAsigM4, "trtemaM4": trtemaM4,
+        "apDur": apDur, "apEv": apEv, "apIns": apIns, "apPond": apPond,
+        "apAct": apAct,
+        "deDur": deDur, "deEv": deEv, "deIns": deIns, "dePond": dePond,
+        "deAct": deAct,
+        "ciDur": ciDur, "ciEv": ciEv, "ciIns": ciIns, "ciPond": ciPond,
+        "ciAct": ciAct,
         "materiales": materiales, "equipo": equipo, "fuentes": fuentes,
-        "elabora": elabora, "revisa": revisa, "avala": avala,
-        "cve": cve, "created_at": created_at, "pdf_url": pdf_url
+        "elabora": elabora, "revisa": revisa, "avala": avala, "cve": cve,
+        "created_at": created_at, "pdf_url": pdf_url
     }
-    
+
     try:
-        # Attempt to insert
+        # Definición de la sentencia INSERT
         insert_query = text("""
             INSERT INTO planInocAgro (
-                plan, asig, prop, temas, plantel, ciclo, meta, periodo, carrera, semestre, grupos,
-                horas_sem, docenteID, imparte, parcial,
-                trAsigP1, trtemaP1, trAsigP2, trtemaP2, trAsigP3, trtemaP3, trAsigP4, trtemaP4,
-                trAsigM1, trtemaM1, trAsigM2, trtemaM2, trAsigM3, trtemaM3, trAsigM4, trtemaM4,
-                apDur, apEv, apIns, apPond, apAct,
-                deDur, deEv, deIns, dePond, deAct,
-                ciDur, ciEv, ciIns, ciPond, ciAct,
+                plan, asig, prop, temas, plantel, ciclo, meta, periodo, carrera,
+                semestre, grupos, horas_sem, docenteID, imparte, parcial,
+                trAsigP1, trtemaP1, trAsigP2, trtemaP2, trAsigP3, trtemaP3,
+                trAsigP4, trtemaP4, trAsigM1, trtemaM1, trAsigM2, trtemaM2,
+                trAsigM3, trtemaM3, trAsigM4, trtemaM4,
+                apDur, apEv, apIns, apPond, apAct, deDur, deEv, deIns, dePond,
+                deAct, ciDur, ciEv, ciIns, ciPond, ciAct,
                 materiales, equipo, fuentes,
                 elabora, revisa, avala, cve, created_at, pdf_url
-            )
-            VALUES (
-                :asig, :prop, :temas, :plantel, :ciclo, :periodo, :carrera, :semestre, :grupos,
-                :horas_sem, :docenteID, :imparte, :parcial,
-                :trAsigP1, :trtemaP1, :trAsigP2, :trtemaP2, :trAsigP3, :trtemaP3, :trAsigP4, :trtemaP4,
-                :trAsigM1, :trtemaM1, :trAsigM2, :trtemaM2, :trAsigM3, :trtemaM3, :trAsigM4, :trtemaM4,
-                :apDur, :apEv, :apIns, :apPond, :apAct,
-                :deDur, :deEv, :deIns, :dePond, :deAct,
-                :ciDur, :ciEv, :ciIns, :ciPond, :ciAct,
-                :materiales, :equipo, :fuentes,
-                :elabora, :revisa, :avala, :cve, :created_at, :pdf_url
+            ) VALUES (
+                :asig, :prop, :temas, :plantel, :ciclo, :meta, :periodo, :carrera,
+                :semestre, :grupos, :horas_sem, :docenteID, :imparte, :parcial,
+                :trAsigP1, :trtemaP1, :trAsigP2, :trtemaP2, :trAsigP3, :trtemaP3,
+                :trAsigP4, :trtemaP4, :trAsigM1, :trtemaM1, :trAsigM2, :trtemaM2,
+                :trAsigM3, :trtemaM3, :trAsigM4, :trtemaM4, :apDur, :apEv, :apIns,
+                :apPond, :apAct, :deDur, :deEv, :deIns, :dePond, :deAct,
+                :ciDur, :ciEv, :ciIns, :ciPond, :ciAct, :materiales, :equipo,
+                :fuentes, :elabora, :revisa, :avala, :cve, :created_at, :pdf_url
             )
         """)
-        
         result = session.execute(insert_query, params)
         session.commit()
         print("✅ Plan insertado correctamente")
         return result.lastrowid
+
     except pymysql.err.IntegrityError as e:
-        if "1062" in str(e):  # Duplicate key
+        if "1062" in str(e):  # Detección de clave duplicada
             print("⚠️ Plan duplicado detectado. Actualizando...")
-            
+
             update_query = text("""
                 UPDATE planInocAgro SET
-                    plan = :plan, asig = :asig, meta= :meta, prop = :prop, temas = :temas, plantel = :plantel, ciclo = :ciclo,
-                    periodo = :periodo, carrera = :carrera, semestre = :semestre, grupos = :grupos,
-                    horas_sem = :horas_sem, docenteID = :docenteID, imparte = :imparte, parcial = :parcial,
-                    trAsigP1 = :trAsigP1, trtemaP1 = :trtemaP1, trAsigP2 = :trAsigP2, trtemaP2 = :trtemaP2,
-                    trAsigP3 = :trAsigP3, trtemaP3 = :trtemaP3, trAsigP4 = :trAsigP4, trtemaP4 = :trtemaP4,
-                    trAsigM1 = :trAsigM1, trtemaM1 = :trtemaM1, trAsigM2 = :trAsigM2, trtemaM2 = :trtemaM2,
-                    trAsigM3 = :trAsigM3, trtemaM3 = :trtemaM3, trAsigM4 = :trAsigM4, trtemaM4 = :trtemaM4,
-                    apDur = :apDur, apEv = :apEv, apIns = :apIns, apPond = :apPond, apAct = :apAct,
-                    deDur = :deDur, deEv = :deEv, deIns = :deIns, dePond = :dePond, deAct = :deAct,
-                    ciDur = :ciDur, ciEv = :ciEv, ciIns = :ciIns, ciPond = :ciPond, ciAct = :ciAct,
+                    plan = :plan, asig = :asig, meta = :meta, prop = :prop, temas = :temas,
+                    plantel = :plantel, ciclo = :ciclo, periodo = :periodo, carrera = :carrera,
+                    semestre = :semestre, grupos = :grupos, horas_sem = :horas_sem,
+                    docenteID = :docenteID, imparte = :imparte, parcial = :parcial,
+                    trAsigP1 = :trAsigP1, trtemaP1 = :trtemaP1, trAsigP2 = :trAsigP2,
+                    trtemaP2 = :trtemaP2, trAsigP3 = :trAsigP3, trtemaP3 = :trtemaP3,
+                    trAsigP4 = :trAsigP4, trtemaP4 = :trtemaP4,
+                    trAsigM1 = :trAsigM1, trtemaM1 = :trtemaM1,
+                    trAsigM2 = :trAsigM2, trtemaM2 = :trtemaM2,
+                    trAsigM3 = :trAsigM3, trtemaM3 = :trtemaM3,
+                    trAsigM4 = :trAsigM4, trtemaM4 = :trtemaM4,
+                    apDur = :apDur, apEv = :apEv, apIns = :apIns, apPond = :apPond,
+                    apAct = :apAct,
+                    deDur = :deDur, deEv = :deEv, deIns = :deIns, dePond = :dePond,
+                    deAct = :deAct,
+                    ciDur = :ciDur, ciEv = :ciEv, ciIns = :ciIns, ciPond = :ciPond,
+                    ciAct = :ciAct,
                     materiales = :materiales, equipo = :equipo, fuentes = :fuentes,
                     elabora = :elabora, revisa = :revisa, avala = :avala,
                     created_at = :created_at, pdf_url = :pdf_url
                 WHERE cve = :cve
             """)
-            result = session.execute(insert_query, params)
+
             session.execute(update_query, params)
             session.commit()
-            return result.lastrowid
-        print("✅ Plan actualizado correctamente")
-        else:
-        
-        raise  # Rethrow if it's a different IntegrityError
-    
+            print("✅ Plan actualizado correctamente")
+            return params.get("cve")  # Puedes retornar el identificador si corresponde
+
+        # Si no es por duplicado, propaga el error
+        raise
+
     except Exception as e:
         print(f"❌ DB ERROR al cargar la planeación: {e}")
         session.rollback()
         return False
+
     finally:
         session.close()
-    
-    return True
 
 
 
