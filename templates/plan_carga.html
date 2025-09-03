@@ -85,7 +85,7 @@
       <div class="mb-3 row g-3">
         <div class="col-sm-4">
         <label for="plantel" class="form-label" style="font-weight:bold;">Plantel</label>
-          <select type="text" class="form-select" name="plantel">
+          <select type="text" class="form-select" name="plantel" required>
             <option selected>Seleccione...</option>
             <option value="CETAC 05">CETAC 05</option>
             <option value="CBTA 30">CBTA 30</option>
@@ -98,7 +98,7 @@
         </div>
         <div class="col-sm-4">
         <label for="ciclo" class="form-label" style="font-weight:bold;">Ciclo</label>
-          <select type="text" class="form-select" name="ciclo">
+          <select type="text" class="form-select" name="ciclo" required>
             <option selected>Seleccione...</option>
             <option value="2025-2026">2025-2026</option>
             <option value="2026-2027">2026-2027</option>
@@ -109,7 +109,7 @@
         </div>
         <div class="col-sm-4">
         <label class="form-label" for="periodo" style="font-weight:bold;">Periodo</label>
-        <select type="text" class="form-select" name="periodo">
+        <select type="text" class="form-select" name="periodo" required>
           <option selected>Seleccione...</option>
           <option value="AGOSTO-ENERO">AGOSTO-ENERO</option>
           <option value="FEBRERO-JULIO">FEBRERO-JULIO</option>
@@ -120,7 +120,7 @@
       <div class="mb-3 row g-2">
       <div class="col-sm-4">
         <label class="form-label" for="parcial" style="font-weight:bold;">Parcial</label>
-        <select type="text" class="form-select" name="parcial">
+        <select type="text" class="form-select" name="parcial" required>
           <option selected>Seleccione...</option>
           <option value="PARCIAL 1">PARCIAL 1</option>
           <option value="PARCIAL 2">PARCIAL 2</option>
@@ -131,14 +131,14 @@
         
       <div class="col-sm-4">
         <label class="form-label" for="plan" style="font-weight:bold;">Planeación #No:</label>
-        <input type="number" class="form-control" name="plan" placeholder="Ej: 11">
+        <input type="number" class="form-control" name="plan" placeholder="Ej: 11" required>
       </div>
       </div>
       
       <div class="mb-3 row g-3">
         <div class="col-sm-4">
         <label class="form-label" for="carrera" style="font-weight:bold;">Carrera</label>
-        <select type="text" class="form-select" name="carrera">
+        <select type="text" class="form-select" name="carrera" required>
           <option selected>Seleccione...</option>
           <option value="TA">TA</option>
           <option value="SMEC">SMEC</option>
@@ -150,7 +150,7 @@
         </div>
         <div class="col-sm-4">
         <label class="form-label" for="semestre" style="font-weight:bold;">Semestre</label>
-        <select type="text" class="form-select" name="semestre">
+        <select type="text" class="form-select" name="semestre" required>
           <option selected>Seleccione...</option>
           <option value="1">1</option>
           <option value="2">2</option>
@@ -162,12 +162,12 @@
         </div>
         <div class="col-sm-4">
         <label class="form-label" for="grupos" style="font-weight:bold;">Grupo(s)</label>
-        <input type="text" class="form-control" name="grupos" placeholder="Ej: A,B,C,D,E,F,G">
+        <input type="text" class="form-control" name="grupos" placeholder="Ej: A,B,C,D,E" required>
         </div>
       </div>
       <div class="col-sm-12">
         <label class="form-label" for="asig" style="font-weight:bold;">Asignatura</label>
-        <select type="text" class="form-select" name="asig">
+        <select type="text" class="form-select" name="asig" required>
           <option selected>Seleccione...</option>
           <option value="CULTURA DIGITAL 1">CULTURA DIGITAL 1</option>
           <option value="LENGUA Y COMUNICACIÓN 1">LENGUA Y COMUNICACIÓN 1</option>
