@@ -137,8 +137,14 @@
         <h2 class="text-center mt-4 mb-2" style="color:rgb(100,100,100);">
         </h2>
 
+
+        {% if item.meta %}
         <p class="lead">
-            <br> {{item['meta']}}<br><br>
+            {{ item.meta }}
+        </p>
+        {% endif %}
+<br><br>
+        <p class="lead">   
             <i style="color:rgb(150,150,150);font-size:16px">M.C. Héctor René Becerril Cejudo</i><br><i style="color:rgb(150,150,150);font-size:16px">Aguascalientes, México.</i>
         </p>
 
