@@ -80,7 +80,7 @@ def load_pgn_from_db(id):
     with engine.connect() as conn:
       result = conn.execute(
         text("SELECT * FROM mat1 WHERE id = :val"),
-        {"val":plan}
+        {"val":id}
       )
       row = result.mappings().first()  # <- dict, no tupla
       return dict(row) if row else None
@@ -194,7 +194,7 @@ def insert_plan(
                 materiales, equipo, fuentes,
                 elabora, revisa, avala, cve, created_at, pdf_url
             ) VALUES (
-                :asig, :prop, :temas, :plantel, :ciclo, :meta, :periodo, :carrera,
+                :plan, :asig, :prop, :temas, :plantel, :ciclo, :meta, :periodo, :carrera,
                 :semestre, :grupos, :horas_sem, :docenteID, :imparte, :parcial,
                 :trAsigP1, :trtemaP1, :trAsigP2, :trtemaP2, :trAsigP3, :trtemaP3,
                 :trAsigP4, :trtemaP4, :trAsigM1, :trtemaM1, :trAsigM2, :trtemaM2,
