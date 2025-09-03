@@ -372,7 +372,7 @@ def plan_carga():
             flash(f"Ocurrió un error al procesar la planeación {cve}.", "danger")
             return redirect(url_for('plan_carga'))
 
-    return render_template("plan_carga.html", show_form=show_form, plan=plan)
+    return render_template("plan_carga.html", show_form=show_form)
 
 """
 #para registrar un nuevo usuario y almacenarlo en la DB
