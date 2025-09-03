@@ -79,7 +79,7 @@ def load_pgn_from_db(id):
   try:
     with engine.connect() as conn:
       result = conn.execute(
-        text("SELECT * FROM inocAgro WHERE id = :val"),
+        text("SELECT * FROM planInocAgro WHERE id = :val"),
         {"val":plan}
       )
       row = result.mappings().first()  # <- dict, no tupla
