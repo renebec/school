@@ -111,11 +111,7 @@
 <body>
     <header>
         <h1 class="text-center mt-4 mb-2" style="color:rgb(100,100,100);">
-            {% for i in pg %}
-                {% if i['parcial'] == 'PARCIAL 1' %}
-                    {{ i.asig }}
-                {% endif %}
-            {% endfor %}
+            Pensamiento Matemático I
         </h1>
     </header>
 
@@ -131,12 +127,10 @@
         <h2 class="text-center mt-4 mb-2" style="color:rgb(100,100,100);">
             Acerca del curso
         </h2>
-        {% for i in pg %}
-            {% if i['plan'] == 1 %}
-                {{ i.asig }}
+
            
         <p class="lead">
-            <br>{{ i.meta }}
+            <br>Meta educativa:
             <i style="color:rgb(150,150,150);font-size:16px">M.C. Héctor René Becerril Cejudo</i><br><i style="color:rgb(150,150,150);font-size:16px">Aguascalientes, México.</i>
         </p>
         {% endif %}
