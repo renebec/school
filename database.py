@@ -63,7 +63,7 @@ def load_plan_from_db(id):
     try:
       with engine.connect() as conn:
           result = conn.execute(text("SELECT * FROM mat1 WHERE id = :val"),
-              {"val":id}
+              {"val":cve}
             )
           row = result.mappings().first()
           return dict(row) if row else None
@@ -80,7 +80,7 @@ def load_pgn_from_db(id):
     with engine.connect() as conn:
       result = conn.execute(
         text("SELECT * FROM mat1 WHERE id = :val"),
-        {"val":id}
+        {"val":cve}
       )
       row = result.mappings().first()  # <- dict, no tupla
       return dict(row) if row else None
