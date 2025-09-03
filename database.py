@@ -63,7 +63,7 @@ def load_plan_from_db(id):
     try:
       with engine.connect() as conn:
           result = conn.execute(text("SELECT * FROM mat1 WHERE id = :val"),
-              {"val":cve}
+              {"val":plan}
             )
           row = result.mappings().first()
           return dict(row) if row else None
@@ -80,7 +80,7 @@ def load_pgn_from_db(id):
     with engine.connect() as conn:
       result = conn.execute(
         text("SELECT * FROM mat1 WHERE id = :val"),
-        {"val":cve}
+        {"val":plan}
       )
       row = result.mappings().first()  # <- dict, no tupla
       return dict(row) if row else None
@@ -235,13 +235,13 @@ def insert_plan(
                     materiales = :materiales, equipo = :equipo, fuentes = :fuentes,
                     elabora = :elabora, revisa = :revisa, avala = :avala,
                     created_at = :created_at, pdf_url = :pdf_url
-                WHERE cve = :cve
+                WHERE plan = :plan
             """)
 
             session.execute(update_query, params)
             session.commit()
             print("✅ Plan actualizado correctamente")
-            return params.get("cve")  # Puedes retornar el identificador si corresponde
+            return params.get("plan")  # Puedes retornar el identificador si corresponde
 
         # Si no es por duplicado, propaga el error
         raise
