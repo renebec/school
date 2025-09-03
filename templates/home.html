@@ -110,9 +110,16 @@
     </div>
 <body>
     <header>
-        <h1 class="text-center mt-4 mb-2" style="color:rgb(100,100,100);">
-            Pensamiento Matemático I
-        </h1>
+        <div>            
+            {% set item = (pg | selectattr('parcial', 'equalto', 'PARCIAL 1') |  first) %}
+            {% if item %} 
+            <h1 class="text-center mt-4 mb-2" style="color:rgb(100,100,100);">
+                 {{item['asig']}}
+            </h1>
+            {% endif %} 
+        </div>
+        
+               
     </header>
 
         
