@@ -111,7 +111,7 @@
 <body>
     <header>
         <div>            
-            {% set item = (pg | selectattr('parcial', 'equalto', 'PARCIAL 1') |  first) %}
+            {% set item = (pg | selectattr('carrera', 'equalto', 'TA' & 'semestre', 'equalto', 1) |  first) %}
             {% if item %} 
             <h1 class="text-center mt-4 mb-2" style="color:rgb(100,100,100);">
                  {{item['asig']}}
@@ -130,7 +130,6 @@
         <a href="https://renebec.github.io/mapdgetaycm/" target="_blank">Mapa de planteles</a>&#128072;
  -->       
         <h2 class="text-center mt-4 mb-2" style="color:rgb(100,100,100);">
-            Acerca del curso
         </h2>
 
         <p class="lead">
