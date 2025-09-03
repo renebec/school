@@ -137,6 +137,7 @@
         <h2 class="text-center mt-4 mb-2" style="color:rgb(100,100,100);">
         </h2>
 
+        {% set item = (pg | selectattr('parcial', 'equalto', 'PARCIAL 1') |                 first) %}
 
         {% if item.meta %}
         <p class="lead">
@@ -158,7 +159,7 @@
 
         
         <div>            
-            {% set item = (pg | selectattr('parcial', 'equalto', 'PARCIAL 2') |                 first) %}
+            {% set item = (pg | selectattr('parcial', 'equalto', 'PARCIAL 1') |                 first) %}
             
             {% if item %}
                 <h2 class="text-center mt-4 mb-2" style="padding-                                           bottom:16px;color:rgb(100,100,100);">
