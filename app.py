@@ -70,7 +70,7 @@ def show_pg(pg_id):
 
     # Supongamos que TEMAS es tu estructura de datos (lista o dict)
     pg = load_pg_from_db2()
-    item = next((item for item in pg if item['id'] == pg_id), None)
+    item = next((item for item in pg if item['plan'] == pg_id), None)
     if item is None:
         return "Not Found", 404
     return render_template('classpage.html', i=item)
@@ -254,7 +254,7 @@ def plan_carga():
             elabora = request.form['elabora']
             revisa = request.form['revisa']
             avala = request.form['avala']
-            cve = f"{docenteID}_{ciclo}_{periodo}_{semestre}_{grupos}_{asig}"
+            cve = f"{docenteID}_{ciclo}_{periodo}_{semestre}_{grupos}_{asig}_{plan}"
             pdf_file = request.files['pdf_file']
 
 

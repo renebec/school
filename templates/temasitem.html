@@ -2,7 +2,7 @@
     <div class="col-9">
         
         <h4 style="margin-bottom:4px;">                                 
-            Planeación {{i['id']}}
+            Planeación {{i['plan']}}
         </h4>
         
         <h4 style="margin-bottom:4px;color:rgb(155,155,155);text-align:left;">                                 
@@ -58,7 +58,7 @@
     </div>
 
     <div class="col-3"> 
-        <a href= "{{ url_for('show_pg', pg_id=i['id']) }}" type="button" class= "btn btn-outline-primary"> Entrar</a>
+        <a href= "{{ url_for('show_pg', pg_id=i['plan']) }}" type="button" class= "btn btn-outline-primary"> Entrar</a>
     </div>
 
     {% if es_profesor %}
@@ -70,7 +70,7 @@
                 <a href= "{{ url_for('show_plan', id=i['id']) }}" type="button"> Ver planeación</a>
             </div>
             -->
-            <a href="{{ url_for('show_plan', id=i['id']) }}">
+            <a href="{{ url_for('show_plan', id=i['plan']) }}">
                   <button>Ver planeación</button>
             </a>
         </div>
