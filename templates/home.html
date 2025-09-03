@@ -111,10 +111,14 @@
 <body>
     <header>
         <div>            
-            {% set item = (pg | selectattr('carrera', 'equalto', 'TA' & 'semestre', 'equalto', 1) |  first) %}
+            {% set item = (pg 
+            | selectattr('carrera', 'equalto', 'TA') 
+            | selectattr('semestre', 'equalto', 1) 
+            | first) %}
+            
             {% if item %} 
             <h1 class="text-center mt-4 mb-2" style="color:rgb(100,100,100);">
-                 {{item['asig']}}
+                {{item['carrera']}}{{item['asig']}} {{item['semestre']}}
             </h1>
             {% endif %} 
         </div>
@@ -147,10 +151,14 @@
 
         
         <div>            
-            {% set item = (pg | selectattr('parcial', 'equalto', 'PARCIAL 1') |  first) %}
+            {% set item = (pg 
+            | selectattr('carrera', 'equalto', 'TA') 
+            | selectattr('semestre', 'equalto', 3) 
+            | first) %}
+            
             {% if item %}
                 <h2 class="text-center mt-4 mb-2" style="padding-                                           bottom:16px;color:rgb(100,100,100);">
-                    {{item['parcial']}}
+                    {{item['carrera']}}{{item['asig']}} {{item['semestre']}}
             </h2>
             {% endif %}
         </div>
@@ -200,10 +208,14 @@
         </div>   
 
         <div>                     
-                {% set item = (pg | selectattr('parcial', 'equalto', 'PARCIAL 2') |                 first) %}
+            {% set item = (pg 
+            | selectattr('carrera', 'equalto', 'TA') 
+            | selectattr('semestre', 'equalto', 5) 
+            | first) %}
+            
                 {% if item %}
                 <h2 class="text-center mt-4 mb-2" style="padding-                                       bottom:16px;color:rgb(100,100,100);">
-                    {{item['parcial']}}
+                    {{item['carrera']}}{{item['asig']}} {{item['semestre']}}
                 </h2>
                 {% endif %}
         </div>
