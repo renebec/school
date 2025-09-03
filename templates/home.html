@@ -138,7 +138,7 @@
         </h2>
 
         {% set item = (pg | selectattr('parcial', 'equalto', 'PARCIAL 1') |                 first) %}
-        {% if item is defined and (item.meta | default(false) | bool) %}
+        {% if item is defined and item.meta | default(false) %}
         
         <p class="lead">
             {{ item.meta }}
