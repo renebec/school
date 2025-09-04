@@ -207,7 +207,7 @@ def plan_carga():
             print("📥 POST recibido")
             print("Campos en el formulario:", request.form.keys())
             plan = request.form['plan']
-            asig = request.form['asig'].replace(" ", "_")
+            asig = request.form['asig']
             meta = request.form['meta']
             prop = request.form['prop']
             temas = request.form['temas']
