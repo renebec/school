@@ -484,10 +484,13 @@
       <label>Instrumentos<br>Archivo PDF:</label> 
         <input type="file" name="pdf_file" accept="application/pdf" required
           ><br><br>
-      <button type="submit" class="btn btn-success btn-sm">Enviar</button><br><br>
+    <div>
+      <button type="submit" class="btn btn-success btn-sm">Enviar</button>
+    </div>
         <!--<a href="{{ request.referrer }}">
             <button type="button" href="{{ url_for('register') }}">Cancelar</button>
         </a> -->
+    <div>
         <a class="btn btn-danger btn-sm" type="button" href="{{ url_for('hello_pm1') }}">Regresar al inicio:</a>
     </div>
 
