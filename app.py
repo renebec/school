@@ -150,11 +150,14 @@ def enviaractividad():
             grupo = user['grupo']
             pdf_url = user['pdf_url']
 
+            
             # Subir archivo a Cloudinary
+            filename = secure_filename(f"actividad {apellido_paterno}_{apellido_materno}_{nombres}_{semestre}_{grupo}_{actividad_num}.pdf")
             result = cloudinary.uploader.upload(
                 pdf_file,
                 resource_type='raw',
-                folder='actividades_pdf'
+                folder='actividades_pdf',
+                public_id=filename
             )
             pdf_url = result.get('secure_url')
             print("✅ Carga en Cloudinary exitosa")
@@ -278,10 +281,12 @@ def plan_carga():
 
             # Subir archivo a Cloudinary
             print("☁️ Subiendo archivo a Cloudinary...")
+            filename = secure_filename(f"Plan {plan}_{cve}.pdf")
             result = cloudinary.uploader.upload(
                 pdf_file,
                 resource_type='raw',
-                folder='instrumentos_pdf'
+                folder='instrumentos_pdf',
+                public_id=filename
             )
             pdf_url = result.get('secure_url')
             print("✅ Carga en Cloudinary exitosa")
