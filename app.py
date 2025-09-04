@@ -24,7 +24,7 @@ def check_session_timeout():
     if 'username' in session:
         if 'last_activity' in session:
             last_activity = datetime.fromisoformat(session['last_activity'])
-            if datetime.now() - last_activity > timedelta(minutes=30):
+            if datetime.now() - last_activity > timedelta(minutes=60):
                 session.clear()
                 return False
         session['last_activity'] = datetime.now().isoformat()
@@ -41,7 +41,7 @@ cloudinary.config(
 app = Flask(__name__)
 app.config['JSONIFY_PRETTYPRINT_REGULAR'] = True
 app.secret_key = os.environ.get("SECRET_KEY", "dev-secret")
-app.permanent_session_lifetime = timedelta(minutes=20)
+app.permanent_session_lifetime = timedelta(minutes=60)
 
 
 @app.route("/")
