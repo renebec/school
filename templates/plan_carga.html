@@ -404,6 +404,11 @@
         <textarea type="text" class="form-control" name="ciAct" rows="5"></textarea>
         </div>
       </div>
+      <div class="col-sm">
+        <label for="parPond" class="form-label" style="font-weight:bold;">Ponderación en el parcial (%):</label>
+        <input type="number" class="form-control" name="parPond" placeholder="25">
+      </div>
+      
       {% set ns = namespace(total=0) %}
 
             {% for i in plan %}
@@ -416,7 +421,7 @@
 
             {% endfor %}
 
-            <text class='partial-footer-total'>Total ponderado: {{ ns.total }}%</text>             
+            <text class='partial-footer-total'>Total ponderado: {{ ns.total }} %</text>             
 
 <br>
 

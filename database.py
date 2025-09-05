@@ -151,12 +151,13 @@ def insert_plan(
     ciDur, ciEv, ciIns, ciPond, ciAct,
     materiales, equipo, fuentes,
     elabora, revisa, avala, cve,
-    created_at=None, pdf_url=None
+    created_at=None, pdf_url=None, parPond
 ):
     # Si no se proporciona created_at, se asigna la hora actual de México
     if created_at is None:
         created_at = datetime.now(pytz.timezone("America/Mexico_City"))
-
+        
+    parPond = float(parPond)/100 if parPond is not None else None
     # Preparación de parámetros para INSERT y UPDATE
     params = {
         "plan": plan, "asig": asig, "meta": meta, "prop": prop, "temas": temas,
@@ -177,7 +178,7 @@ def insert_plan(
         "ciAct": ciAct,
         "materiales": materiales, "equipo": equipo, "fuentes": fuentes,
         "elabora": elabora, "revisa": revisa, "avala": avala, "cve": cve,
-        "created_at": created_at, "pdf_url": pdf_url
+        "created_at": created_at, "pdf_url": pdf_url, "parPond": parPond
     }
 
     try:
@@ -192,7 +193,7 @@ def insert_plan(
                 apDur, apEv, apIns, apPond, apAct, deDur, deEv, deIns, dePond,
                 deAct, ciDur, ciEv, ciIns, ciPond, ciAct,
                 materiales, equipo, fuentes,
-                elabora, revisa, avala, cve, created_at, pdf_url
+                elabora, revisa, avala, cve, created_at, pdf_url, parPond
             ) VALUES (
                 :plan, :asig, :prop, :temas, :plantel, :ciclo, :meta, :periodo, :carrera,
                 :semestre, :grupos, :horas_sem, :docenteID, :imparte, :parcial,
@@ -201,7 +202,7 @@ def insert_plan(
                 :trAsigM3, :trtemaM3, :trAsigM4, :trtemaM4, :apDur, :apEv, :apIns,
                 :apPond, :apAct, :deDur, :deEv, :deIns, :dePond, :deAct,
                 :ciDur, :ciEv, :ciIns, :ciPond, :ciAct, :materiales, :equipo,
-                :fuentes, :elabora, :revisa, :avala, :cve, :created_at, :pdf_url
+                :fuentes, :elabora, :revisa, :avala, :cve, :created_at, :pdf_url, :parPond
             )
         """)
         result = session.execute(insert_query, params)
@@ -234,7 +235,7 @@ def insert_plan(
                     ciAct = :ciAct,
                     materiales = :materiales, equipo = :equipo, fuentes = :fuentes,
                     elabora = :elabora, revisa = :revisa, avala = :avala,
-                    created_at = :created_at, pdf_url = :pdf_url
+                    created_at = :created_at, pdf_url = :pdf_url, parPond = : parPond
                 WHERE plan = :plan
             """)
 
