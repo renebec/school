@@ -181,8 +181,6 @@ def insert_plan(
         "created_at": created_at, "pdf_url": pdf_url
     }
 
-    parPond = float(parPond)/100 if parPond is not None else None
-
     try:
         # Definición de la sentencia INSERT
         insert_query = text("""
