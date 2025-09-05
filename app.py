@@ -19,7 +19,7 @@ from database import load_pg_from_db, load_pgn_from_db,  register_user, get_db_s
 
 from sqlalchemy import text
 
-bcrypt = Bcrypt(app)
+
 
 created_at = datetime.now()
 
@@ -42,6 +42,7 @@ cloudinary.config(
 )
 """
 app = Flask(__name__)
+bcrypt = Bcrypt(app)
 app.config['JSONIFY_PRETTYPRINT_REGULAR'] = True
 app.secret_key = os.environ.get("SECRET_KEY", "dev-secret")
 app.permanent_session_lifetime = timedelta(minutes=60)
