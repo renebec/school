@@ -545,6 +545,18 @@ def register_docente():
 
 
 
+@app.route("/plan/<int:plan_id>/edit", methods=["GET"])
+def edit_plan(plan_id):
+    db = get_db_session()
+    plan = db.query(Plan).filter_by(id=plan_id).first()
+
+    if not plan:
+        return "Plan not found", 404
+
+    return render_template("edit_plan.html", plan=plan)
+
+
+
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
