@@ -414,10 +414,7 @@
         <textarea class="form-control" name="ciAct" rows="5">{{ i.ciAct }}</textarea>
 
       </div>
-      <div class="col-sm">
-        <label for="parPond" class="form-label" style="font-weight:bold;">Ponderación en el parcial (%):</label>
-        <label type="number" class="form-control" name="parPond">{{ i.parPond }}</label>
-      </div>
+      
       {% set ns = namespace(total=0) %}
 
 
@@ -432,9 +429,9 @@
 
             {% if ns.total != 100 %}
 
-            <text class='partial-footer-total' style="color:red;">Total ponderado: {{ ns.total }}%</text>
+            <text class='partial-footer-total' style="color:red;">% evaluado: {{ ns.total }}%</text>
             {% else %}
-            <text class='partial-footer-total' style="color:green;">Total ponderado: {{ ns.total }}%</text>
+            <text class='partial-footer-total' style="color:green;">% evaluado: {{ ns.total }}%</text>
             {% endif %}
 <br>
 
@@ -459,7 +456,11 @@
             <text class='partial-footer-total' style="color:green;">Total tiempo: {{ ns.total/60 }}                         hrs</text>
             {% endif %}
       
-<br><br><br>
+<br><br>
+      <div class="col-sm">
+        <label for="parPond" class="form-label" style="font-weight:bold;">Ponderación de esta planeación en el parcial (%):</label>
+        <label type="number" class="form-control" name="parPond">{{ i.parPond }} %</label>
+      </div><br>
 
     <div style="background-color:rgb(120,120,0,0.5)">
         <h3>Complementos:</h3> 
