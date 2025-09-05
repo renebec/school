@@ -263,7 +263,7 @@ def plan_carga():
             revisa = request.form['revisa']
             avala = request.form['avala']
             cve = f"{docenteID}_{ciclo}_{periodo}_{semestre}_{grupos}_{asig}_{plan}"
-            parPond = request.form['parpond']
+            parPond = request.form['parPond']
             pdf_file = request.files['pdf_file']
             
 
