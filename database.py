@@ -278,7 +278,7 @@ def get_user_from_database(username):
 
 
 # Register a new user in the database
-def register_user(session, numero_control, apellido_paterno, apellido_materno, nombres, username, password, carrera, semestre, grupo):
+def register_user(session, numero_control, apellido_paterno, apellido_materno, nombres, username, password, carrera, semestre, grupo, created_at):
     # Check if username already exists
     existing_user = get_user_from_database(username)
     if existing_user:
@@ -288,8 +288,8 @@ def register_user(session, numero_control, apellido_paterno, apellido_materno, n
     password = password  # You might want to hash this password
     try:
         sql = text("""
-            INSERT INTO users ( numero_control, apellido_paterno, apellido_materno, nombres, username, password, carrera, semestre, grupo)
-            VALUES (:numero_control, :apellido_paterno, :apellido_materno, :nombres, :username, :password, :carrera, :semestre, :grupo)
+            INSERT INTO users ( numero_control, apellido_paterno, apellido_materno, nombres, username, password, carrera, semestre, grupo, created_at)
+            VALUES (:numero_control, :apellido_paterno, :apellido_materno, :nombres, :username, :password, :carrera, :semestre, :grupo, :created_at)
         """)
         session.execute(sql, {
             "numero_control": numero_control,
@@ -301,6 +301,7 @@ def register_user(session, numero_control, apellido_paterno, apellido_materno, n
             "carrera": carrera,
             "semestre": semestre,
             "grupo": grupo,
+            "created_at": created_at
         })
         session.commit()  # Commit the transaction
     except Exception as e:
