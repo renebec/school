@@ -259,8 +259,9 @@ def plan_carga():
             revisa = request.form['revisa']
             avala = request.form['avala']
             cve = f"{docenteID}_{ciclo}_{periodo}_{semestre}_{grupos}_{asig}_{plan}"
-            pdf_file = request.files['pdf_file']
             parPond = request.form['parpond']
+            pdf_file = request.files['pdf_file']
+            
 
 
             print("📋 Datos del formulario extraídos correctamente")
@@ -353,9 +354,10 @@ def plan_carga():
                 revisa,
                 avala,
                 cve,
+                parPond,
                 created_at,
-                pdf_url,
-                parPond
+                pdf_url
+                
             )
             print("✅ Inserción en DB exitosa")
 

@@ -150,8 +150,8 @@ def insert_plan(
     deDur, deEv, deIns, dePond, deAct,
     ciDur, ciEv, ciIns, ciPond, ciAct,
     materiales, equipo, fuentes,
-    elabora, revisa, avala, cve,
-    created_at=None, pdf_url=None, parPond
+    elabora, revisa, avala, cve, parPond,
+    created_at=None, pdf_url=None
 ):
     # Si no se proporciona created_at, se asigna la hora actual de México
     if created_at is None:
@@ -177,8 +177,8 @@ def insert_plan(
         "ciDur": ciDur, "ciEv": ciEv, "ciIns": ciIns, "ciPond": ciPond,
         "ciAct": ciAct,
         "materiales": materiales, "equipo": equipo, "fuentes": fuentes,
-        "elabora": elabora, "revisa": revisa, "avala": avala, "cve": cve,
-        "created_at": created_at, "pdf_url": pdf_url, "parPond": parPond
+        "elabora": elabora, "revisa": revisa, "avala": avala, "cve": cve, "parPond": parPond,
+        "created_at": created_at, "pdf_url": pdf_url
     }
 
     try:
@@ -202,7 +202,7 @@ def insert_plan(
                 :trAsigM3, :trtemaM3, :trAsigM4, :trtemaM4, :apDur, :apEv, :apIns,
                 :apPond, :apAct, :deDur, :deEv, :deIns, :dePond, :deAct,
                 :ciDur, :ciEv, :ciIns, :ciPond, :ciAct, :materiales, :equipo,
-                :fuentes, :elabora, :revisa, :avala, :cve, :created_at, :pdf_url, :parPond
+                :fuentes, :elabora, :revisa, :avala, :cve, :parPond, :created_at, :pdf_url
             )
         """)
         result = session.execute(insert_query, params)
@@ -234,8 +234,8 @@ def insert_plan(
                     ciDur = :ciDur, ciEv = :ciEv, ciIns = :ciIns, ciPond = :ciPond,
                     ciAct = :ciAct,
                     materiales = :materiales, equipo = :equipo, fuentes = :fuentes,
-                    elabora = :elabora, revisa = :revisa, avala = :avala,
-                    created_at = :created_at, pdf_url = :pdf_url, parPond = : parPond
+                    elabora = :elabora, revisa = :revisa, avala = :avala, parPond = : parPond,
+                    created_at = :created_at, pdf_url = :pdf_url
                 WHERE plan = :plan
             """)
 
