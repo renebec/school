@@ -151,7 +151,7 @@ def insert_plan(
     ciDur, ciEv, ciIns, ciPond, ciAct,
     materiales, equipo, fuentes,
     elabora, revisa, avala, cve,
-    created_at=None, pdf_url=None, parPond=parPond
+    created_at=None, pdf_url=None, parPond=None
 ):
     # Si no se proporciona created_at, se asigna la hora actual de México
     if created_at is None:
