@@ -481,7 +481,7 @@ def handle_register_user(choice):
 
             # Simple validation
             password_raw = request.form.get('password', '') #secure validation
-            if len(password) < 8: #
+            if len(password_raw) < 8: #
                 flash("La contraseña debe tener al menos 8 caracteres.", "danger")
                 return render_template(template)
             password = bcrypt.generate_password_hash(password_raw).decode('utf-8')#secure password
@@ -526,7 +526,8 @@ def handle_register_user(choice):
             return render_template(template)
 
         finally:
-            db_session.close()  #
+            if db_session:  # ✅ Only close if it exists
+                db_session.close()
 
     # GET method: show registration form
     return render_template(template)
