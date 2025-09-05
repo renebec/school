@@ -3,6 +3,7 @@ import pytz
 import os
 from flask import Flask, render_template, jsonify, request, redirect, url_for, flash, session, send_file, make_response
 from flask import session as flask_session
+from flask_bcrypt import Bcrypt
 from gevent import monkey; monkey.patch_all()
 from gevent.pywsgi import WSGIServer
 from datetime import datetime, timedelta
@@ -17,6 +18,8 @@ from werkzeug.utils import secure_filename
 from database import load_pg_from_db, load_pgn_from_db,  register_user, get_db_session, insert_actividad, load_plan_from_db, insert_plan,  load_pg_from_db2
 
 from sqlalchemy import text
+
+bcrypt = Bcrypt(app)
 
 created_at = datetime.now()
 
@@ -468,17 +471,30 @@ def handle_register_user(choice):
             apellido_materno = request.form.get('apellido_materno', '').strip()
             nombres = request.form.get('nombres', '').strip()
             username = request.form.get('username', '').strip()
-            password = request.form.get('password', '')
+            #password = request.form.get('password', '')
             carrera = request.form.get('carrera', '').strip()
             semestre = request.form.get('semestre', '').strip()
             grupo = request.form.get('grupo', '').strip()
 
             # Simple validation
-            if len(password) < 8:
+            password_raw = request.form.get('password', '') #secure validation
+            if len(password) < 8: #
                 flash("La contraseña debe tener al menos 8 caracteres.", "danger")
                 return render_template(template)
+            password = bcrypt.generate_password_hash(password_raw).decode('utf-8')#secure password
 
             db_session = get_db_session()
+            created_at = datetime.now(pytz.timezone("America/Mexico_City"))
+
+            # ✅ Check if the username is already taken
+            existing_user = db_session.execute(
+                text("SELECT 1 FROM users WHERE username = :username"),
+                {"username": username}
+            ).fetchone()
+
+            if existing_user:
+                flash("Ese nombre de usuario ya está registrado. Por favor, elige otro.", "danger")
+                return render_template(template)
 
             success = register_user(
                 db_session,
@@ -490,7 +506,8 @@ def handle_register_user(choice):
                 password,
                 carrera,
                 semestre,
-                grupo
+                grupo,
+                created_at
             )
 
             if not success:
@@ -504,6 +521,9 @@ def handle_register_user(choice):
             print(f"Error en el registro: {e}")
             flash("Hubo un problema al registrarte. Intenta nuevamente.", "danger")
             return render_template(template)
+
+        finally:
+            db_session.close()  #
 
     # GET method: show registration form
     return render_template(template)
@@ -537,10 +557,12 @@ def login():
             db_session.close()
 
             if user:
-                print("User found:", user)
+                # ✅ Secure password check using Bcrypt
+                if bcrypt.check_password_hash(user['password'], password):
+                    print("User found:", user)
                 # Check if password matches (you should hash passwords in production)
-                if user['password'] == password:
-                    print("Password correct")
+                #if user['password'] == password:
+                #    print("Password correct")
                     flask_session.permanent = True
                     flask_session['username'] = username
                     flask_session['last_activity'] = datetime.now().isoformat()
