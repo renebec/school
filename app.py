@@ -463,6 +463,8 @@ def handle_register_user(choice):
     if not template:
             flash("Tipo de usuario no válido.", "danger")
             return redirect(url_for("home"))
+    
+    db_session = None  #
 
     if request.method == "POST":
         try:
