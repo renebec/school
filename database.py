@@ -157,7 +157,7 @@ def insert_plan(
     if created_at is None:
         created_at = datetime.now(pytz.timezone("America/Mexico_City"))
         
-    parPond = float(parPond)/100 if parPond is not None else None
+    
     # Preparación de parámetros para INSERT y UPDATE
     params = {
         "plan": plan, "asig": asig, "meta": meta, "prop": prop, "temas": temas,
@@ -180,6 +180,8 @@ def insert_plan(
         "elabora": elabora, "revisa": revisa, "avala": avala, "cve": cve, "parPond": parPond,
         "created_at": created_at, "pdf_url": pdf_url
     }
+
+    parPond = float(parPond)/100 if parPond is not None else None
 
     try:
         # Definición de la sentencia INSERT
