@@ -326,7 +326,7 @@ def register():
             flash("Seleccione un tipo de usuario válido.")
     return render_template('select_register_type.html')
 
-@app.route('/register_docente', methods=['GET', 'POST'])
+@app.route('/register_user', methods=['GET', 'POST'])
 def register():
     if request.method == 'POST':
         user_type = request.form.get('user_type')
