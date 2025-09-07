@@ -4,6 +4,7 @@ from sqlalchemy.orm import sessionmaker
 from datetime import datetime
 import pytz
 import pymysql
+from flask_bcrypt import generate_password_hash
 
 db_connection_string = os.environ['DB_CONNECTION_STRING']
 engine = create_engine(db_connection_string,
@@ -20,16 +21,6 @@ SessionLocal = sessionmaker(bind=engine)
 
 def get_db_session():
     return SessionLocal()
-
-
-def handle_choice():
-    choice = None
-    if request.method == 'POST':
-        choice = request.form.get('choice')  # 'value1' or 'value2' or None
-    return render_template('register.html', choice=choice)
-
-
-
 
 
 def load_pg_from_db():
@@ -94,7 +85,7 @@ def load_pgn_from_db(id):
 
 
 # Insert a new actividad record
-def insert_actividad(session, actividad_num, apellido_paterno, apellido_materno, nombres, carrera, semestre, grupo, pdf_url, created_at):
+def insert_actividad_simple(session, actividad_num, apellido_paterno, apellido_materno, nombres, carrera, semestre, grupo, pdf_url, created_at):
     created_at = datetime.now(pytz.timezone("America/Mexico_City"))
     try:
             query = text("""
@@ -280,44 +271,7 @@ def get_user_from_database(username):
 
 
 
-# Register a new user in the database
-"""
-def register_user(session, numero_control, apellido_paterno, apellido_materno, nombres, username, password, carrera, semestre, grupo, created_at):
-    # Check if username already exists
-    existing_user = get_user_from_database(username)
-    if existing_user:
-        # If the user already exists, return False or an error message
-        return False
-
-    password = password  # You might want to hash this password
-    try:
-    #coment this part
-        sql = text(
-        INSERT INTO users ( numero_control, apellido_paterno, apellido_materno, nombres, username, password, carrera, semestre, grupo, created_at)
-            VALUES (:numero_control, :apellido_paterno, :apellido_materno, :nombres, :username, :password, :carrera, :semestre, :grupo, :created_at)
-        )
-    #until here
-        session.execute(sql, {
-            "numero_control": numero_control,
-            "apellido_paterno": apellido_paterno,
-            "apellido_materno": apellido_materno,
-            "nombres": nombres,
-            "username": username,
-            "password": password,
-            "carrera": carrera,
-            "semestre": semestre,
-            "grupo": grupo,
-            "created_at": created_at
-        })
-        session.commit()  # Commit the transaction
-    except Exception as e:
-        print(f"DB ERROR during user registration: {e}")
-        session.rollback()  # Rollback in case of error
-        return False
-    return True
-"""
-
-def insert_actividad(session, actividad_num, apellido_paterno, apellido_materno, nombres,
+def insert_actividad_with_user_class(session, actividad_num, apellido_paterno, apellido_materno, nombres,
      carrera, semestre, grupo, pdf_url, created_at, user_id, class_id):
     try:
         query = text("""
@@ -494,7 +448,7 @@ def register_user(session, numero_control, apellido_paterno, apellido_materno, n
     if existing_user:
         return False
 
-    password_hashed = password  # Ojo, para producción haz hash, aquí simplificamos
+    password_hashed = bcrypt.generate_password_hash(password).decode('utf-8')
 
     try:
         # Insertar usuario
