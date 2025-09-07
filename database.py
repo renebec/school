@@ -291,10 +291,12 @@ def register_user(session, numero_control, apellido_paterno, apellido_materno, n
 
     password = password  # You might want to hash this password
     try:
-        sql = text("""
-            INSERT INTO users ( numero_control, apellido_paterno, apellido_materno, nombres, username, password, carrera, semestre, grupo, created_at)
+    #coment this part
+        sql = text(
+        INSERT INTO users ( numero_control, apellido_paterno, apellido_materno, nombres, username, password, carrera, semestre, grupo, created_at)
             VALUES (:numero_control, :apellido_paterno, :apellido_materno, :nombres, :username, :password, :carrera, :semestre, :grupo, :created_at)
-        """)
+        )
+    #until here
         session.execute(sql, {
             "numero_control": numero_control,
             "apellido_paterno": apellido_paterno,
