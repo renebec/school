@@ -500,43 +500,6 @@ def submit_activity():
     return render_template('submit_activity.html')
 #----
 
-@app.route('/ver_actividades')
-def ver_actividades():
-    if 'user_id' not in session or 'current_class_id' not in session:
-        return redirect(url_for('login'))
-
-    user_id = session['user_id']
-    class_id = session['current_class_id']
-
-    # Obtener información del usuario para saber si es docente o estudiante
-    user = get_user_by_id(user_id)
-
-    session_db = get_db_session()
-
-    try:
-        if user['rol'] == 'docente':
-            # Ver todas las actividades de esa clase
-            result = session_db.execute(text("""
-                SELECT * FROM actividades_inoc
-                WHERE class_id = :class_id
-                ORDER BY created_at DESC
-            """), {"class_id": class_id})
-        else:
-            # Ver solo las actividades del estudiante
-            result = session_db.execute(text("""
-                SELECT * FROM actividades_inoc
-                WHERE class_id = :class_id AND user_id = :user_id
-                ORDER BY created_at DESC
-            """), {"class_id": class_id, "user_id": user_id})
-
-        actividades = result.mappings().all()
-        return render_template('ver_actividades.html', actividades=actividades, user=user)
-
-    except Exception as e:
-        print(f"DB ERROR: {e}")
-        return "Error al cargar las actividades"
-    finally:
-        session_db.close()
 
 #----
 @app.route('/ver_actividades', methods=['GET', 'POST'])
