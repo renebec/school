@@ -2,10 +2,10 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8" />
-    <title>Login</title>
+    <title>Selecciona Clase</title>
 </head>
 <body>
-    <h1>Iniciar Sesión</h1>
+    <h1>Selecciona una Clase</h1>
 
     {% with messages = get_flashed_messages(with_categories=true) %}
       {% if messages %}
@@ -17,10 +17,15 @@
       {% endif %}
     {% endwith %}
 
-  <form method="POST" action="/login">
-    <input type="text" name="username" placeholder="Usuario" required>
-    <input type="password" name="password" placeholder="Contraseña" required>
-    <button type="submit">Iniciar sesión</button>
-  </form>
+    <h2>Selecciona tu clase</h2>
+
+    <form method="POST" action="{{ url_for('enter_class') }}">
+        <select name="class_id">
+            {% for clase in classes %}
+            <option value="{{ clase.id }}">{{ clase.nombre }} - {{ clase.grupo }}</option>
+            {% endfor %}
+        </select>
+        <button type="submit">Entrar</button>
+    </form>
 </body>
 </html>

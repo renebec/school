@@ -10,22 +10,16 @@
   <main class="container">
   <h3>Enviar actividad:</h3>
   
-    <form method="POST" enctype="multipart/form-data" action="{{ url_for('enviaractividad') }}">
-    <label>Número de actividad:</label> <br>
-    <input type="text" name="actividad_num" placeholder="7" required> <br>
+    <h2>Enviar Actividad</h2>
+    <form method="POST">
+        <label for="actividad_num">Número de Actividad:</label>
+        <input type="number" name="actividad_num" required>
 
-    <form method="POST" enctype="multipart/form-data" action="{{ url_for('enviaractividad') }}">
-    <label>Número de control:</label> <br>
-    <input type="text" name="numero_control" placeholder="20250001" required> <br>
-  
-  
-    <label>Archivo PDF:</label> 
-    <input type="file" name="pdf_file" accept="application/pdf" required><br><br> 
-    <button type="submit">Enviar</button>  
-      <a href="{{ request.referrer }}">
-          <button type="button">Cancelar</button>
-      </a>                     
-  </form>
+        <label for="pdf_url">URL del PDF:</label>
+        <input type="text" name="pdf_url" required>
+
+        <button type="submit">Enviar</button>
+    </form>
   </main>
 </body>
 </html>

@@ -1,8 +1,8 @@
-modules = ["python-3.11"]
+modules = ["web", "python-3.11"]
 
 [nix]
 channel = "stable-25_05"
-packages = ["libev"]
+packages = ["libev", "u-root-cmds"]
 
 [[ports]]
 localPort = 8080

@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <title>Dashboard</title>
+</head>
+<body>
+    <h2>Bienvenido {{ session['username'] }}</h2>
+    <h2>Clase actual: {{ class_id }}</h2>
+
+    <p>Aquí puedes ver actividades, planeaciones y más...</p>
+    <p>Selecciona la clase a la que quieres acceder:</p>
+
+    <ul>
+      {% for clase in classes %}
+        <li>
+          <form method="POST" action="/select_class">
+            <input type="hidden" name="class_id" value="{{ clase.id }}">
+            <button type="submit">{{ clase.name }} - {{ clase.grupo }}</button>
+          </form>
+        </li>
+      {% endfor %}
+    </ul>
+
+    <!-- Aquí luego agregamos más info o links para subir actividades, planes, etc. -->
+</body>
+</html>
