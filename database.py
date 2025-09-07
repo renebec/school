@@ -341,15 +341,16 @@ def register_user_with_class(
     created_at = datetime.now(pytz.timezone("America/Mexico_City"))
 
     try:
-        session.execute(text("""
-            INSERT INTO users (...) VALUES (...)
-        """), {..., "password": password_hashed, ...})
+        sql = text("""
+        INSERT INTO users (username, email, password)
+        VALUES (:username, :email, :password)
+        """)
 
-        user_id = session.execute(text("SELECT LAST_INSERT_ID()")).scalar()
-
-        session.execute(text("""
-            INSERT INTO user_classes (...) VALUES (...)
-        """), {...})
+        db_session.execute(sql, {
+            "username": username,
+            "email": email,
+            "password": password_hashed
+        })
 
         session.commit()
         return True, "Usuario registrado correctamente"
