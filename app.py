@@ -327,7 +327,7 @@ def register():
     return render_template('select_register_type.html')
 
 @app.route('/register_user', methods=['GET', 'POST'])
-def register_user():
+def register():
     if request.method == 'POST':
         user_type = request.form.get('user_type')
         if user_type == 'A':
@@ -339,7 +339,7 @@ def register_user():
     return render_template('select_register_type.html')
 
 @app.route('/register_alumno', methods=['GET', 'POST'])
-def register_alumno():
+def register():
     if request.method == 'POST':
         user_type = request.form.get('user_type')
         if user_type == 'A':
