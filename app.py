@@ -13,7 +13,8 @@ import tempfile
 from weasyprint import HTML, CSS
 import pymysql
 from werkzeug.utils import secure_filename
-from flask_bcrypt import generate_password_hash
+from flask_bcrypt import Bcrypt
+from database import get_user_from_database
 
 
 from database import load_pg_from_db, load_pgn_from_db,  register_user, get_db_session, insert_actividad, load_plan_from_db, insert_plan,  load_pg_from_db2

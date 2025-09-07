@@ -5,6 +5,12 @@ from datetime import datetime
 import pytz
 import pymysql
 from flask_bcrypt import generate_password_hash
+#Estructura básica Flask para registro
+
+from flask import Flask, request, render_template, redirect, url_for, flash
+
+from datetime import datetime
+import pytz
 
 db_connection_string = os.environ['DB_CONNECTION_STRING']
 engine = create_engine(db_connection_string,
@@ -328,68 +334,32 @@ def register_user_with_class(
     session, numero_control, apellido_paterno, apellido_materno, nombres,
     username, password, rol, carrera, semestre, grupo, class_id
 ):
-    # Verificar si el username ya existe
-    existing_user = get_user_from_database(username)
-    if existing_user:
+    if get_user_from_database(username):
         return False, "El usuario ya existe"
 
+    password_hashed = bcrypt.generate_password_hash(password).decode('utf-8')
     created_at = datetime.now(pytz.timezone("America/Mexico_City"))
 
     try:
-        # Insertar usuario
-        insert_user_query = text("""
-            INSERT INTO users (
-                numero_control, apellido_paterno, apellido_materno, nombres,
-                username, password, rol, carrera, semestre, grupo, created_at
-            ) VALUES (
-                :numero_control, :apellido_paterno, :apellido_materno, :nombres,
-                :username, :password, :rol, :carrera, :semestre, :grupo, :created_at
-            )
-        """)
-        session.execute(insert_user_query, {
-            "numero_control": numero_control,
-            "apellido_paterno": apellido_paterno,
-            "apellido_materno": apellido_materno,
-            "nombres": nombres,
-            "username": username,
-            "password": password,  # recuerda hacer hash en el frontend o aquí
-            "rol": rol,
-            "carrera": carrera,
-            "semestre": semestre,
-            "grupo": grupo,
-            "created_at": created_at
-        })
+        session.execute(text("""
+            INSERT INTO users (...) VALUES (...)
+        """), {..., "password": password_hashed, ...})
 
-        # Obtener el ID del usuario recién insertado
         user_id = session.execute(text("SELECT LAST_INSERT_ID()")).scalar()
 
-        # Insertar en user_classes para asociar usuario con clase y grupo
-        insert_user_class_query = text("""
-            INSERT INTO user_classes (user_id, class_id, grupo)
-            VALUES (:user_id, :class_id, :grupo)
-        """)
-        session.execute(insert_user_class_query, {
-            "user_id": user_id,
-            "class_id": class_id,
-            "grupo": grupo
-        })
+        session.execute(text("""
+            INSERT INTO user_classes (...) VALUES (...)
+        """), {...})
 
         session.commit()
         return True, "Usuario registrado correctamente"
-
     except Exception as e:
         session.rollback()
-        print(f"DB ERROR: {e}")
-        return False, f"Error al registrar usuario: {e}"
+        return False, f"DB ERROR: {e}"
 
 #------
 
-#Estructura básica Flask para registro
 
-from flask import Flask, request, render_template, redirect, url_for, flash
-from database import get_db_session, register_user, get_class_by_id  # asumiendo get_class_by_id
-from datetime import datetime
-import pytz
 
 app = Flask(__name__)
 app.secret_key = 'tu_secreto_aqui'  # Para mensajes flash
