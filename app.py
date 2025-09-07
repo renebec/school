@@ -326,6 +326,30 @@ def register():
             flash("Seleccione un tipo de usuario válido.")
     return render_template('select_register_type.html')
 
+@app.route('/register_docente', methods=['GET', 'POST'])
+def register():
+    if request.method == 'POST':
+        user_type = request.form.get('user_type')
+        if user_type == 'A':
+            return redirect(url_for('register_alumno'))
+        elif user_type == 'D':
+            return redirect(url_for('register_docente'))
+        else:
+            flash("Seleccione un tipo de usuario válido.")
+    return render_template('select_register_type.html')
+
+@app.route('/register_alumno', methods=['GET', 'POST'])
+def register():
+    if request.method == 'POST':
+        user_type = request.form.get('user_type')
+        if user_type == 'A':
+            return redirect(url_for('register_alumno'))
+        elif user_type == 'D':
+            return redirect(url_for('register_docente'))
+        else:
+            flash("Seleccione un tipo de usuario válido.")
+    return render_template('select_register_type.html')
+
 
 def handle_register_user(choice):
     template_map = {
