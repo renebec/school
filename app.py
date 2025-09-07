@@ -774,7 +774,7 @@ def ver_actividades():
     return render_template('ver_actividades.html', actividades=result, user=user)
 
 #------------
-Permitir a docentes crear y editar clases.
+#Permitir a docentes crear y editar clases.
 
 @app.route('/mis_clases')
 def mis_clases():
