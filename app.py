@@ -789,7 +789,7 @@ def download_pdf(id):
 #    return render_template('register.html', opciones=opciones)
 
 from flask import Flask, render_template, request, redirect, session, url_for, flash
-from database import get_user_from_database, get_user_classes
+from database import get_user_from_database
 
 
 
