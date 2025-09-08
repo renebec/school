@@ -9,12 +9,7 @@
 <body>
     <h1>Registro de Usuario</h1>
 
-  <select name="class_id" required>
-    <option value="1">PENSAMIENTO MATEMÁTICO 1</option>
-    <option value="2">LECTURA Y COMUNICACIÓN 1</option>
-    <option value="3">CULTURA DIGITA 1</option>
-    <option value="4">LA ENERGÍA Y SUS INTERACCIONES</option>
-  </select>
+  
 
     <form method="POST" action="/register">
       <input name="numero_control" placeholder="Número de control" required />
@@ -24,9 +19,10 @@
       <input name="username" placeholder="Usuario" required />
       <input name="password" type="password" placeholder="Contraseña" required />
       <select name="class_id" required>
-        {% for clase in clases %}
-          <option value="{{ clase.id }}">{{ clase.name }}</option>
-        {% endfor %}
+        <option value="1">PENSAMIENTO MATEMÁTICO 1</option>
+        <option value="2">LECTURA Y COMUNICACIÓN 1</option>
+        <option value="3">CULTURA DIGITA 1</option>
+        <option value="4">LA ENERGÍA Y SUS INTERACCIONES</option>
       </select>
       <input name="grupo" placeholder="Grupo" />
       <button type="submit">Registrar</button>
