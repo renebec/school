@@ -463,15 +463,14 @@ def login():
 
         user = get_user_from_database(username)
 
-        if user and user['password'] == password:
-            session['user_id'] = user['id']
-            session['username'] = user['username']
-            session['role'] = user.get('role', 'student')  # 'docente' o 'estudiante'
-
-            return redirect('/dashboard')
+        if user and bcrypt.check_password_hash(user.password_hash, password):
+                session['user_id'] = user.id
+                session['username'] = user.username
+                session['role'] = user.get('role', 'student')
+                return redirect('/dashboard')
         else:
-            flash("Usuario o contraseña incorrectos.")
-            return redirect('/login')
+                flash("Usuario o contraseña incorrectos.")
+                return redirect('/login')
 
     return render_template('login.html')
     #-----
