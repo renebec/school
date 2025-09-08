@@ -18,7 +18,7 @@ from database import get_user_from_database
 from sqlalchemy import text
 
 
-from database import load_pg_from_db, load_pgn_from_db,  register_user, get_db_session, insert_actividad_simple, load_plan_from_db, insert_plan,  load_pg_from_db2, register_user
+from database import load_pg_from_db, load_pgn_from_db,  register_user, get_db_session, insert_actividad_simple, load_plan_from_db, insert_plan,  load_pg_from_db2, register_user, get_class_by_id, get_user_by_id, insert_actividad_with_user_class, get_classes_for_user, load_classes_for_users, get_users_from_database
 
 from sqlalchemy import text
 
