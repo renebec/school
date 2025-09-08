@@ -15,6 +15,7 @@ import pymysql
 from werkzeug.utils import secure_filename
 from flask_bcrypt import Bcrypt
 from database import get_user_from_database
+from sqlalchemy import text
 
 
 from database import load_pg_from_db, load_pgn_from_db,  register_user, get_db_session, insert_actividad_simple, load_plan_from_db, insert_plan,  load_pg_from_db2, register_user
@@ -352,7 +353,7 @@ def register():
     # GET
     session = get_db_session()
     # Cargar todas las clases para mostrarlas en el formulario
-    clases = session.execute("SELECT * FROM classes").fetchall()
+    clases = session.execute(text("SELECT * FROM classes")).fetchall()
     session.close()
     return render_template('register.html', clases=clases)
     
