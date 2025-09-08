@@ -314,6 +314,19 @@ def plan_carga():
     return render_template("plan_carga.html", show_form=show_form)
 
 
+
+@app.route('/select_register_type', methods=['GET', 'POST'])
+def select_register_type():
+    if request.method == 'POST':
+        user_type = request.form.get('user_type')
+        if user_type == 'A':
+            return redirect(url_for('register_alumno'))
+        elif user_type == 'D':
+            return redirect(url_for('register_docente'))
+    return render_template('select_register_type.html')
+
+
+
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     if request.method == 'POST':
