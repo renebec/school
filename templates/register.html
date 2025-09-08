@@ -10,14 +10,14 @@
     <h1>Registro de Usuario</h1>
 
     {% with messages = get_flashed_messages(with_categories=true) %}
-      {% if messages %}
-        <ul>
-          {% for category, message in messages %}
-            <li style="color: {% if category == 'error' %}red{% else %}green{% endif %};">
-              {{ message }}
-            </li>
+      {% if clases %}
+        <select name="class_id" required>
+          {% for clase in clases %}
+            <option value="{{ clase.id }}">{{ clase.name }}</option>
           {% endfor %}
-        </ul>
+        </select>
+      {% else %}
+        <p style="color: red;">No hay clases disponibles. Por favor, crea una primero.</p>
       {% endif %}
     {% endwith %}
 
