@@ -313,42 +313,49 @@ def plan_carga():
     return render_template("plan_carga.html", show_form=show_form)
 
 
-
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     if request.method == 'POST':
-        user_type = request.form.get('user_type')
-        if user_type == 'A':
-            return redirect(url_for('register_alumno'))
-        elif user_type == 'D':
-            return redirect(url_for('register_docente'))
-        else:
-            flash("Seleccione un tipo de usuario válido.")
-    return render_template('select_register_type.html')
+        numero_control = request.form.get('numero_control')
+        apellido_paterno = request.form.get('apellido_paterno')
+        apellido_materno = request.form.get('apellido_materno')
+        nombres = request.form.get('nombres')
+        username = request.form.get('username')
+        password = request.form.get('password')
+        carrera = request.form.get('carrera')
+        semestre = request.form.get('semestre')
+        grupo = request.form.get('grupo')
+        class_id = request.form.get('class_id')  # La clase a la que se asocia el usuario
 
-@app.route('/register_user', methods=['GET', 'POST'])
-def register():
-    if request.method == 'POST':
-        user_type = request.form.get('user_type')
-        if user_type == 'A':
-            return redirect(url_for('register_alumno'))
-        elif user_type == 'D':
-            return redirect(url_for('register_docente'))
-        else:
-            flash("Seleccione un tipo de usuario válido.")
-    return render_template('select_register_type.html')
+        # Validar que la clase exista (opcional pero recomendado)
+        session = get_db_session()
+        clase = get_class_by_id(session, class_id)
+        if not clase:
+            flash("La clase seleccionada no existe.", "error")
+            return render_template('register.html')
 
-@app.route('/register_alumno', methods=['GET', 'POST'])
-def register():
-    if request.method == 'POST':
-        user_type = request.form.get('user_type')
-        if user_type == 'A':
-            return redirect(url_for('register_alumno'))
-        elif user_type == 'D':
-            return redirect(url_for('register_docente'))
+        created_at = datetime.now(pytz.timezone("America/Mexico_City"))
+
+        # Registrar usuario
+        success = register_user(
+            session, numero_control, apellido_paterno, apellido_materno, nombres,
+            username, password, carrera, semestre, grupo, created_at, class_id
+        )
+
+        if success:
+            flash("Usuario registrado con éxito. Por favor haz login.", "success")
+            return redirect(url_for('login'))
         else:
-            flash("Seleccione un tipo de usuario válido.")
-    return render_template('select_register_type.html')
+            flash("Error: Usuario o username ya existe.", "error")
+            return render_template('register.html')
+
+    # GET
+    session = get_db_session()
+    # Cargar todas las clases para mostrarlas en el formulario
+    clases = session.execute("SELECT * FROM classes").fetchall()
+    session.close()
+    return render_template('register.html', clases=clases)
+    
 
 
 def handle_register_user(choice):
