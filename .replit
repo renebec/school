@@ -2,14 +2,18 @@ modules = ["web", "python-3.11"]
 
 [nix]
 channel = "stable-25_05"
-packages = ["libev", "u-root-cmds"]
+packages = ["fontconfig", "ghostscript", "glib", "harfbuzz", "libev", "pango", "u-root-cmds"]
+
+[[ports]]
+localPort = 5000
+externalPort = 80
 
 [[ports]]
 localPort = 8080
 externalPort = 80
 
 [workflows]
-runButton = "Run"
+runButton = "Project"
 
 [[workflows.workflow]]
 name = "Run"
@@ -20,5 +24,27 @@ mode = "sequential"
 task = "shell.exec"
 args = "python app.py"
 
+[[workflows.workflow]]
+name = "Project"
+mode = "parallel"
+author = "agent"
+
+[[workflows.workflow.tasks]]
+task = "workflow.run"
+args = "Web App"
+
+[[workflows.workflow]]
+name = "Web App"
+author = "agent"
+
+[workflows.workflow.metadata]
+outputType = "webview"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "python simple_app.py"
+waitForPort = 5000
+
 [agent]
 expertMode = true
+integrations = ["python_database:1.0.0"]

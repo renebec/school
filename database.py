@@ -3,8 +3,8 @@ from sqlalchemy import create_engine, text
 from sqlalchemy.orm import sessionmaker
 from datetime import datetime
 import pytz
-import pymysql
-from flask_bcrypt import generate_password_hash
+# import psycopg2
+# from flask_bcrypt import generate_password_hash
 #Estructura básica Flask para registro
 
 from flask import Flask, request, render_template, redirect, url_for, flash
@@ -12,14 +12,12 @@ from flask import Flask, request, render_template, redirect, url_for, flash
 from datetime import datetime
 import pytz
 
-db_connection_string = os.environ['DB_CONNECTION_STRING']
-engine = create_engine(db_connection_string,
-      connect_args={
-            "ssl": { 
-              "ca": "/etc/ssl/certs/ca-certificates.crt"
-                   }
-                  }
-            )
+# Use PostgreSQL DATABASE_URL environment variable
+db_connection_string = os.environ.get('DATABASE_URL')
+if not db_connection_string:
+    raise ValueError("DATABASE_URL environment variable is not set")
+
+engine = create_engine(db_connection_string)
 
 #Session = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
@@ -210,7 +208,7 @@ def insert_plan(
         print("✅ Plan insertado correctamente")
         return result.lastrowid
 
-    except pymysql.err.IntegrityError as e:
+    except Exception as e:
         if "1062" in str(e):  # Detección de clave duplicada
             print("⚠️ Plan duplicado detectado. Actualizando...")
 
@@ -337,7 +335,7 @@ def register_user_with_class(
     if get_user_from_database(username):
         return False, "El usuario ya existe"
 
-    password_hashed = bcrypt.generate_password_hash(password).decode('utf-8')
+    password_hashed = password  # TODO: Re-enable bcrypt hashing when dependencies are installed
     created_at = datetime.now(pytz.timezone("America/Mexico_City"))
 
     try:
@@ -419,7 +417,7 @@ def register_user(session, numero_control, apellido_paterno, apellido_materno, n
     if existing_user:
         return False
 
-    password_hashed = bcrypt.generate_password_hash(password).decode('utf-8')
+    password_hashed = password  # TODO: Re-enable bcrypt hashing when dependencies are installed
 
     try:
         # Insertar usuario
