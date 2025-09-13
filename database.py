@@ -13,9 +13,9 @@ from datetime import datetime
 import pytz
 
 # Use PostgreSQL DATABASE_URL environment variable
-db_connection_string = os.environ.get('DATABASE_URL')
+db_connection_string = os.environ.get('DB_CONNECTION_STRING')
 if not db_connection_string:
-    raise ValueError("DATABASE_URL environment variable is not set")
+    raise ValueError("DB_CONNECTION_STRING environment variable is not set")
 
 engine = create_engine(db_connection_string)
 
