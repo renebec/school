@@ -62,17 +62,17 @@
   .form-control{
     font-size:14px;
   }
-  
+
 </style>
 
 <body>
   <div class="container">
 
-    
 
 
 
-  
+
+
 
     <form>
 
@@ -94,7 +94,7 @@
           <input type="text" class="form-control" name="created_at" value="{{ i.created_at }}" readonly>
         </div>
       </div>
-      
+
     <div style="background-color:rgb(120,120,0,0.5)"> 
       <h3>Datos Generales</h3>
       </div>
@@ -143,7 +143,7 @@
           <label for="meta" class="form-label mb-0" style="font-weight:bold;">Meta educativa</label>
           <textarea type="text" class="form-control" name="meta" rows="5">{{ i.meta }}</textarea>
           </div>
-        
+
         <div class="mb-3 row g-2">
           <div class="col-sm-6">
           <label for="prop" class="form-label mb-0" style="font-weight:bold;">Propósito formativo</label>
@@ -157,7 +157,7 @@
       </div>
 
 
-        
+
       </div>
       <div class="mb-3 row g-3">
         <div class="col-sm-5">
@@ -190,7 +190,7 @@
                  value="{{ i.trAsigP1 }}" 
                  title="{{ asignaturas[i.trAsigP1|string] }}" 
                  readonly>
-      
+
         <label for="trtemaP1" class="form-label mb-0" style="font-weight:bold;">Contenidos</label>
           <textarea type="text" class="form-control mb-4" name="trtemaP1">{{ i.trtemaP1 }}</textarea>
         </div>
@@ -317,7 +317,7 @@
         </div>
           {% endif %}
 
-      
+
 
 
 
@@ -409,12 +409,12 @@
       </div>
       </div>
       <div class="mb-3 row g-1">
-     
+
         <label for="ciAct" class="form-label mb-0" style="font-weight:bold;">Actividades de cierre:</label>
         <textarea class="form-control" name="ciAct" rows="5">{{ i.ciAct }}</textarea>
 
       </div>
-      
+
       {% set ns = namespace(total=0) %}
 
 
@@ -450,12 +450,12 @@
 
 
             {% if ns.total/60 != horasem/1 %}
-      
+
             <text class='partial-footer-total' style="color:red;">Total tiempo: {{ ns.total/60 }}                         hrs</text>
             {% else %}
             <text class='partial-footer-total' style="color:green;">Total tiempo: {{ ns.total/60 }}                         hrs</text>
             {% endif %}
-      
+
 <br><br>
       <div class="col-sm">
         <label for="parPond" class="form-label" style="font-weight:bold;">Ponderación de esta planeación en el parcial (%):</label>
@@ -508,8 +508,8 @@
         📄 Descargar PDF
       </a>
       <br><br>
-      
-  
+
+
       <a class="btn btn-info" type="button" href="{{ url_for('hello_pm1') }}">Regresar al inicio:</a>
 
 
@@ -527,7 +527,7 @@
 
   </div>
 </div>
-  
+
 </body>
 
 </html>

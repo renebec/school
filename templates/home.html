@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Reg</title>
+    <title>Home</title>
     <link             href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -41,15 +41,14 @@
     <style>
 
         #btnCerrar {
-            
+
             position: sticky;
             top:0;
             margin-top:0px;
             margin-left:75%;
             z-index: 1000;
-
         }
-        
+
         #banner {
             display:block;
             margin-left:auto;
@@ -78,24 +77,30 @@
             width:100px;
         }
 
-        
+        .noexist {
+
+        }
+
+
     </style>
 
     </head>
         <nav class="navbar fixed-top bg-white shadow-sm mb-4">
             <div class="container-fluid d-flex justify-content-between row">
-                <span class="navbar-brand mb-0 h1 navtxt col-7">NEM</span>
+                {% if session.username %}
+                <span class="navbar-brand mb-0 h1 navtxt col-7">NEM user: {{session.username}}</span>
+                {% endif %}
             </div>
             <a href="{{ url_for('logout') }}" class="btn btn-danger btn-sm col-5" id="btnCerrar">Cerrar Sesión</a>
         </nav>
-    
-        
-    
+
+
+
         <img class="mt-5" id="banner" src= "https://www.adgility.com.au/hs-fs/hubfs/advanced-insights-analystics-reporting-GIF.gif?width=1780&height=1080&name=advanced-insights-analystics-reporting-GIF.gif">
 
 
 
-    
+
     {% with messages = get_flashed_messages(with_categories=true) %}
         {% if messages %}
           <div class="container mt-3">
@@ -107,7 +112,7 @@
           </div>
         {% endif %}
       {% endwith %}
-    
+
     <div style="text-align:left;padding-left:20px;">
         <text style="font-size:11px;color:#04AA6D;" id="date-time"></text>&nbsp;
         <text style="font-size:11px;color:#04AA6D;">, </text>
@@ -121,7 +126,7 @@
             | selectattr('semestre', 'equalto', 1) 
             | first) %}-->
             {% set item = (pg | selectattr('parcial', 'equalto', 'PARCIAL 1') |                 first) %}
-            
+
             {% if item %} 
             <h1 class="text-center mt-4 mb-2" style="color:rgb(100,100,100);">
                 {{item['asig']}}
@@ -130,10 +135,10 @@
         </div>
     </header>
 
-        
+
     <main class="container">
         <p style="text-align:right;color:rgb(150,150,150);">@ by M.C. Héctor René Becerril Cejudo</p>
-        
+
         <br>
         <br>
 <!--        <a href="https://dgetaycm.sep.gob.mx/Con%C3%B3cenos/2" target="_blank">Acerca de DGETAyCM</a>&#128072;<br>
@@ -144,7 +149,7 @@
 
         {% set item = (pg | selectattr('parcial', 'equalto', 'PARCIAL 1') |                 first) %}
         {% if item is defined and item.meta | default(false) %}
-        
+
         <p class="lead">
             {{ item.meta }}
         </p>
@@ -155,24 +160,24 @@
         </p>
 
 
-        
+
         {% if es_profesor %}
         <a  href="{{ url_for('plan_carga') }}">
               <button type="submit" class="btn btn-warning">Subir una planeación</button>
         </a>
         {% endif %}
 
-        
+
         <div>            
             {% set item = (pg | selectattr('parcial', 'equalto', 'PARCIAL 1') |                 first) %}
-            
+
             {% if item %}
                 <h2 class="text-center mt-4 mb-2" style="padding-                                           bottom:16px;color:rgb(100,100,100);">
                     {{item['parcial']}}
             </h2>
             {% endif %}
         </div>
-        
+
         <div>
             {% for i in pg %}
                 {% if i['parcial'] == 'PARCIAL 1' %}
@@ -207,7 +212,7 @@
                 {% if i['parcial'] == 'PARCIAL 1' %}
                     {% set tapertura = i['apDur'] | int %}
                     {% set tdesarrollo = i['deDur'] | int %}
-            
+
                     {% set tcierre = i['ciDur'] | int %}
                     {% set tparcial_sum = tapertura + tdesarrollo + tcierre %}
                     {% set ts.total = ts.total + tparcial_sum %}
@@ -219,7 +224,7 @@
 
         <div>                     
                 {% set item = (pg | selectattr('parcial', 'equalto', 'PARCIAL 2') |                 first) %}
-            
+
                 {% if item %}
                 <h2 class="text-center mt-4 mb-2" style="padding-                                       bottom:16px;color:rgb(100,100,100);">
                     {{item['parcial']}}
@@ -227,7 +232,7 @@
                 {% endif %}
         </div>
         <br>
-            
+
 
         <div>
             {% for i in pg %}
@@ -244,7 +249,7 @@
                 {% if i['parcial'] == 'PARCIAL 2' %}
                     {% set apertura = i['apPond'] | int %}
                     {% set desarrollo = i['dePond'] | int %}
-                   
+
                     {% set cierre = i['ciPond'] | int %}
                     {% set parcial_sum = apertura + desarrollo + cierre %}
                     {% set ns.total = ns.total + parcial_sum %}
@@ -254,14 +259,14 @@
             <text class= 'partial-footer-total'>Total ponderado: {{ ns.total }}% 
             </text>        
             <br>
-            
+
             {% set ns = namespace(total=0) %}
 
             {% for i in pg %}
                 {% if i['parcial'] == 'PARCIAL 2' %}
                     {% set tapertura = i['apDur'] | int %}
                     {% set tdesarrollo = i['deDur'] | int %}
-                   
+
                     {% set tcierre = i['ciDur'] | int %}
                     {% set parcial_sum = tapertura + tdesarrollo + tcierre %}
                     {% set ns.total = ns.total + parcial_sum %}
@@ -270,7 +275,7 @@
 
             <text class='partial-footer-total'>Total tiempo: {{ ns.total/60 }} hrs</text>
         </div>
-        
+
         <div>                     
         {% set item = (pg | selectattr('parcial', 'equalto', 'PARCIAL 3') | first)          %}
                 {% if item %}
@@ -280,7 +285,7 @@
                 {% endif %}
         </div>
         <br>
-            
+
         <div>
             {% for i in pg %}
                 {% if i['parcial'] == 'PARCIAL 3' %}
@@ -296,7 +301,7 @@
                 {% if i['parcial'] == 'Parcial 3' %}
                     {% set apertura = i['apPond'] | int %}
                     {% set desarrollo = i['dePond'] | int %}
-                    
+
                     {% set cierre = i['ciPond'] | int %}
                     {% set parcial_sum = apertura + desarrollo + cierre %}
                     {% set ns.total = ns.total + parcial_sum %}
@@ -312,7 +317,7 @@
                 {% if i['parcial'] == 'PARCIAL 3' %}
                     {% set tapertura = i['apDur'] | int %}
                     {% set tdesarrollo = i['deDur'] | int %}
-                   
+
                     {% set tcierre = i['ciDur'] | int %}
                     {% set parcial_sum = tapertura + tdesarrollo + tcierre %}
                     {% set ns.total = ns.total + parcial_sum %}

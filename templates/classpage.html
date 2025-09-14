@@ -13,9 +13,9 @@
 
             margin-right:10px;
          background-color:red;
-         
+
        }
-        
+
         #banner {
             display:block;
             margin-left:auto;
@@ -43,7 +43,7 @@
             background-color:rgba(250, 117, 221, 0.25);
             color:#B51767;
         }
-        
+
         .home-link1 {
             position: fixed;
             top: 30px;
@@ -262,23 +262,25 @@
         }
     </script>
     <main class="container">
-        
+
         <nav class="navbar fixed-top bg-white shadow-sm mb-4">
             <span class="navbar-brand mb-0 h1 navtxt">
                 <div class="container-fluid row align-items-center">
-                        <text class='col-9'>{{i['id']}} {{i['temas']}}</text>
+                  {% if session.username %}
+                        <text class='col-9'>Planeación {{i['id']}} user: {{session.username}}</text>
+                  {% endif %}
                         <div class="col-3 text-end">
-                            
+
                         </div>
                 </div>
             </span>
         </nav>
-        
+
         <div height: 56px>
-            
+
         </div>
         <br>
-       
+
     <div class="mt-3 mb-3">
 
         {% set tiempo = 0 %}
@@ -286,13 +288,14 @@
 
         <h3>Planeación {{i['plan']}}</h3>
         {{i['prop'] | safe}}<br>
-<!-- ANUNCIO EN CONSTRUCCIÓN -->
+<!-- ANUNCIO EN CONSTRUCCIÓN 
       <text style="font-size:130px">
         &#128679;
       </text>
+
       <br>
       <text style="color:rgb(259,100,100);font-weight:bold;font-size:31px">En construcción...</text>
-
+-->
     <br>
         </div>
 
@@ -307,20 +310,22 @@
 
 
 
-      
- 
+
+
         <div id='Aper'><br><br></div>
         <div class="apertura" >
     <h2 style="color:green;">Apertura ({{i['apDur']/60}} hrs)</h2>
-    {{i['apAct'] | safe}}
+    {{i['apHTML'] | safe}}
             <br><br>
-          <!-- ANUNCIO EN CONSTRUCCIÓN -->
+<!-- ANUNCIO EN CONSTRUCCIÓN 
           <text style="font-size:130px">
             &#128679;
           </text>
+
           <br>
           <text style="color:rgb(259,100,100);font-weight:bold;font-size:30px">En construcción...</text>
           <br>
+-->
 <!--            {% if i['caso'] %}
             <p style="font-weight:bold; ">Caso {{i['id']}}:</p>
             {{i['caso']  | safe}}
@@ -335,30 +340,33 @@
         <div id='Desa'><br><br><br></div>
         <div class="desarrollo">
     <h2 style="color:orange;"">Desarrollo ({{i['deDur']/60}} hrs)</h2>
-            
-    {{i['deAct'] | safe}}
+
+    {{i['deHTML'] | safe}}
           <br><br>
-          <!-- ANUNCIO EN CONSTRUCCIÓN -->
+<!-- ANUNCIO EN CONSTRUCCIÓN 
           <text style="font-size:130px">
             &#128679;
           </text>
+
           <br>
           <text style="color:rgb(259,100,100);font-weight:bold;font-size:30px">En construcción...</text>
           <br>
 
-            
+
 
                   <br>
-                  <!-- ANUNCIO EN CONSTRUCCIÓN -->
+                  <!-- ANUNCIO EN CONSTRUCCIÓN
                   <text style="font-size:130px">
                     &#128679;
                   </text>
+
                   <br>
                   <text style="color:rgb(259,100,100);font-weight:bold;font-size:30px">En construcción...</text>
                   <br>
+-->
                 </div>
         </div>
-  
+
 
 
 
@@ -366,16 +374,17 @@
         <div class="cierre">
             <h2 style="color:#B51767;"">Cierre ({{i['ciDur']/60}} hrs)</h2>
 
-            {{i['ciAct'] | safe}}</br>
-          
+            {{i['ciHTML'] | safe}}</br>
+
           <br>
-          <!-- ANUNCIO EN CONSTRUCCIÓN -->
+          <!-- ANUNCIO EN CONSTRUCCIÓN 
           <text style="font-size:130px">
             &#128679;
           </text>
           <br>
           <text style="color:rgb(259,100,100);font-weight:bold;font-size:30px">En construcción...</text>
           <br>
+          -->
 
 
 
@@ -383,7 +392,6 @@
 
 
 
-      
       <br>
       <br>
       <br>
@@ -398,7 +406,10 @@
 <br>
         </div>
       <div class="parPond">
-        <h2 style="color:#B51767;"">Ponderación en el parcial ({{i['parPond']}} hrs)</h2>
+        <br>
+        <br>
+        <br>
+        <h2 style="color:#B5e7A7;"">Ponderación para el parcial ({{i['parPond']}} %)</h2>
 
       <br>
         <br>
@@ -410,7 +421,7 @@
           </h4>
         {% if i['fuentes'] %}  
         <!-- <a class='referencia' href= '{{i["fuentes"] | safe}}' target="_blank"> i['fuentes'] </a><br>-->
-          <pre class='referencia'> {{i['fuentes']}} </pre><br>
+          <a class='referencia' href="{{i['fuentes']}}" target="_blank"> Referencia 1 </a><br>
         {% endif %}  
         </main>
     <footer>
