@@ -1,28 +1,21 @@
-
 import pytz
 import os
 from flask import Flask, render_template, jsonify, request, redirect, url_for, flash, session, send_file, make_response
 from flask import session as flask_session
-# from flask_bcrypt import Bcrypt
+from flask_bcrypt import Bcrypt
 from gevent import monkey; monkey.patch_all()
 from gevent.pywsgi import WSGIServer
 from datetime import datetime, timedelta
-# import cloudinary
-# import cloudinary.uploader
-# import tempfile
-# from weasyprint import HTML, CSS
-# import psycopg2
+import cloudinary
+import cloudinary.uploader
+import tempfile
+from weasyprint import HTML, CSS
+import pymysql
 from werkzeug.utils import secure_filename
-# from flask_bcrypt import Bcrypt
-# from database import get_user_from_database
-# from sqlalchemy import text
 
+from database import load_pg_from_db, load_pgn_from_db,  register_user, get_db_session, insert_actividad, load_plan_from_db, insert_plan,  load_pg_from_db2, is_preregistered
 
-# from database import load_pg_from_db, load_pgn_from_db,  register_user, get_db_session, insert_actividad_simple, load_plan_from_db, insert_plan,  load_pg_from_db2, register_user, get_class_by_id, get_user_by_id, insert_actividad_with_user_class, get_classes_for_user, load_classes_for_user, get_user_from_database
-
-# from sqlalchemy import text
-
-
+from sqlalchemy import text
 
 created_at = datetime.now()
 
@@ -44,25 +37,11 @@ cloudinary.config(
   api_secret = os.environ.get("CLOUDINARY_API_SECRET")
 )
 """
-# from models import db, User, Class, Mat1, ActividadInoc, StudentsClasses
-
 app = Flask(__name__)
-# bcrypt = Bcrypt(app)
+bcrypt = Bcrypt(app)
 app.config['JSONIFY_PRETTYPRINT_REGULAR'] = True
 app.secret_key = os.environ.get("SECRET_KEY", "dev-secret")
 app.permanent_session_lifetime = timedelta(minutes=60)
-
-# Database configuration - commented out temporarily
-# app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get("DATABASE_URL")
-# app.config["SQLALCHEMY_ENGINE_OPTIONS"] = {
-#     "pool_recycle": 300,
-#     "pool_pre_ping": True,
-# }
-
-# db.init_app(app)
-
-# with app.app_context():
-#     db.create_all()
 
 
 @app.route("/")
@@ -75,7 +54,7 @@ def hello_pm1():
 
         es_profesor = flask_session.get('es_profesor', False)
         username = flask_session.get('username', 'Invitado')
-        
+
 
         return render_template('home.html', es_profesor=es_profesor , pg=pg, username=username)
 
@@ -108,7 +87,7 @@ def show_plan(id):
         return redirect(url_for('login'))
 
     show_form = request.method == "GET"
-    
+
 
     # Supongamos que TEMAS es tu estructura de datos (lista o dict)
     plan = load_plan_from_db(id)
@@ -133,6 +112,84 @@ def show_pgn(id):
 
 
 
+
+#para que el usuario envíe una nueva actividad y registrarla en la DB
+@app.route("/enviaractividad", methods=["GET", "POST"])
+def enviaractividad():
+    if not check_session_timeout():
+        flash('Su sesión ha expirado. Por favor, inicie sesión nuevamente.', 'danger')
+        return redirect(url_for('login'))
+
+    show_form = request.method == "POST"
+
+    if request.method == "POST":
+        try:
+            actividad_num = request.form['actividad_num']
+            numero_control = request.form['numero_control']
+            pdf_file = request.files['pdf_file']
+
+            if not pdf_file or not pdf_file.filename.endswith('.pdf'):
+                flash("Debes subir un archivo PDF válido menor a 5MB.", "danger")
+                return redirect(request.url)
+
+            # Obtener la sesión de base de datos
+            session_db = get_db_session()
+
+            # Obtener datos del usuario
+            query = text('SELECT * FROM users WHERE numero_control = :numero_control')
+            user = session_db.execute(query, {'numero_control': numero_control}).mappings().first()
+
+            if not user:
+                flash("Número de control no encontrado en la base de datos.", "danger")
+                return redirect(request.url)
+
+            apellido_paterno = user['apellido_paterno']
+            apellido_materno = user['apellido_materno']
+            nombres = user['nombres']
+            carrera = user['carrera']
+            semestre = user['semestre']
+            grupo = user['grupo']
+            pdf_url = user['pdf_url']
+
+
+            # Subir archivo a Cloudinary
+            filename = secure_filename(f"actividad {apellido_paterno}_{apellido_materno}_{nombres}_{semestre}_{grupo}_{actividad_num}.pdf")
+            result = cloudinary.uploader.upload(
+                pdf_file,
+                resource_type='raw',
+                folder='actividades_pdf',
+                public_id=filename
+            )
+            pdf_url = result.get('secure_url')
+            print("✅ Carga en Cloudinary exitosa")
+
+            # Establecer la fecha y hora actual en zona horaria de México
+            created_at = datetime.now(pytz.timezone("America/Mexico_City"))
+
+            # Insertar en la tabla actividades_inoc
+            insert_actividad(
+                session_db,
+                actividad_num,
+                apellido_paterno,
+                apellido_materno,
+                nombres,
+                carrera,
+                semestre,
+                grupo,
+                pdf_url,
+                created_at
+            )
+            print("✅ Inserción en DB exitosa")
+
+            flash(f"Actividad {actividad_num} de {nombres} enviada correctamente.", "success")
+            return redirect(url_for("hello_pm1"))
+
+        except Exception as e:
+            print("❌ Error during submission:", e)
+            flash(f"Ocurrió un error al procesar la actividad {actividad_num}.", "danger")
+            return redirect(url_for('enviaractividad'))
+
+    return render_template("enviaractividad.html", show_form=show_form)
 
 
 
@@ -204,7 +261,7 @@ def plan_carga():
             cve = f"{docenteID}_{ciclo}_{periodo}_{semestre}_{grupos}_{asig}_{plan}"
             pdf_file = request.files['pdf_file']
             parPond = request.form['parPond']
-            
+
 
 
             print("📋 Datos del formulario extraídos correctamente")
@@ -300,26 +357,26 @@ def plan_carga():
                 created_at,
                 pdf_url,
                 parPond
-                
+
             )
             print("✅ Inserción en DB exitosa")
 
             flash(f"Planeación {cve} de {docenteID} enviada correctamente.", "success")
             return redirect(url_for("show_plan", id=new_plan_id))
 
-        except Exception as e:
+        except pymysql.err.IntegrityError as e:
             if "1062" in str(e):  # Duplicate entry error
                 with connection.cursor() as cursor:
                     cursor.execute(update_query, data)
                 connection.commit()
                 return "Plan updated successfully"
 
-        except Exception as e:
+        except pymysql.MySQLError as e:
             print("❌ Error MySQL:", e)
             flash("Error al acceder a la base de datos.", "danger")
             return redirect(url_for('plan_carga'))
 
-        
+
         except Exception as e:
             print("❌ Error during submission:", e)
             flash(f"Ocurrió un error al procesar la planeación {cve}.", "danger")
@@ -327,67 +384,68 @@ def plan_carga():
 
     return render_template("plan_carga.html", show_form=show_form)
 
+"""
+#para registrar un nuevo usuario y almacenarlo en la DB
+@app.route("/register", methods=["GET", "POST"])
+def register():
+    choice = request.form.get('choice') #or request.args.get('choice')
 
-if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5000, debug=True)
+    if request.method == "POST":
+        try:
+            # Extract data from the form
+            numero_control = request.form['numero_control']
+            apellido_paterno = request.form['apellido_paterno']
+            apellido_materno = request.form['apellido_materno']
+            nombres = request.form['nombres']
+            username = request.form['username']
+            password = request.form['password']
+            carrera = request.form['carrera']
+            semestre = request.form['semestre']
+            grupo = request.form['grupo']
 
 
+            # Validate password (you can extend this validation)
+            if len(password) < 8:
+                flash("La contraseña debe tener al menos 8 caracteres.", "danger")
+                return render_template("register.html", choice=choice)
 
-@app.route('/select_register_type', methods=['GET', 'POST'])
-def select_register_type():
+
+                # Initialize DB session
+            db_session = get_db_session()
+            created_at = datetime.now(pytz.timezone("America/Mexico_City"))
+
+            if not register_user(db_session, numero_control, apellido_paterno, apellido_materno, nombres, username, password, carrera, semestre, grupo):
+                flash("Ese nombre de usuario ya está registrado. Por favor, elige otro.", "danger")
+                return render_template("register.html", choice=choice)
+
+            # Call the function to register the user (make sure it handles the db insertion)
+            db_session = get_db_session()
+            created_at = datetime.now(pytz.timezone("America/Mexico_City"))
+            register_user(db_session, numero_control, apellido_paterno, apellido_materno, nombres, username, password, carrera, semestre, grupo)
+            db_session.close()
+
+            flash(f"Registro exitoso para {nombres}!", "success")
+            return redirect(url_for('login'))
+
+        except Exception as e:
+            print(f"Error en el registro: {e}")
+            flash("Hubo un problema al registrarte. Intenta nuevamente.", "danger")
+            return render_template("register.html", choice=choice)
+
+    return render_template("register.html", choice=choice)
+"""
+
+@app.route('/register', methods=['GET', 'POST'])
+def register():
     if request.method == 'POST':
         user_type = request.form.get('user_type')
         if user_type == 'A':
             return redirect(url_for('register_alumno'))
         elif user_type == 'D':
             return redirect(url_for('register_docente'))
-    return render_template('select_register_type.html')
-
-
-
-@app.route('/register', methods=['GET', 'POST'])
-def register():
-    if request.method == 'POST':
-        numero_control = request.form.get('numero_control')
-        apellido_paterno = request.form.get('apellido_paterno')
-        apellido_materno = request.form.get('apellido_materno')
-        nombres = request.form.get('nombres')
-        username = request.form.get('username')
-        password = request.form.get('password')
-        carrera = request.form.get('carrera')
-        semestre = request.form.get('semestre')
-        grupo = request.form.get('grupo')
-        class_id = request.form.get('class_id')  # La clase a la que se asocia el usuario
-
-        # Validar que la clase exista (opcional pero recomendado)
-        session = get_db_session()
-        clase = get_class_by_id(session, class_id)
-        if not clase:
-            flash("La clase seleccionada no existe.", "error")
-            return render_template('register.html')
-
-        created_at = datetime.now(pytz.timezone("America/Mexico_City"))
-
-        # Registrar usuario
-        success = register_user(
-            session, numero_control, apellido_paterno, apellido_materno, nombres,
-            username, password, carrera, semestre, grupo, created_at, class_id
-        )
-
-        if success:
-            flash("Usuario registrado con éxito. Por favor haz login.", "success")
-            return redirect(url_for('login'))
         else:
-            flash("Error: Usuario o username ya existe.", "error")
-            return render_template('register.html')
-
-    # GET
-    session = get_db_session()
-    # Cargar todas las clases para mostrarlas en el formulario
-    clases = session.execute(text("SELECT * FROM classes")).fetchall()
-    session.close()
-    return render_template('register.html', clases=clases)
-    
+            flash("Seleccione un tipo de usuario válido.")
+    return render_template('select_register_type.html')
 
 
 def handle_register_user(choice):
@@ -401,7 +459,7 @@ def handle_register_user(choice):
     if not template:
             flash("Tipo de usuario no válido.", "danger")
             return redirect(url_for("home"))
-    
+
     db_session = None  #
 
     if request.method == "POST":
@@ -417,12 +475,30 @@ def handle_register_user(choice):
             semestre = request.form.get('semestre', '').strip()
             grupo = request.form.get('grupo', '').strip()
 
+
+            # Format check: validate user type based on numero_control
+            is_teacher_form = (choice == "D")
+            fourth_char = numero_control[3] if len(numero_control) >= 4 else None
+
+            if is_teacher_form and (not fourth_char or not fourth_char.isalpha()):
+                flash("El número de control no corresponde a un docente (debe tener letra como cuarto carácter).", "danger")
+                return render_template(template)
+
+            if not is_teacher_form and fourth_char and fourth_char.isalpha():
+                flash("El número de control corresponde a un docente. Selecciona 'Docente' para registrarte.", "danger")
+                return render_template(template)
+
+            if not is_preregistered(numero_control):
+                flash("Número de control no está preregistrado; no se puede registrar.", "danger")
+                return render_template(template)
+
+
             # Simple validation
             password_raw = request.form.get('password', '') #secure validation
             if len(password_raw) < 8: #
                 flash("La contraseña debe tener al menos 8 caracteres.", "danger")
                 return render_template(template)
-            password = password_raw  # TODO: Re-enable bcrypt hashing when dependencies are installed
+            password = bcrypt.generate_password_hash(password_raw).decode('utf-8')#secure password
 
             db_session = get_db_session()
             created_at = datetime.now(pytz.timezone("America/Mexico_City"))
@@ -472,348 +548,74 @@ def handle_register_user(choice):
 
 
 
+@app.route("/register/alumno", methods=["GET", "POST"])
+def register_alumno():
+    return handle_register_user(choice="A")
+
+@app.route("/register/docente", methods=["GET", "POST"])
+def register_docente():
+    return handle_register_user(choice="D")
+
+
+
+@app.route("/plan/<int:plan_id>/edit", methods=["GET"])
+def edit_plan(plan_id):
+    db = get_db_session()
+    plan = db.query(Plan).filter_by(id=plan_id).first()
+
+    if not plan:
+        return "Plan not found", 404
+
+    return render_template("edit_plan.html", plan=plan)
+
+
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
+        print(f"Trying login for user: {username}")
+        try:
+            # Connect to the database and fetch user data by username
+            db_session = get_db_session()
+            query = text('SELECT * FROM users WHERE username = :username')
+            result = db_session.execute(query, {'username': username})
+            user = result.mappings().first()
+            db_session.close()
 
-        user = get_user_from_database(username)
+            if user:
+                # ✅ Secure password check using Bcrypt
+                if bcrypt.check_password_hash(user['password'], password):
+                    print("User found:", user)
+                # Check if password matches (you should hash passwords in production)
+                #if user['password'] == password:
+                #    print("Password correct")
+                    flask_session.permanent = True
+                    flask_session['username'] = username
+                    flask_session['last_activity'] = datetime.now().isoformat()
 
-        if user and user.get('password_hash') == password:  # TODO: Re-enable bcrypt when dependencies are installed
-                session['user_id'] = user.id
-                session['username'] = user.username
-                session['role'] = user.get('role', 'student')
-                return redirect('/dashboard')
-        else:
-                flash("Usuario o contraseña incorrectos.")
-                return redirect('/login')
+                    #  --- Lógica añadida para determinar tipo de usuario ---
+                    school_id = user.get('numero_control', '')
+                    es_profesor = len(school_id) >= 4 and school_id[5].isalpha()
+                    flask_session['es_profesor'] = es_profesor
+
+                    flash(f'{username} inició sesión correctamente', 'success')
+                    return redirect(url_for('hello_pm1'))  # Redirect on success
+                else:
+                    print("Password incorrect")
+                    flash('Contraseña equivocada. Intente de nuevo.', 'danger')
+                    return render_template('login.html')
+            else:
+                flash('Nombre de usuario no existe. Intente de nuevo.', 'danger')
+                return render_template('login.html')
+
+        except Exception as e:
+            print("Exception during login:", e)
+            flash('Ocurrió un error. Intente más tarde.', 'danger')
+            return render_template('login.html')
 
     return render_template('login.html')
-    #-----
-
-
-@app.route('/select_class')
-def select_class():
-    if 'user_id' not in session:
-        return redirect(url_for('login'))
-
-    user_id = session['user_id']
-    rol = session['rol']
-
-    classes = get_classes_for_user(user_id, rol)
-    return render_template('select_class.html', classes=classes)
-
-
-@app.route('/class_dashboard')
-def class_dashboard():
-    if 'current_class_id' not in session:
-        return redirect(url_for('select_class'))
-
-    class_id = session['current_class_id']
-    # Aquí podrías cargar actividades, planeaciones, etc.
-    return render_template('class_dashboard.html', class_id=class_id)
-
-    #----
-@app.route('/enter_class', methods=['POST'])
-def enter_class():
-    class_id = request.form.get('class_id')
-    session['current_class_id'] = class_id
-    return redirect(url_for('class_dashboard'))
-
-#-------
-@app.route('/submit_activity', methods=['GET', 'POST'])
-def submit_activity():
-    if 'user_id' not in session or 'current_class_id' not in session:
-        return redirect(url_for('login'))
-
-    if request.method == 'POST':
-        actividad_num = request.form.get('actividad_num')
-        pdf_url = request.form.get('pdf_url')  # en producción sería `request.files`
-        created_at = datetime.now(pytz.timezone("America/Mexico_City"))
-
-        user_id = session['user_id']
-        class_id = session['current_class_id']
-
-        # Carga datos del usuario
-        user = get_user_by_id(user_id)
-
-        success = insert_actividad(
-            session=get_db_session(),
-            actividad_num=actividad_num,
-            apellido_paterno=user['apellido_paterno'],
-            apellido_materno=user['apellido_materno'],
-            nombres=user['nombres'],
-            carrera=user['carrera'],
-            semestre=user['semestre'],
-            grupo=user['grupo'],
-            pdf_url=pdf_url,
-            created_at=created_at,
-            user_id=user_id,
-            class_id=class_id
-        )
-
-        if success:
-            return "✅ Actividad enviada correctamente"
-        else:
-            return "❌ Error al enviar la actividad"
-
-    return render_template('submit_activity.html')
-#----
-
-
-#----
-@app.route('/ver_actividades', methods=['GET', 'POST'])
-def ver_actividades():
-    if 'user_id' not in session or 'current_class_id' not in session:
-        return redirect(url_for('login'))
-
-    user = get_user_by_id(session['user_id'])
-    class_id = session['current_class_id']
-    filtros = {}
-    actividad_num = request.form.get("actividad_num")
-    if actividad_num:
-        filtros["actividad_num"] = actividad_num
-
-    session_db = get_db_session()
-    query = text("""
-        SELECT * FROM actividades_inoc
-        WHERE class_id = :class_id
-        {filter_clause}
-        ORDER BY created_at DESC
-    """.format(filter_clause=" AND actividad_num = :actividad_num" if actividad_num else ""))
-
-    params = {"class_id": class_id}
-    if actividad_num:
-        params["actividad_num"] = actividad_num
-
-    if user['rol'] == 'alumno':
-        query = text(str(query) + " AND user_id = :user_id")
-        params["user_id"] = session['user_id']
-
-    result = session_db.execute(query, params).mappings().all()
-    
-    session_db.close()
-
-    
-    return render_template('ver_actividades.html', actividades=result, user=user)
-
-#------------
-#Permitir a docentes crear y editar clases.
-
-@app.route('/mis_clases')
-def mis_clases():
-    if session.get('rol') != 'docente':
-        return redirect(url_for('login'))
-    clases = get_classes_for_user(session['user_id'], 'docente')
-    return render_template('mis_clases.html', clases=clases)
-
-@app.route('/crear_clase', methods=['GET', 'POST'])
-def crear_clase():
-    if session.get('rol') != 'docente':
-        return redirect(url_for('login'))
-    if request.method == 'POST':
-        nombre = request.form['nombre']
-        grupo = request.form['grupo']
-        session_db = get_db_session()
-        session_db.execute(text("""
-            INSERT INTO classes (name, description, docente_id)
-            VALUES (:name, :desc, :doc)
-        """), {"name": nombre, "desc": grupo, "doc": session['user_id']})
-        session_db.commit()
-        session_db.close()
-        return redirect(url_for('mis_clases'))
-    return render_template('crear_clase.html')
-
-#------
-@app.route('/dashboard_clase')
-def dashboard_clase():
-    class_id = session.get('current_class_id')
-    if not class_id:
-        return redirect(url_for('select_class'))
-
-    session_db = get_db_session()
-    total = session_db.execute(text("SELECT COUNT(*) FROM actividades_inoc WHERE class_id = :cid"), {"cid": class_id}).scalar()
-    calificadas = session_db.execute(text("SELECT COUNT(*) FROM actividades_inoc WHERE class_id = :cid AND calificacion IS NOT NULL"), {"cid": class_id}).scalar()
-    promedio = session_db.execute(text("SELECT AVG(calificacion) FROM actividades_inoc WHERE class_id = :cid AND calificacion IS NOT NULL"), {"cid": class_id}).scalar()
-    session_db.close()
-
-    return render_template('dashboard_clase.html', total=total, calificadas=calificadas, promedio=promedio)
-#---------
-
-from datetime import date
-@app.route('/asistencia', methods=['GET', 'POST'])
-def asistencia():
-    if 'user_id' not in session or 'current_class_id' not in session:
-        return redirect(url_for('login'))
-
-    class_id = session['current_class_id']
-    session_db = get_db_session()
-    estudiantes = session_db.execute(text("""
-        SELECT u.id, u.nombres, u.apellido_paterno
-        FROM users u
-        JOIN students_classes sc ON sc.user_id = u.id
-        WHERE sc.class_id = :cid
-    """), {"cid": class_id}).mappings().all()
-
-    # Selección del período
-    periodo = request.form.get('periodo', 'A')
-    if periodo == 'A':
-        start, end = date(2025,9,8), date(2025,10,3)
-    elif periodo == 'B':
-        start, end = date(2025,10,6), date(2025,11,4)
-    else:
-        start, end = date(2025,11,5), date(2026,1,15)
-
-    # Generar lista de fechas en el período
-    fechas = [start + timedelta(days=i) for i in range((end-start).days + 1)]
-
-    if request.method == 'POST' and 'guardar' in request.form:
-        for uid in request.form.getlist('user'):
-            fch = request.form.get('fecha')
-            presente = 1 if request.form.get(f"check_{uid}_{fch}") == 'on' else 0
-            session_db.execute(text("""
-                INSERT INTO asistencia (user_id, class_id, fecha, presente)
-                VALUES (:uid, :cid, :fch, :pres)
-                ON DUPLICATE KEY UPDATE presente = :pres
-            """), {"uid": uid, "cid": class_id, "fch": fch, "pres": presente})
-        session_db.commit()
-
-    # Cargar registros existentes
-    registros = session_db.execute(text("""
-        SELECT user_id, fecha, presente
-        FROM asistencia
-        WHERE class_id = :cid AND fecha BETWEEN :start AND :end
-    """), {"cid": class_id, "start": start, "end": end}).mappings().all()
-    session_db.close()
-
-    return render_template('asistencia.html', estudiantes=estudiantes, fechas=fechas, registros=registros, periodo=periodo)
-#-----------
-
-from flask import request, session, redirect, url_for, render_template
-from database import get_db_session, get_user_by_id
-from datetime import date, timedelta
-from sqlalchemy import text
-
-@app.route('/dashboard_asistencia', methods=['GET'])
-def dashboard_asistencia():
-    if 'user_id' not in session or 'current_class_id' not in session:
-        return redirect(url_for('login'))
-
-    class_id = session['current_class_id']
-    user = get_user_by_id(session['user_id'])
-    if user['rol'] != 'docente':
-        return "Acceso denegado: solo docentes pueden ver este dashboard", 403
-
-    # Selección de período (por GET query param o default 'A')
-    periodo = request.args.get('periodo', 'A')
-    if periodo == 'A':
-        start, end = date(2025,9,8), date(2025,10,3)
-    elif periodo == 'B':
-        start, end = date(2025,10,6), date(2025,11,4)
-    else:
-        start, end = date(2025,11,5), date(2026,1,15)
-
-    total_days = (end - start).days + 1
-
-    session_db = get_db_session()
-
-    # Obtener lista de estudiantes de la clase
-    estudiantes = session_db.execute(text("""
-        SELECT u.id, u.nombres, u.apellido_paterno
-        FROM users u
-        JOIN students_classes sc ON sc.user_id = u.id
-        WHERE sc.class_id = :cid
-    """), {"cid": class_id}).mappings().all()
-
-    # Obtener registros de asistencia del período
-    asistencias = session_db.execute(text("""
-        SELECT user_id, COUNT(*) AS asistencias
-        FROM asistencia
-        WHERE class_id = :cid AND fecha BETWEEN :start AND :end AND presente = 1
-        GROUP BY user_id
-    """), {"cid": class_id, "start": start, "end": end}).mappings().all()
-
-    # Convertir a diccionario { user_id: asistencias }
-    asist_dict = {a['user_id']: a['asistencias'] for a in asistencias}
-
-    if asistencias:
-        max_asist = max(asist_dict.values())
-    else:
-        max_asist = 0
-
-    # Construir resumen por estudiante
-    resumen = []
-    for est in estudiantes:
-        uid = est['id']
-        cnt = asist_dict.get(uid, 0)
-        porcentaje = (cnt / max_asist * 100) if max_asist > 0 else 0
-        resumen.append({
-            "id": uid,
-            "nombre": f"{est['nombres']} {est['apellido_paterno']}",
-            "asistencias": cnt,
-            "porcentaje": round(porcentaje, 2)
-        })
-
-    session_db.close()
-
-    return render_template(
-        'dashboard_asistencia.html',
-        resumen=resumen,
-        total_days=total_days,
-        periodo=periodo
-    )
-    
-#-----
-
-#-----
-@app.route('/calificar/<int:actividad_id>', methods=['POST'])
-def calificar_actividad(actividad_id):
-    if 'user_id' not in session or 'current_class_id' not in session:
-        return redirect(url_for('login'))
-
-    calificacion = request.form.get('calificacion')
-    comentario = request.form.get('comentario')
-    session_db = get_db_session()
-    # Opcionalmente valida rol docente
-    session_db.execute(text("""
-        UPDATE actividades_inoc
-        SET calificacion = :cal, comentario = :com
-        WHERE id = :id AND class_id = :class_id
-    """), {"cal": calificacion, "com": comentario, "id": actividad_id, "class_id": session['current_class_id']})
-    session_db.commit()
-    session_db.close()
-    return redirect(url_for('ver_actividades'))
-
-
-#-----
-
-def load_classes_for_user(user_id):
-    session = get_db_session()
-    try:
-        # Traer clases donde es docente
-        docente_classes = session.execute(text("""
-            SELECT DISTINCT c.id, c.name 
-            FROM classes c 
-            JOIN plans p ON p.class_id = c.id
-            WHERE p.docenteID = :user_id
-        """), {"user_id": user_id}).mappings().all()
-
-        # Traer clases donde es estudiante
-        student_classes = session.execute(text("""
-            SELECT DISTINCT c.id, c.name
-            FROM classes c
-            JOIN students_classes sc ON sc.class_id = c.id
-            WHERE sc.user_id = :user_id
-        """), {"user_id": user_id}).mappings().all()
-
-        # Unir sin duplicados
-        combined = {c['id']: c for c in (docente_classes + student_classes)}.values()
-        return list(combined)
-    finally:
-        session.close()
-#------
 
 
 
@@ -850,18 +652,15 @@ def download_pdf(id):
 #        opciones = request.form.get('choice')  # 'value1' or 'value2' or None
 #    return render_template('register.html', opciones=opciones)
 
-from flask import Flask, render_template, request, redirect, session, url_for, flash
-from database import get_user_from_database
-
 
 
 
 
 @app.route('/logout')
 def logout():
-    
+
     session.pop('username', None)
-    
+
     return redirect(url_for('login'))
 
 
