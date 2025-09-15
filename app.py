@@ -458,7 +458,7 @@ def handle_register_user(choice):
 
     if not template:
             flash("Tipo de usuario no válido.", "danger")
-            return redirect(url_for("home"))
+            return redirect(url_for("hello_pm1"))
 
     db_session = None  #
 
@@ -481,7 +481,7 @@ def handle_register_user(choice):
             fourth_char = numero_control[3] if len(numero_control) >= 4 else None
 
             if is_teacher_form and (not fourth_char or not fourth_char.isalpha()):
-                flash("El número de control no corresponde a un docente (debe tener letra como cuarto carácter).", "danger")
+                flash("El número de control no corresponde a un docente.", "danger")
                 return render_template(template)
 
             if not is_teacher_form and fourth_char and fourth_char.isalpha():
@@ -489,7 +489,7 @@ def handle_register_user(choice):
                 return render_template(template)
 
             if not is_preregistered(numero_control):
-                flash("Número de control no está preregistrado; no se puede registrar.", "danger")
+                flash("No se reconoce ese número de control; no se puede registrar.", "danger")
                 return render_template(template)
 
 
@@ -536,7 +536,7 @@ def handle_register_user(choice):
 
         except Exception as e:
             print(f"Error en el registro: {e}")
-            flash("Hubo un problema al registrarte. Intenta nuevamente.", "danger")
+            flash("Hubo un problema al registrarte. Inténtelo más tarde.", "danger")
             return render_template(template)
 
         finally:
