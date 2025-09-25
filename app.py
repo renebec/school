@@ -481,7 +481,7 @@ def handle_register_user(choice):
             fourth_char = numero_control[3] if len(numero_control) >= 4 else None
 
             if is_teacher_form and (not fourth_char or not fourth_char.isalpha()):
-                flash("El número de control no corresponde a un docente.", "danger")
+                flash("El número de control No corresponde a un docente.", "danger")
                 return render_template(template)
 
             if not is_teacher_form and fourth_char and fourth_char.isalpha():
@@ -489,7 +489,7 @@ def handle_register_user(choice):
                 return render_template(template)
 
             if not is_preregistered(numero_control):
-                flash("No se reconoce ese número de control; no se puede registrar.", "danger")
+                flash("No se reconoce ese número de control; imposible registrar.", "danger")
                 return render_template(template)
 
 
