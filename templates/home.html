@@ -330,12 +330,21 @@
 
 
 <!--recursamientos -->
-        
+
+
+        <div>                     
+            {% set item = (pg | selectattr('parcial', 'equalto', 'Recursamiento emergente') | first)          %}
+                    {% if item %}
+                    <h2 class="text-center mt-4 mb-2" style="padding-bottom:16px;color:rgb(100,100,100);">
+                        {{item['parcial']}}
+                    </h2>
+                    {% endif %}
+            </div>
+            <br>
 
         <div>
             {% for i in pg %}
                 {% if i['parcial'] == 'Recursamiento emergente' %}
-                    Recursamiento emergente
             
                     {% include 'temasitem.html' %}
                 {% endif %}
