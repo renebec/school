@@ -326,6 +326,58 @@
 
             <text class='partial-footer-total'>Total tiempo: {{ ns.total/60 }}                         hrs</text>
         </div>
+
+
+
+
+        
+
+        <div>
+            {% for i in pg %}
+                {% if i['parcial'] == 'Recursamiento emergente' %}
+                    {% include 'temasitem.html' %}
+                {% endif %}
+            {% endfor %}
+        </div>
+        <text class= 'partial-footer-total'>Recursamiento emergente</text>
+        <div>
+            {% set ns = namespace(total=0) %}
+
+            {% for i in pg %}
+                {% if i['parcial'] == 'Recursamiento emergente' %}
+                    {% set apertura = i['apPond'] | int %}
+                    {% set desarrollo = i['dePond'] | int %}
+
+                    {% set cierre = i['ciPond'] | int %}
+                    {% set parcial_sum = apertura + desarrollo + cierre %}
+                    {% set ns.total = ns.total + parcial_sum %}
+                {% endif %}
+            {% endfor %}
+
+            <text class='partial-footer-total'>Total ponderado: {{ ns.total }}%</text>             
+            <br>
+
+            {% set ns = namespace(total=0) %}
+
+            {% for i in pg %}
+                {% if i['parcial'] == 'Recursamiento emergente' %}
+                    {% set tapertura = i['apDur'] | int %}
+                    {% set tdesarrollo = i['deDur'] | int %}
+
+                    {% set tcierre = i['ciDur'] | int %}
+                    {% set parcial_sum = tapertura + tdesarrollo + tcierre %}
+                    {% set ns.total = ns.total + parcial_sum %}
+                {% endif %}
+            {% endfor %}
+
+            <text class='partial-footer-total'>Total tiempo: {{ ns.total/60 }}                         hrs</text>
+        </div>
+
+
+
+
+
+        
         <!--BOTON CONTACTO -->
         <div style="text-align:center;">
             <a class="btn btn-primary btn-lg"  type="button"                                       href="mailto:mc.renebec@gmail.com?                                        subject=Pregunta%20sobre%20el%20curso%20de%20Pensamiento%20Matemático%20I&body=Nombre%3A%20%3C%20escriba%20aqu%C3%AD%20su%20nombre%20completo%20%3E%0D%0ADatos%3A%20%3C%20escriba%20sus%20datos%20de%20Semestre%2C%20Grupo%20y%20Carrera%20%3E%0D%0APregunta%3A%20%3C%20escriba%20aqu%C3%AD%20su%20pregunta%20o%20comentario%20%3E%0D%0A">Contacto</a>
