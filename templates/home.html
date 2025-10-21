@@ -329,12 +329,14 @@
 
 
 
-
+<!--recursamientos -->
         
 
         <div>
             {% for i in pg %}
                 {% if i['parcial'] == 'Recursamiento emergente' %}
+                    Recursamiento emergente
+            
                     {% include 'temasitem.html' %}
                 {% endif %}
             {% endfor %}
