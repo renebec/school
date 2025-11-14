@@ -100,18 +100,7 @@
             color:#B51767;
         }
 
-        .iframe‐wrapper {
-          width: 310px;        /* whatever container size */
-          height: 260px;       /* whatever container size */
-          overflow: hidden;    /* hide anything that overflows after scaling */
-        }
 
-        .scaled‐iframe {
-          width: calc(100% / 0.8);   /* adjust so after scale the content fits wrapper */
-          height: calc(100% / 0.8);
-          transform: scale(0.95);     /* scale to 80% for example */
-          transform‐origin: top right;/* ensures scaling starts at top-right corner */
-        }
 
 
     </style>
@@ -153,9 +142,10 @@
 <body>
     <header>
         <div> 
-            <div width="100%" class="iframe‐wrapper">
-              <iframe src="https://thingspeak.com/channels/2842388/charts/3?bgcolor=%23FFC300&color=%23d62020&dynamic=true&results=300&title=Temperatura+%C2%B0C+%28Aguascalientes%29&type=line&yaxis=%C2%B0C" class="scaled‐iframe" frameborder="0"></iframe>
-            </div>
+
+            <div width="100%">
+                <iframe width="320" height="260" style="border: 1px solid #cccccc;" src="https://thingspeak.com/channels/2842388/charts/3?bgcolor=%23FFC300&color=%23d62020&dynamic=true&results=300&title=Temperatura+%C2%B0C+%28Aguascalientes%29&type=line&yaxis=%C2%B0C"></iframe><br>
+                </div>
 
   
  
