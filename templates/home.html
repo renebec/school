@@ -107,9 +107,9 @@
         }
 
         .scaled‐iframe {
-          width: calc(100% / 0.95);   /* adjust so after scale the content fits wrapper */
-          height: calc(100% / 0.95);
-          transform: scale(0.8);     /* scale to 80% for example */
+          width: calc(100% / 0.8);   /* adjust so after scale the content fits wrapper */
+          height: calc(100% / 0.8);
+          transform: scale(0.95);     /* scale to 80% for example */
           transform‐origin: top right;/* ensures scaling starts at top-right corner */
         }
 
@@ -153,9 +153,11 @@
 <body>
     <header>
         <div> 
-            <div class="iframe‐wrapper">
+            <div width="100%" class="iframe‐wrapper">
               <iframe src="https://thingspeak.com/channels/2842388/charts/3?bgcolor=%23FFC300&color=%23d62020&dynamic=true&results=300&title=Temperatura+%C2%B0C+%28Aguascalientes%29&type=line&yaxis=%C2%B0C" class="scaled‐iframe" frameborder="0"></iframe>
             </div>
+
+  
  
             <!--{% set item = (pg 
             | selectattr('carrera', 'equalto', 'TA') 
