@@ -100,6 +100,19 @@
             color:#B51767;
         }
 
+        .iframe‐wrapper {
+          width: 800px;        /* whatever container size */
+          height: 600px;       /* whatever container size */
+          overflow: hidden;    /* hide anything that overflows after scaling */
+        }
+
+        .scaled‐iframe {
+          width: calc(100% / 0.8);   /* adjust so after scale the content fits wrapper */
+          height: calc(100% / 0.8);
+          transform: scale(0.8);     /* scale to 80% for example */
+          transform‐origin: top left;/* ensures scaling starts at top-left corner */
+        }
+
 
     </style>
 
@@ -140,9 +153,10 @@
 <body>
     <header>
         <div> 
-            <div width="100%">
-                <iframe width="320" height="260" style="border: 1px solid #cccccc;" src="https://thingspeak.com/channels/2842388/charts/3?bgcolor=%23FFC300&color=%23d62020&dynamic=true&results=300&title=Temperatura+%C2%B0C+%28Aguascalientes%29&type=line&yaxis=%C2%B0C"></iframe><br>
-                </div>
+            <div class="iframe‐wrapper">
+              <iframe src="https://thingspeak.com/channels/2842388/charts/3?bgcolor=%23FFC300&color=%23d62020&dynamic=true&results=300&title=Temperatura+%C2%B0C+%28Aguascalientes%29&type=line&yaxis=%C2%B0C" class="scaled‐iframe" frameborder="0"></iframe>
+            </div>
+ 
             <!--{% set item = (pg 
             | selectattr('carrera', 'equalto', 'TA') 
             | selectattr('semestre', 'equalto', 1) 
