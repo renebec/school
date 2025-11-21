@@ -40,6 +40,7 @@ cloudinary.config(
 app = Flask(__name__)
 bcrypt = Bcrypt(app)
 app.config['JSONIFY_PRETTYPRINT_REGULAR'] = True
+app.config['MAX_CONTENT_LENGTH'] = 25 * 1024 * 1024  # 25 MB
 app.secret_key = os.environ.get("SECRET_KEY", "dev-secret")
 app.permanent_session_lifetime = timedelta(minutes=60)
 
@@ -131,6 +132,8 @@ def enviaractividad():
             if not pdf_file or not pdf_file.filename.endswith('.pdf'):
                 flash("Debes subir un archivo PDF válido menor a 5MB.", "danger")
                 return redirect(request.url)
+
+
 
             # Obtener la sesión de base de datos
             session_db = get_db_session()
