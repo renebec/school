@@ -211,7 +211,7 @@ def enviaractividad():
                 return redirect(url_for("enviaractividad"))
 
             # --- Generar nombre único ---
-            base_name = f"{user['numero_control']}_{user['apellido_paterno']}_{user['apellido_materno']}_{user['nombres']}_{actividad_num}"
+            base_name = f"{user['numero_control']}_{user['apellido_paterno']}_{user['apellido_materno']}_{user['nombres']}_{actividad_num}.pdf"
             base_name = secure_filename(base_name)
             filename = f"{base_name}_{int(time.time())}"
 
