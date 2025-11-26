@@ -71,7 +71,8 @@ def hello_pm1():
     numero_control = session.get("numero_control")
     es_profesor = session.get("es_profesor", False)
 
-    if not username or not es_profesor:
+    # Validar que haya sesión
+    if not username:
         flash("Debe iniciar sesión.", "danger")
         return redirect(url_for("login"))
 
@@ -83,11 +84,9 @@ def hello_pm1():
         if es_profesor:
             pg = load_pg_from_db2()
             pdfs = load_all_pdfs(session_db)
-            es_profesor = True
         else:
             pg = load_pg_from_db2()
             pdfs = load_user_pdfs(session_db, numero_control)
-            es_profesor = False
 
     except Exception as e:
         print("❌ Error al cargar PDFs:", e)
