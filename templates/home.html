@@ -209,7 +209,7 @@
         <ul>
         {% for pdf in pdfs %}
             <li>
-                <a href="{{ pdf.pdf_url }}?fl_attachment:false" target="_blank">Ver PDF</a>
+                <a href="{{ pdf.pdf_url }}" target="_blank">Ver PDF</a>
                 (Subido: {{ pdf.created_at }})
             </li>
         {% endfor %}

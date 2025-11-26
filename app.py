@@ -216,6 +216,7 @@ def enviaractividad():
             filename = f"{base_name}_{int(time.time())}"
 
             # --- Subir PDF a Cloudinary ---
+            # --- Subir PDF a Cloudinary ---
             result = cloudinary.uploader.upload(
                 pdf_file,
                 resource_type="raw",
@@ -225,7 +226,12 @@ def enviaractividad():
                 overwrite=True
             )
 
-            pdf_url = result.get("secure_url")
+            # Obtener URL directa para abrir en navegador, no forzar descarga
+            pdf_url = cloudinary.utils.cloudinary_url(
+                public_id=f"actividades_pdf/{filename}",
+                resource_type="raw",
+                type="upload"  # importante: no fl_attachment
+            )[0]  # cloudinary_url devuelve tupla (url, options)
 
             # --- Insertar en la tabla actividades ---
             created_at = datetime.now(pytz.timezone("America/Mexico_City"))
