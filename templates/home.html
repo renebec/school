@@ -37,6 +37,19 @@
 
         // Initial call to set the time immediately
         updateDateTime();
+
+
+        function copiarURL() {
+            // Tomar la URL desde el enlace
+            const pdfLink = document.getElementById("pdf-link").href;
+
+            // Usar la API del portapapeles
+            navigator.clipboard.writeText(pdfLink).then(() => {
+                alert("¡URL copiada al portapapeles!");
+            }).catch(err => {
+                alert("Error al copiar: " + err);
+            });
+        }
     </script>
     <style>
 
@@ -211,6 +224,10 @@
             <li>
                 <a href="{{ pdf.pdf_url }}" target="_blank">Ver PDF</a>
                 (Subido: {{ pdf.created_at }})
+            </li>
+            <li>
+                <!-- Botón para copiar al portapapeles -->
+                  <button onclick="copiarURL()" id="copy-btn">Copiar URL</button>
             </li>
         {% endfor %}
         </ul>
