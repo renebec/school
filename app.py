@@ -210,13 +210,11 @@ def enviaractividad():
                 flash("Número de control no encontrado en la base de usuarios.", "danger")
                 return redirect(url_for("enviaractividad"))
 
-            # --- Generar nombre único ---
-            base_name = f"{user['numero_control']}_{user['apellido_paterno']}_{user['apellido_materno']}_{user['nombres']}_{actividad_num}.pdf"
-            base_name = secure_filename(base_name)
-            filename = f"{base_name}_{int(time.time())}"
+            # Generar nombre único sin añadir .pdf
+            base_name = secure_filename(f"{user['numero_control']}_{user['apellido_paterno']}_{user['apellido_materno']}_{user['nombres']}_{actividad_num}")
+            filename = f"{int(time.time())}_{base_name}"
 
-            # --- Subir PDF a Cloudinary ---
-            # --- Subir PDF a Cloudinary ---
+            # Subir PDF
             result = cloudinary.uploader.upload(
                 pdf_file,
                 resource_type="raw",
@@ -226,12 +224,12 @@ def enviaractividad():
                 overwrite=True
             )
 
-            # Obtener URL directa para abrir en navegador, no forzar descarga
+            # URL directa para abrir en otra pestaña
             pdf_url = cloudinary.utils.cloudinary_url(
                 public_id=f"actividades_pdf/{filename}",
                 resource_type="raw",
-                type="upload"  # importante: no fl_attachment
-            )[0]  # cloudinary_url devuelve tupla (url, options)
+                type="upload"
+            )[0]
 
             # --- Insertar en la tabla actividades ---
             created_at = datetime.now(pytz.timezone("America/Mexico_City"))
