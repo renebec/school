@@ -105,15 +105,7 @@ def load_pgn_from_db(id):
     return None
 
 
-def insert_actividad(session, actividad_num, apellido_paterno, apellido_materno, nombres, carrera, semestre, grupo, pdf_url):
-    """
-    Inserta un registro en la tabla 'actividades'.
-
-    session: objeto SQLAlchemy session
-    """
-    # Fecha actual en zona de México, sin tzinfo
-    created_at = datetime.now(pytz.timezone("America/Mexico_City")).replace(tzinfo=None)
-
+def insert_actividad(session, actividad_num, apellido_paterno, apellido_materno, nombres, carrera, semestre, grupo, pdf_url, created_at):
     try:
         query = text("""
             INSERT INTO actividades (
@@ -126,7 +118,8 @@ def insert_actividad(session, actividad_num, apellido_paterno, apellido_materno,
                 grupo,
                 pdf_url,
                 created_at
-            ) VALUES (
+            )
+            VALUES (
                 :actividad_num,
                 :apellido_paterno,
                 :apellido_materno,
@@ -138,8 +131,7 @@ def insert_actividad(session, actividad_num, apellido_paterno, apellido_materno,
                 :created_at
             )
         """)
-
-        params = {
+        session.execute(query, {
             "actividad_num": actividad_num,
             "apellido_paterno": apellido_paterno,
             "apellido_materno": apellido_materno,
@@ -149,21 +141,11 @@ def insert_actividad(session, actividad_num, apellido_paterno, apellido_materno,
             "grupo": grupo,
             "pdf_url": pdf_url,
             "created_at": created_at
-        }
-
-        # Mostrar log de los parámetros
-        print("INSERT ACTIVIDAD params:", params)
-
-        # Ejecutar la inserción
-        session.execute(query, params)
-        session.commit()
-        print("INSERT ACTIVIDAD: OK")
+        })
         return True
 
     except Exception as e:
-        # Mostrar error completo
-        print("DB ERROR al insertar actividad:", e)
-        session.rollback()
+        print(f"❌ DB ERROR en insert_actividad: {e}")
         return False
 
 
