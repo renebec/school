@@ -176,7 +176,7 @@ def enviaractividad():
 
         # --- Validaciones ---
         if not numero_control or not pdf_file or not actividad_num:
-            flash("Debes ingresar número de control, seleccionar numero de actividad y subir un PDF.", "danger")
+            flash("Debes ingresar número de control, seleccionar número de actividad y subir un PDF.", "danger")
             return redirect(url_for("enviaractividad"))
 
         if not pdf_file.filename.lower().endswith(".pdf"):
@@ -232,16 +232,16 @@ def enviaractividad():
 
             insert_actividad(
                 session_db,
-                numero_control,                 # <- agregado
-                actividad_num,
-                user["apellido_paterno"],
-                user["apellido_materno"],
-                user["nombres"],
-                user["carrera"],
-                user["semestre"],
-                user["grupo"],
-                pdf_url,
-                created_at
+                numero_control,                 # 1
+                actividad_num,                  # 2
+                user["apellido_paterno"],       # 3
+                user["apellido_materno"],       # 4
+                user["nombres"],                # 5
+                user["carrera"],                # 6
+                user["semestre"],               # 7
+                user["grupo"],                  # 8
+                pdf_url,                        # 9
+                created_at                      # 10
             )
 
             session_db.commit()
