@@ -168,94 +168,107 @@ def enviaractividad():
     if request.method == "GET":
         return render_template("enviaractividad.html", show_form=True)
 
-    # --- POST ---
-    numero_control = request.form.get("numero_control")
-    actividad_num = request.form.get("actividad_num")
-    pdf_file = request.files.get("pdf_file")
-
-    # --- Validaciones ---
-    if not numero_control or not actividad_num or not pdf_file:
-        flash("Debes ingresar número de control, seleccionar número de actividad y subir un PDF.", "danger")
-        return redirect(url_for("enviaractividad"))
-
-    if not pdf_file.filename.lower().endswith(".pdf"):
-        flash("El archivo debe ser un PDF.", "danger")
-        return redirect(url_for("enviaractividad"))
-
-    pdf_bytes = pdf_file.read()
-    if len(pdf_bytes) > 10 * 1024 * 1024:
-        flash("El PDF debe ser menor o igual a 10 MB.", "danger")
-        return redirect(url_for("enviaractividad"))
-    pdf_file.seek(0)
-
-    session_db = get_db_session()
     try:
-        # --- Obtener datos completos del usuario ---
-        query = text("""
-            SELECT numero_control, nombres, apellido_paterno, apellido_materno,
-                   carrera, semestre, grupo
-            FROM users
-            WHERE numero_control = :nc
-        """)
-        user = session_db.execute(query, {"nc": numero_control}).mappings().first()
+        # --- Recibir datos ---
+        numero_control = request.form.get("numero_control")
+        actividad_num = request.form.get("actividad_num")
+        pdf_file = request.files.get("pdf_file")
 
-        if not user:
-            flash("Número de control no encontrado en la base de usuarios.", "danger")
+        # --- Validaciones ---
+        if not numero_control or not pdf_file or not actividad_num:
+            flash("Debes ingresar número de control, seleccionar numero de actividad y subir un PDF.", "danger")
             return redirect(url_for("enviaractividad"))
 
-        # --- Generar nombre único ---
-        base_name = f"{user['numero_control']}_{user['apellido_paterno']}_{user['apellido_materno']}_{user['nombres']}_{actividad_num}"
-        base_name = secure_filename(base_name)
-        filename = f"{base_name}_{int(time.time())}"
+        if not pdf_file.filename.lower().endswith(".pdf"):
+            flash("El archivo debe ser un PDF.", "danger")
+            return redirect(url_for("enviaractividad"))
 
-        # --- Subir PDF a Cloudinary ---
-        result = cloudinary.uploader.upload(
-            pdf_file,
-            resource_type="raw",
-            folder="actividades_pdf",
-            public_id=filename,
-            unique_filename=False,
-            overwrite=True
-        )
-        pdf_url = result.get("secure_url")
-        created_at = datetime.now(pytz.timezone("America/Mexico_City"))
+        pdf_bytes = pdf_file.read()
+        if len(pdf_bytes) > 10 * 1024 * 1024:
+            flash("El PDF debe ser menor o igual a 10 MB.", "danger")
+            return redirect(url_for("enviaractividad"))
 
-        # --- Insertar en la tabla actividades ---
-        inserted = insert_actividad(
-            session_db,
-            actividad_num,
-            user["apellido_paterno"],
-            user["apellido_materno"],
-            user["nombres"],
-            user["carrera"],
-            user["semestre"],
-            user["grupo"],
-            pdf_url,
-            created_at
-        )
+        pdf_file.seek(0)
 
-        if not inserted:
+        # --- Conexión a la BD ---
+        session_db = get_db_session()
+        try:
+            # Obtener datos completos del usuario
+            query = text("""
+                SELECT numero_control, nombres, apellido_paterno, apellido_materno,
+                       carrera, semestre, grupo
+                FROM users
+                WHERE numero_control = :nc
+            """)
+            user = session_db.execute(query, {"nc": numero_control}).mappings().first()
+
+            if not user:
+                flash("Número de control no encontrado en la base de usuarios.", "danger")
+                return redirect(url_for("enviaractividad"))
+
+            # --- Generar nombre único ---
+            base_name = f"{user['numero_control']}_{user['apellido_paterno']}_{user['apellido_materno']}_{user['nombres']}_{actividad_num}"
+            filename = secure_filename(base_name) + f"_{int(datetime.utcnow().timestamp())}"
+
+            # --- Subir PDF a Cloudinary ---
+            result = cloudinary.uploader.upload(
+                pdf_file,
+                resource_type="raw",
+                folder="actividades_pdf",
+                public_id=filename,
+                unique_filename=False,
+                overwrite=True
+            )
+            pdf_url = result.get("secure_url")
+
+            # --- Insertar en la tabla actividades ---
+            created_at = datetime.now(pytz.timezone("America/Mexico_City")).replace(tzinfo=None)
+
+            insert_query = text("""
+                INSERT INTO actividades (
+                    actividad_num, apellido_paterno, apellido_materno,
+                    nombres, carrera, semestre, grupo, pdf_url, created_at
+                ) VALUES (
+                    :actividad_num, :apellido_paterno, :apellido_materno,
+                    :nombres, :carrera, :semestre, :grupo, :pdf_url, :created_at
+                )
+            """)
+
+            session_db.execute(insert_query, {
+                "actividad_num": actividad_num,
+                "apellido_paterno": user["apellido_paterno"],
+                "apellido_materno": user["apellido_materno"],
+                "nombres": user["nombres"],
+                "carrera": user["carrera"],
+                "semestre": user["semestre"],
+                "grupo": user["grupo"],
+                "pdf_url": pdf_url,
+                "created_at": created_at
+            })
+            session_db.commit()
+
+        except Exception as db_err:
             session_db.rollback()
-            # Si el PDF ya se subió, eliminar
+            # Si el PDF ya se subió pero hubo error en DB → eliminar
             try:
                 cloudinary.uploader.destroy(f"actividades_pdf/{filename}", resource_type="raw")
             except:
                 pass
+
+            print("❌ Error en DB:", db_err)
             flash("Ocurrió un error al registrar la actividad en la base de datos.", "danger")
             return redirect(url_for("enviaractividad"))
 
-        session_db.commit()
+        finally:
+            session_db.close()
+
         flash(f"PDF de {user['nombres']} {user['apellido_paterno']} enviado correctamente.", "success")
         return redirect(url_for("hello_pm1"))
 
     except Exception as e:
-        session_db.rollback()
         print("❌ Error general:", e)
         flash("Ocurrió un error inesperado al procesar el registro.", "danger")
         return redirect(url_for("enviaractividad"))
-
-    finally:
-        session_db.close()
 
 
 #para que el docente suba una planeación (anexo PDF de instrumentos) y registrarla en la DB
