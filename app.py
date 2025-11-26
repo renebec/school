@@ -183,15 +183,18 @@ def enviaractividad():
             flash("El archivo debe ser un PDF.", "danger")
             return redirect(url_for("enviaractividad"))
 
+        # Validar tamaño (máx 10 MB)
         pdf_bytes = pdf_file.read()
         if len(pdf_bytes) > 10 * 1024 * 1024:
             flash("El PDF debe ser menor o igual a 10 MB.", "danger")
             return redirect(url_for("enviaractividad"))
 
+        # Regresar puntero
         pdf_file.seek(0)
 
         # --- Conexión a la BD ---
         session_db = get_db_session()
+
         try:
             # Obtener datos completos del usuario
             query = text("""
@@ -200,6 +203,7 @@ def enviaractividad():
                 FROM users
                 WHERE numero_control = :nc
             """)
+
             user = session_db.execute(query, {"nc": numero_control}).mappings().first()
 
             if not user:
@@ -208,7 +212,8 @@ def enviaractividad():
 
             # --- Generar nombre único ---
             base_name = f"{user['numero_control']}_{user['apellido_paterno']}_{user['apellido_materno']}_{user['nombres']}_{actividad_num}"
-            filename = secure_filename(base_name) + f"_{int(datetime.utcnow().timestamp())}"
+            base_name = secure_filename(base_name)
+            filename = f"{base_name}_{int(time.time())}"
 
             # --- Subir PDF a Cloudinary ---
             result = cloudinary.uploader.upload(
@@ -219,36 +224,31 @@ def enviaractividad():
                 unique_filename=False,
                 overwrite=True
             )
+
             pdf_url = result.get("secure_url")
 
             # --- Insertar en la tabla actividades ---
-            created_at = datetime.now(pytz.timezone("America/Mexico_City")).replace(tzinfo=None)
+            created_at = datetime.now(pytz.timezone("America/Mexico_City"))
 
-            insert_query = text("""
-                INSERT INTO actividades (
-                    actividad_num, apellido_paterno, apellido_materno,
-                    nombres, carrera, semestre, grupo, pdf_url, created_at
-                ) VALUES (
-                    :actividad_num, :apellido_paterno, :apellido_materno,
-                    :nombres, :carrera, :semestre, :grupo, :pdf_url, :created_at
-                )
-            """)
+            insert_actividad(
+                session_db,
+                numero_control,                 # <- agregado
+                actividad_num,
+                user["apellido_paterno"],
+                user["apellido_materno"],
+                user["nombres"],
+                user["carrera"],
+                user["semestre"],
+                user["grupo"],
+                pdf_url,
+                created_at
+            )
 
-            session_db.execute(insert_query, {
-                "actividad_num": actividad_num,
-                "apellido_paterno": user["apellido_paterno"],
-                "apellido_materno": user["apellido_materno"],
-                "nombres": user["nombres"],
-                "carrera": user["carrera"],
-                "semestre": user["semestre"],
-                "grupo": user["grupo"],
-                "pdf_url": pdf_url,
-                "created_at": created_at
-            })
             session_db.commit()
 
         except Exception as db_err:
             session_db.rollback()
+
             # Si el PDF ya se subió pero hubo error en DB → eliminar
             try:
                 cloudinary.uploader.destroy(f"actividades_pdf/{filename}", resource_type="raw")
