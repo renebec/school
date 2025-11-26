@@ -641,9 +641,14 @@ def login():
                 # Check if password matches (you should hash passwords in production)
                 #if user['password'] == password:
                 #    print("Password correct")
-                    flask_session.permanent = True
-                    flask_session['username'] = username
-                    flask_session['last_activity'] = datetime.now().isoformat()
+                    session.permanent = True
+                    session['username'] = user['username']
+                    session['numero_control'] = user['numero_control']
+                    session['last_activity'] = datetime.now().isoformat()
+                    session['es_profesor'] = user.get('es_profesor', 0) == 1
+                    # Detect professor
+                    numero_control = user['numero_control']
+                    session['es_profesor'] = len(numero_control) >= 4 and numero_control[3].isalpha()
 
                     #  --- Lógica añadida para determinar tipo de usuario ---
                     school_id = user.get('numero_control', '')
