@@ -607,16 +607,6 @@ def register_docente():
 
 
 
-@app.route("/plan/<int:plan_id>/edit", methods=["GET"])
-def edit_plan(plan_id):
-    db = get_db_session()
-    plan = db.query(Plan).filter_by(id=plan_id).first()
-
-    if not plan:
-        return "Plan not found", 404
-
-    return render_template("edit_plan.html", plan=plan)
-
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
@@ -625,7 +615,7 @@ def login():
         print(f"Trying login for user: {username}")
 
         try:
-            # Conexión a la DB y búsqueda de usuario por username
+            # Conexión a la DB
             db_session = get_db_session()
             query = text('SELECT * FROM users WHERE username = :username')
             result = db_session.execute(query, {'username': username})
@@ -645,13 +635,13 @@ def login():
             print("User found:", user)
             session.permanent = True
             session['username'] = user['username']
+            session['numero_control'] = user['numero_control']   # ← FALTABA ESTO
 
             session['last_activity'] = time.time()
 
-            # Detectar profesor (si el cuarto caracter de numero_control es letra)
+            # Detectar profesor (si el 4to caracter es letra)
             nc = user['numero_control']
             session['es_profesor'] = len(nc) >= 4 and nc[3].isalpha()
-
 
             flash(f'{username} inició sesión correctamente', 'success')
             return redirect(url_for('hello_pm1'))
@@ -661,7 +651,6 @@ def login():
             flash('Ocurrió un error. Intente más tarde.', 'danger')
             return render_template('login.html')
 
-    # GET
     return render_template('login.html')
 
 @app.route('/download_pdf/<int:id>')
