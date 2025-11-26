@@ -159,7 +159,6 @@ def show_pgn(id):
 
 
 
-
 @app.route("/enviaractividad", methods=["GET", "POST"])
 def enviaractividad():
     if not check_session_timeout():
@@ -169,7 +168,6 @@ def enviaractividad():
     if request.method == "GET":
         return render_template("enviaractividad.html", show_form=True)
 
-    # --- Si entra por POST ---
     try:
         # --- Recibir datos ---
         numero_control = request.form.get("numero_control")
@@ -191,15 +189,17 @@ def enviaractividad():
             flash("El PDF debe ser menor o igual a 10 MB.", "danger")
             return redirect(url_for("enviaractividad"))
 
-        # Regresamos el puntero
+        # Regresar puntero
         pdf_file.seek(0)
 
         # --- Conexión a la BD ---
         session_db = get_db_session()
 
         try:
+            # Obtener datos completos del usuario
             query = text("""
-                SELECT numero_control, nombres, apellido_paterno, apellido_materno
+                SELECT numero_control, nombres, apellido_paterno, apellido_materno,
+                       carrera, semestre, grupo
                 FROM users
                 WHERE numero_control = :nc
             """)
@@ -210,11 +210,9 @@ def enviaractividad():
                 flash("Número de control no encontrado en la base de usuarios.", "danger")
                 return redirect(url_for("enviaractividad"))
 
-            # --- Generar nombre único para el PDF ---
+            # --- Generar nombre único ---
             base_name = f"{user['numero_control']}_{user['apellido_paterno']}_{user['apellido_materno']}_{user['nombres']}_{actividad_num}"
             base_name = secure_filename(base_name)
-
-            # Evitar sobrescrituras (agregar timestamp)
             filename = f"{base_name}_{int(time.time())}"
 
             # --- Subir PDF a Cloudinary ---
@@ -234,13 +232,15 @@ def enviaractividad():
 
             insert_actividad(
                 session_db,
-                numero_control=user["numero_control"],
-                actividad_num=actividad_num,
-                apellido_paterno=user["apellido_paterno"],
-                apellido_materno=user["apellido_materno"],
-                nombres=user["nombres"],
-                pdf_url=pdf_url,
-                created_at=created_at
+                actividad_num,                  # 1
+                user["apellido_paterno"],       # 2
+                user["apellido_materno"],       # 3
+                user["nombres"],                # 4
+                user["carrera"],                # 5
+                user["semestre"],               # 6
+                user["grupo"],                  # 7
+                pdf_url,                        # 8
+                created_at                      # 9
             )
 
             session_db.commit()
@@ -248,7 +248,7 @@ def enviaractividad():
         except Exception as db_err:
             session_db.rollback()
 
-            # Si el PDF ya se subió pero hubo error en DB, se borra del servidor
+            # Si el PDF ya se subió pero hubo error en DB → eliminar
             try:
                 cloudinary.uploader.destroy(f"actividades_pdf/{filename}", resource_type="raw")
             except:
@@ -268,7 +268,6 @@ def enviaractividad():
         print("❌ Error general:", e)
         flash("Ocurrió un error inesperado al procesar el registro.", "danger")
         return redirect(url_for("enviaractividad"))
-
 
 
 #para que el docente suba una planeación (anexo PDF de instrumentos) y registrarla en la DB
