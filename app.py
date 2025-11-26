@@ -618,68 +618,54 @@ def edit_plan(plan_id):
 
     return render_template("edit_plan.html", plan=plan)
 
-
-
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
         print(f"Trying login for user: {username}")
+
         try:
-            # Connect to the database and fetch user data by username
+            # Conexión a la DB y búsqueda de usuario por username
             db_session = get_db_session()
             query = text('SELECT * FROM users WHERE username = :username')
             result = db_session.execute(query, {'username': username})
             user = result.mappings().first()
             db_session.close()
 
-            if user:
-                # ✅ Secure password check using Bcrypt
-                if bcrypt.check_password_hash(user['password'], password):
-                    print("User found:", user)
-                # Check if password matches (you should hash passwords in production)
-                #if user['password'] == password:
-                #    print("Password correct")
-                    session.permanent = True
-                    session['username'] = user['username']
-                    session['numero_control'] = user['numero_control']
-                    session['last_activity'] = time.time()
-                    session['es_profesor'] = user.get('es_profesor', 0) == 1
-                    # Detect professor
-                    numero_control = user['numero_control']
-                    session['es_profesor'] = len(numero_control) >= 4 and numero_control[3].isalpha()
-
-                    #  --- Lógica añadida para determinar tipo de usuario ---
-                    school_id = user.get('numero_control', '')
-                    es_profesor = len(school_id) >= 4 and school_id[5].isalpha()
-                    flask_session['es_profesor'] = es_profesor
-
-                    # ------ DETECTAR MASTER ------
-                    # Campo en DB: is_master (0 o 1)
-                    is_master = user.get('is_master', 0) == 1
-                    flask_session['is_master'] = is_master
-
-                    flash(f'{username} inició sesión correctamente', 'success')
-
-                    return redirect(url_for('hello_pm1'))  # Redirect on success
-                else:
-                    print("Password incorrect")
-                    flash('Contraseña equivocada. Intente de nuevo.', 'danger')
-                    return render_template('login.html')
-            else:
+            if not user:
                 flash('Nombre de usuario no existe. Intente de nuevo.', 'danger')
                 return render_template('login.html')
+
+            # Verificar contraseña
+            if not bcrypt.check_password_hash(user['password'], password):
+                flash('Contraseña equivocada. Intente de nuevo.', 'danger')
+                return render_template('login.html')
+
+            # Login exitoso
+            print("User found:", user)
+            session.permanent = True
+            session['username'] = user['username']
+            session['numero_control'] = user['numero_control']
+            session['last_activity'] = time.time()
+
+            # Detectar profesor (si el cuarto caracter de numero_control es letra)
+            nc = user['numero_control']
+            session['es_profesor'] = len(nc) >= 4 and nc[3].isalpha()
+
+            # Detectar master
+            session['is_master'] = user.get('is_master', 0) == 1
+
+            flash(f'{username} inició sesión correctamente', 'success')
+            return redirect(url_for('hello_pm1'))
 
         except Exception as e:
             print("Exception during login:", e)
             flash('Ocurrió un error. Intente más tarde.', 'danger')
             return render_template('login.html')
 
+    # GET
     return render_template('login.html')
-
-
-
 
 @app.route('/download_pdf/<int:id>')
 def download_pdf(id):
