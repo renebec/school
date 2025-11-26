@@ -653,8 +653,6 @@ def login():
             nc = user['numero_control']
             session['es_profesor'] = len(nc) >= 4 and nc[3].isalpha()
 
-            # Detectar master
-            session['is_master'] = user.get('is_master', 0) == 1
 
             flash(f'{username} inició sesión correctamente', 'success')
             return redirect(url_for('hello_pm1'))
