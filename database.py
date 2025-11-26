@@ -107,49 +107,49 @@ def load_pgn_from_db(id):
 
 def insert_actividad(session, actividad_num, apellido_paterno, apellido_materno, nombres, carrera, semestre, grupo, pdf_url, created_at):
 
-try:
-    query = text("""
-        INSERT INTO actividades (
-            actividad_num,
-            apellido_paterno,
-            apellido_materno,
-            nombres,
-            carrera,
-            semestre,
-            grupo,
-            pdf_url,
-            created_at
-        )
-        VALUES (
-            :actividad_num,
-            :apellido_paterno,
-            :apellido_materno,
-            :nombres,
-            :carrera,
-            :semestre,
-            :grupo,
-            :pdf_url,
-            :created_at
-        )
-    """)
-
-    session.execute(query, {
-        "actividad_num": actividad_num,
-        "apellido_paterno": apellido_paterno,
-        "apellido_materno": apellido_materno,
-        "nombres": nombres,
-        "carrera": carrera,
-        "semestre": semestre,
-        "grupo": grupo,
-        "pdf_url": pdf_url,
-        "created_at": created_at
-    })
-
-    return True
-
-except Exception as e:
-    print(f"DB ERROR insert_actividad: {e}")
-    return False
+    try:
+        query = text("""
+            INSERT INTO actividades (
+                actividad_num,
+                apellido_paterno,
+                apellido_materno,
+                nombres,
+                carrera,
+                semestre,
+                grupo,
+                pdf_url,
+                created_at
+            )
+            VALUES (
+                :actividad_num,
+                :apellido_paterno,
+                :apellido_materno,
+                :nombres,
+                :carrera,
+                :semestre,
+                :grupo,
+                :pdf_url,
+                :created_at
+            )
+        """)
+    
+        session.execute(query, {
+            "actividad_num": actividad_num,
+            "apellido_paterno": apellido_paterno,
+            "apellido_materno": apellido_materno,
+            "nombres": nombres,
+            "carrera": carrera,
+            "semestre": semestre,
+            "grupo": grupo,
+            "pdf_url": pdf_url,
+            "created_at": created_at
+        })
+    
+        return True
+    
+    except Exception as e:
+        print(f"DB ERROR insert_actividad: {e}")
+        return False
 
 
 def load_all_pdfs(session_db):
