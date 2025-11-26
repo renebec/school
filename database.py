@@ -105,10 +105,11 @@ def load_pgn_from_db(id):
     return None
 
 
-def insert_actividad(session, actividad_num, apellido_paterno, apellido_materno, nombres, carrera, semestre, grupo, pdf_url, created_at):
+def insert_actividad(session, numero_control, actividad_num, apellido_paterno, apellido_materno, nombres, carrera, semestre, grupo, pdf_url, created_at):
     try:
         query = text("""
             INSERT INTO actividades (
+                numero_control,
                 actividad_num,
                 apellido_paterno,
                 apellido_materno,
@@ -120,6 +121,7 @@ def insert_actividad(session, actividad_num, apellido_paterno, apellido_materno,
                 created_at
             )
             VALUES (
+                :numero_control,
                 :actividad_num,
                 :apellido_paterno,
                 :apellido_materno,
@@ -132,6 +134,7 @@ def insert_actividad(session, actividad_num, apellido_paterno, apellido_materno,
             )
         """)
         session.execute(query, {
+            "numero_control": numero_control,
             "actividad_num": actividad_num,
             "apellido_paterno": apellido_paterno,
             "apellido_materno": apellido_materno,
