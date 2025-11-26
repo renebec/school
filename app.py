@@ -216,15 +216,16 @@ def enviaractividad():
             filename = f"{base_name}_{int(time.time())}"
 
             # --- Subir PDF a Cloudinary ---
-            # --- Subir PDF a Cloudinary ---
             result = cloudinary.uploader.upload(
                 pdf_file,
                 resource_type="raw",
                 folder="actividades_pdf",
                 public_id=filename,
-                unique_filename=False,
+                unique_filename=True,
                 overwrite=True
             )
+
+            pdf_url = result.get("secure_url")
 
             # Obtener URL directa para abrir en navegador, no forzar descarga
             pdf_url = cloudinary.utils.cloudinary_url(
