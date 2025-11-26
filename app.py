@@ -644,7 +644,7 @@ def login():
                     session.permanent = True
                     session['username'] = user['username']
                     session['numero_control'] = user['numero_control']
-                    session['last_activity'] = datetime.now().isoformat()
+                    session['last_activity'] = time.time()
                     session['es_profesor'] = user.get('es_profesor', 0) == 1
                     # Detect professor
                     numero_control = user['numero_control']
