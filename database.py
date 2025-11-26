@@ -154,6 +154,28 @@ def insert_actividad(session, actividad_num, apellido_paterno, apellido_materno,
     return True
 
 
+def load_all_pdfs(session_db):
+    query = text("""
+        SELECT pdf_url, created_at, numero_control
+        FROM actividades
+        ORDER BY created_at DESC, numero_control DESC
+    """)
+    result = session_db.execute(query).mappings().all()  # <-- mapeo
+    pdfs = result  # Cada dict tiene keys: 'pdf_url', 'created_at', 'numero_control'
+    return pdfs
+
+def load_user_pdfs(session_db, numero_control):
+    query = text("""
+        SELECT pdf_url, created_at, numero_control
+        FROM actividades
+        WHERE numero_control = :numero_control
+        ORDER BY created_at DESC, numero_control DESC
+    """)
+    result = session_db.execute(query, {"numero_control": numero_control}).mappings().all()
+    pdfs = result
+    return pdfs
+
+
 
 
 def insert_plan(

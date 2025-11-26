@@ -198,6 +198,28 @@
         <a  href="{{ url_for('plan_carga') }}">
               <button type="submit" class="btn btn-warning">Subir una planeación</button>
         </a>
+
+        <h3>Todos los PDFs cargados</h3>
+        {% else %}
+        <h3>Tus PDFs</h3>
+
+        {% endif %}
+
+        {% if pdfs %}
+        <ul>
+        {% for pdf in pdfs %}
+            <li>
+                <a href="{{ pdf.pdf_url }}" target="_blank">Ver PDF</a>
+                (Subido: {{ pdf.created_at }})
+            </li>
+        {% endfor %}
+        </ul>
+        {% else %}
+            {% if es_profesor %}
+                <p>No hay ningún PDF cargado todavía.</p>
+            {% else %}
+                <p>Todavía no has subido PDFs.</p>
+            {% endif %}
         {% endif %}
 
 

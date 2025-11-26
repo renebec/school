@@ -13,22 +13,36 @@ from weasyprint import HTML, CSS
 import pymysql
 from werkzeug.utils import secure_filename
 
-from database import load_pg_from_db, load_pgn_from_db,  register_user, get_db_session, insert_actividad, load_plan_from_db, insert_plan,  load_pg_from_db2, is_preregistered
+from database import load_pg_from_db, load_pgn_from_db,  register_user, get_db_session, insert_actividad, load_plan_from_db, insert_plan,  load_pg_from_db2, is_preregistered, load_all_pdfs, load_user_pdfs
 
 from sqlalchemy import text
 
 created_at = datetime.now()
 
+import time
+
 def check_session_timeout():
-    if 'username' in session:
-        if 'last_activity' in session:
-            last_activity = datetime.fromisoformat(session['last_activity'])
-            if datetime.now() - last_activity > timedelta(minutes=60):
-                session.clear()
-                return False
-        session['last_activity'] = datetime.now().isoformat()
-        return True
-    return False
+    last = session.get('last_activity')
+    if not last:
+        return False
+
+    now = time.time()
+    timeout_seconds = 60 * 60  # 60 minutes
+
+    # If last_activity is not a float (old ISO string), reset session
+    try:
+        last = float(last)
+    except:
+        session.clear()
+        return False
+
+    if now - last > timeout_seconds:
+        session.clear()
+        return False
+
+    # Refresh timestamp
+    session['last_activity'] = time.time()
+    return True
 
 """
 cloudinary.config( 
@@ -47,17 +61,50 @@ app.permanent_session_lifetime = timedelta(minutes=60)
 
 @app.route("/")
 def hello_pm1():
-        if not check_session_timeout():
-            #flash('Su sesión ha expirado. Por favor, inicie sesión nuevamente.', 'danger')
-            return redirect(url_for('login'))
+    # 1. Validar expiración de sesión
+    if not check_session_timeout():
+        flash("Su sesión ha expirado. Por favor, inicie sesión nuevamente.", "danger")
+        return redirect(url_for("login"))
 
-        pg = load_pg_from_db2()
+    # 2. Obtener datos del usuario desde session
+    username = session.get("username")
+    numero_control = session.get("numero_control")
+    es_profesor = session.get("es_profesor", False)
 
-        es_profesor = flask_session.get('es_profesor', False)
-        username = flask_session.get('username', 'Invitado')
+    if not username or not es_profesor:
+        flash("Debe iniciar sesión.", "danger")
+        return redirect(url_for("login"))
 
+    # 3. Conexión a DB
+    session_db = get_db_session()
 
-        return render_template('home.html', es_profesor=es_profesor , pg=pg, username=username)
+    try:
+        # 4. Cargar PDFs según el tipo de usuario
+        if es_profesor:
+            pg = load_pg_from_db2()
+            pdfs = load_all_pdfs(session_db)
+            es_profesor = True
+        else:
+            pg = load_pg_from_db2()
+            pdfs = load_user_pdfs(session_db, numero_control)
+            es_profesor = False
+
+    except Exception as e:
+        print("❌ Error al cargar PDFs:", e)
+        flash("Error al cargar los archivos.", "danger")
+        pdfs = []
+    finally:
+        session_db.close()
+
+    # 5. Renderizar plantilla
+    return render_template(
+        "home.html",
+        es_profesor=es_profesor,
+        username=username,
+        numero_control=numero_control,
+        pdfs=pdfs,
+        pg=pg
+    )
 
 
 
@@ -603,7 +650,13 @@ def login():
                     es_profesor = len(school_id) >= 4 and school_id[5].isalpha()
                     flask_session['es_profesor'] = es_profesor
 
+                    # ------ DETECTAR MASTER ------
+                    # Campo en DB: is_master (0 o 1)
+                    is_master = user.get('is_master', 0) == 1
+                    flask_session['is_master'] = is_master
+
                     flash(f'{username} inició sesión correctamente', 'success')
+
                     return redirect(url_for('hello_pm1'))  # Redirect on success
                 else:
                     print("Password incorrect")
@@ -661,12 +714,6 @@ def download_pdf(id):
 
 @app.route('/logout')
 def logout():
-
-    session.pop('username', None)
-
+    session.clear()  # removes everything from session
+    flash("Has cerrado sesión correctamente.", "success")
     return redirect(url_for('login'))
-
-
-if __name__ == '__main__':
-    http_server = WSGIServer(('0.0.0.0', 8080), app)
-    http_server.serve_forever()
