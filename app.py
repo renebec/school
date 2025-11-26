@@ -646,7 +646,7 @@ def login():
             print("User found:", user)
             session.permanent = True
             session['username'] = user['username']
-            session['numero_control'] = user['numero_control']
+
             session['last_activity'] = time.time()
 
             # Detectar profesor (si el cuarto caracter de numero_control es letra)
