@@ -160,85 +160,114 @@ def show_pgn(id):
 
 
 
-#para que el usuario envíe una nueva actividad y registrarla en la DB
 @app.route("/enviaractividad", methods=["GET", "POST"])
 def enviaractividad():
     if not check_session_timeout():
         flash('Su sesión ha expirado. Por favor, inicie sesión nuevamente.', 'danger')
         return redirect(url_for('login'))
 
-    show_form = request.method == "POST"
+    if request.method == "GET":
+        return render_template("enviaractividad.html", show_form=True)
 
-    if request.method == "POST":
+    # --- Si entra por POST ---
+    try:
+        # --- Recibir datos ---
+        numero_control = request.form.get("numero_control")
+        actividad_num = request.form.get("actividad_num")
+        pdf_file = request.files.get("pdf_file")
+
+        # --- Validaciones ---
+        if not numero_control or not pdf_file or not actividad_num:
+            flash("Debes ingresar número de control, seleccionar numero de actividad y subir un PDF.", "danger")
+            return redirect(url_for("enviaractividad"))
+
+        if not pdf_file.filename.lower().endswith(".pdf"):
+            flash("El archivo debe ser un PDF.", "danger")
+            return redirect(url_for("enviaractividad"))
+
+        # Validar tamaño (máx 10 MB)
+        pdf_bytes = pdf_file.read()
+        if len(pdf_bytes) > 10 * 1024 * 1024:
+            flash("El PDF debe ser menor o igual a 10 MB.", "danger")
+            return redirect(url_for("enviaractividad"))
+
+        # Regresamos el puntero
+        pdf_file.seek(0)
+
+        # --- Conexión a la BD ---
+        session_db = get_db_session()
+
         try:
-            actividad_num = request.form['actividad_num']
-            numero_control = request.form['numero_control']
-            pdf_file = request.files['pdf_file']
+            query = text("""
+                SELECT numero_control, nombres, apellido_paterno, apellido_materno
+                FROM users
+                WHERE numero_control = :nc
+            """)
 
-            if not pdf_file or not pdf_file.filename.endswith('.pdf'):
-                flash("Debes subir un archivo PDF válido menor a 5MB.", "danger")
-                return redirect(request.url)
-
-
-
-            # Obtener la sesión de base de datos
-            session_db = get_db_session()
-
-            # Obtener datos del usuario
-            query = text('SELECT * FROM users WHERE numero_control = :numero_control')
-            user = session_db.execute(query, {'numero_control': numero_control}).mappings().first()
+            user = session_db.execute(query, {"nc": numero_control}).mappings().first()
 
             if not user:
-                flash("Número de control no encontrado en la base de datos.", "danger")
-                return redirect(request.url)
+                flash("Número de control no encontrado en la base de usuarios.", "danger")
+                return redirect(url_for("enviaractividad"))
 
-            apellido_paterno = user['apellido_paterno']
-            apellido_materno = user['apellido_materno']
-            nombres = user['nombres']
-            carrera = user['carrera']
-            semestre = user['semestre']
-            grupo = user['grupo']
-            pdf_url = user['pdf_url']
+            # --- Generar nombre único para el PDF ---
+            base_name = f"{user['numero_control']}_{user['apellido_paterno']}_{user['apellido_materno']}_{user['nombres']}_{actividad_num}"
+            base_name = secure_filename(base_name)
 
+            # Evitar sobrescrituras (agregar timestamp)
+            filename = f"{base_name}_{int(time.time())}"
 
-            # Subir archivo a Cloudinary
-            filename = secure_filename(f"actividad {apellido_paterno}_{apellido_materno}_{nombres}_{semestre}_{grupo}_{actividad_num}.pdf")
+            # --- Subir PDF a Cloudinary ---
             result = cloudinary.uploader.upload(
                 pdf_file,
-                resource_type='raw',
-                folder='actividades_pdf',
-                public_id=filename
+                resource_type="raw",
+                folder="actividades_pdf",
+                public_id=filename,
+                unique_filename=False,
+                overwrite=True
             )
-            pdf_url = result.get('secure_url')
-            print("✅ Carga en Cloudinary exitosa")
 
-            # Establecer la fecha y hora actual en zona horaria de México
+            pdf_url = result.get("secure_url")
+
+            # --- Insertar en la tabla actividades ---
             created_at = datetime.now(pytz.timezone("America/Mexico_City"))
 
-            # Insertar en la tabla actividades_inoc
             insert_actividad(
                 session_db,
-                actividad_num,
-                apellido_paterno,
-                apellido_materno,
-                nombres,
-                carrera,
-                semestre,
-                grupo,
-                pdf_url,
-                created_at
+                numero_control=user["numero_control"],
+                actividad_num=actividad_num,
+                apellido_paterno=user["apellido_paterno"],
+                apellido_materno=user["apellido_materno"],
+                nombres=user["nombres"],
+                pdf_url=pdf_url,
+                created_at=created_at
             )
-            print("✅ Inserción en DB exitosa")
 
-            flash(f"Actividad {actividad_num} de {nombres} enviada correctamente.", "success")
-            return redirect(url_for("hello_pm1"))
+            session_db.commit()
 
-        except Exception as e:
-            print("❌ Error during submission:", e)
-            flash(f"Ocurrió un error al procesar la actividad {actividad_num}.", "danger")
-            return redirect(url_for('enviaractividad'))
+        except Exception as db_err:
+            session_db.rollback()
 
-    return render_template("enviaractividad.html", show_form=show_form)
+            # Si el PDF ya se subió pero hubo error en DB, se borra del servidor
+            try:
+                cloudinary.uploader.destroy(f"actividades_pdf/{filename}", resource_type="raw")
+            except:
+                pass
+
+            print("❌ Error en DB:", db_err)
+            flash("Ocurrió un error al registrar la actividad en la base de datos.", "danger")
+            return redirect(url_for("enviaractividad"))
+
+        finally:
+            session_db.close()
+
+        flash(f"PDF de {user['nombres']} {user['apellido_paterno']} enviado correctamente.", "success")
+        return redirect(url_for("hello_pm1"))
+
+    except Exception as e:
+        print("❌ Error general:", e)
+        flash("Ocurrió un error inesperado al procesar el registro.", "danger")
+        return redirect(url_for("enviaractividad"))
 
 
 
