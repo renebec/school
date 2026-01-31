@@ -5,6 +5,10 @@ from datetime import datetime
 import pytz
 import pymysql
 
+
+
+
+
 db_connection_string = os.environ['DB_CONNECTION_STRING']
 engine = create_engine(db_connection_string,
       connect_args={
@@ -301,7 +305,7 @@ def get_user_from_database(username):
     try:
         session = get_db_session()
         result = session.execute(
-            text("SELECT * FROM users2 WHERE username = :val"),
+            text("SELECT * FROM users WHERE username = :val"),
             {"val": username}
         )
         row = result.mappings().first()
@@ -324,7 +328,7 @@ def register_user(session, numero_control, apellido_paterno, apellido_materno, n
     password = password  # You might want to hash this password
     try:
         sql = text("""
-            INSERT INTO users2 ( numero_control, apellido_paterno, apellido_materno, nombres, username, password, carrera, semestre, grupo, created_at)
+            INSERT INTO users ( numero_control, apellido_paterno, apellido_materno, nombres, username, password, carrera, semestre, grupo, created_at)
             VALUES (:numero_control, :apellido_paterno, :apellido_materno, :nombres, :username, :password, :carrera, :semestre, :grupo, :created_at)
         """)
         session.execute(sql, {
