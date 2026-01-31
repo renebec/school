@@ -27,6 +27,7 @@
 
         <form method="post" action="{{ url_for('login') }}">
         <!--<form id="myform" method="POST" action="choice">-->
+          <label for="asig" class="form-label">Selecciona una asignatura</label>
           <select name="asig" required>
             <option value="1">PENSAMIENTO MATEMÁTICO 1</option>
             <option value="2">PENSAMIENTO MATEMÁTICO 2</option>
@@ -37,7 +38,7 @@
             <option value="7">TPA M2-S2</option>
             <option value="8">TPA M2-S3</option>
           </select>
-          <br>
+          <br><br>
             <div class="mb-3">
                 <label for="username" class="form-label">Username</label>
                 <input type="text" class="form-control" id="username" name="username" required>
