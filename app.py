@@ -71,6 +71,11 @@ def hello_pm1():
     numero_control = session.get("numero_control")
     es_profesor = session.get("es_profesor", False)
     asig = session.get("asig")
+    if not asig:
+        flash("No hay asignatura seleccionada en sesión.", "warning")
+        pg = []
+    else:
+        pg = load_pg_from_db2(asig)
     # Validar que haya sesión
     if not username:
         flash("Debe iniciar sesión.", "danger")
