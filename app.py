@@ -103,7 +103,14 @@ def hello_pm1():
         numero_control=numero_control,
         pdfs=pdfs,
         pg=pg
+
+        print("ASIG en sesión:", asig)
+        print("PG:", pg)
+        for fila in pg:
+            print(fila['asig'], fila['parcial'])
     )
+
+    
 
 
 
