@@ -95,6 +95,12 @@ def hello_pm1():
     finally:
         session_db.close()
 
+
+    print("ASIG en sesión:", asig)
+    print("PG:", pg)
+    for fila in pg:
+        print(fila['asig'], fila['parcial'])
+
     # 5. Renderizar plantilla
     return render_template(
         "home.html",
@@ -104,10 +110,6 @@ def hello_pm1():
         pdfs=pdfs,
         pg=pg
 
-        print("ASIG en sesión:", asig)
-        print("PG:", pg)
-        for fila in pg:
-            print(fila['asig'], fila['parcial'])
     )
 
     
