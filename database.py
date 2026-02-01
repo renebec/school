@@ -164,7 +164,7 @@ def insert_actividad(session, numero_control, actividad_num, apellido_paterno, a
         return False
 
 
-def load_all_pdfs(session_db):
+def load_all_pdfs(session_db, asig):
     query = text("""
         SELECT pdf_url, created_at, numero_control
         FROM actividades
@@ -175,7 +175,7 @@ def load_all_pdfs(session_db):
     pdfs = result  # Cada dict tiene keys: 'pdf_url', 'created_at', 'numero_control'
     return pdfs
 
-def load_user_pdfs(session_db, numero_control):
+def load_user_pdfs(session_db, numero_control, asig):
     query = text("""
         SELECT pdf_url, created_at, numero_control
         FROM actividades
