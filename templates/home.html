@@ -219,8 +219,7 @@
         {% for pdf in pdfs %}
             <li>
                 <a href="{{ pdf['pdf_url'] }}" target="_blank">descargar PDF</a>
-                {% set nombre = pdf['pdf_url'].split('actividad_')[-1] %}
-                ({{ nombre }} - {{ pdf['created_at'] }})
+                (Subido: {{ pdf['pdf_url'].split('actividad_')[1].rsplit('.', 1)[0] }} - {{ pdf['created_at'] }})
             </li>
         {% endfor %}
         </ul>
