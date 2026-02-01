@@ -114,7 +114,7 @@ def load_pgn_from_db(id):
     return None
 
 
-def insert_actividad(session, numero_control, actividad_num, apellido_paterno, apellido_materno, nombres, carrera, semestre, grupo, pdf_url, created_at):
+def insert_actividad(session, numero_control, actividad_num, apellido_paterno, apellido_materno, nombres, carrera, semestre, grupo, pdf_url, asig, created_at):
     try:
         query = text("""
             INSERT INTO actividades (
@@ -127,6 +127,7 @@ def insert_actividad(session, numero_control, actividad_num, apellido_paterno, a
                 semestre,
                 grupo,
                 pdf_url,
+                asig,
                 created_at
             )
             VALUES (
@@ -139,6 +140,7 @@ def insert_actividad(session, numero_control, actividad_num, apellido_paterno, a
                 :semestre,
                 :grupo,
                 :pdf_url,
+                :asig,
                 :created_at
             )
         """)
@@ -152,6 +154,7 @@ def insert_actividad(session, numero_control, actividad_num, apellido_paterno, a
             "semestre": semestre,
             "grupo": grupo,
             "pdf_url": pdf_url,
+            "asig": asig,
             "created_at": created_at
         })
         return True
@@ -165,9 +168,10 @@ def load_all_pdfs(session_db):
     query = text("""
         SELECT pdf_url, created_at, numero_control
         FROM actividades
+        WHERE asig = :asig
         ORDER BY created_at DESC, numero_control DESC
     """)
-    result = session_db.execute(query).mappings().all()  # <-- mapeo
+    result = session_db.execute(query, {"asig": asig}).mappings().all()  # <-- mapeo
     pdfs = result  # Cada dict tiene keys: 'pdf_url', 'created_at', 'numero_control'
     return pdfs
 
@@ -176,9 +180,10 @@ def load_user_pdfs(session_db, numero_control):
         SELECT pdf_url, created_at, numero_control
         FROM actividades
         WHERE numero_control = :numero_control
+        AND asig = :asig
         ORDER BY created_at DESC, numero_control DESC
     """)
-    result = session_db.execute(query, {"numero_control": numero_control}).mappings().all()
+    result = session_db.execute(query, {"numero_control": numero_control, "asig": asig}).mappings().all()
     pdfs = result
     return pdfs
 

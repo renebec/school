@@ -12,6 +12,13 @@
 
     <form method="POST" enctype="multipart/form-data" action="{{ url_for('enviaractividad') }}">
 
+        <label>Asignatura:</label>
+        <select name="asig" required>
+            {% for a in asig %}
+                <option value="{{ a['asig'] }}">{{ a['asig'] }}</option>
+            {% endfor %}
+        </select>
+
         <label>Número de actividad:</label><br>
         <input type="number" name="actividad_num" placeholder="1" required><br><br>
 

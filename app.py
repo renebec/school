@@ -88,10 +88,10 @@ def hello_pm1():
         # 4. Cargar PDFs según el tipo de usuario
         if es_profesor:
             pg = load_pg_from_db2(asig)
-            pdfs = load_all_pdfs(session_db)
+            pdfs = load_all_pdfs(session_db, asig)
         else:
             pg = load_pg_from_db2(asig)
-            pdfs = load_user_pdfs(session_db, numero_control)
+            pdfs = load_user_pdfs(session_db, numero_control, asig)
 
     except Exception as e:
         print("❌ Error al cargar PDFs:", e)
@@ -135,6 +135,7 @@ def show_pg(pg_id):
     item = next((item for item in pg if item['plan'] == pg_id), None)
     if item is None:
         return "Not Found", 404
+    session['asignatura_actual'] = item['asig']
     return render_template('classpage.html', i=item)
 
 
@@ -179,11 +180,17 @@ def enviaractividad():
         flash('Su sesión ha expirado. Por favor, inicie sesión nuevamente.', 'danger')
         return redirect(url_for('login'))
 
+    asig = session.get('asignatura_actual')
+    if not asig:
+        flash("No se puede enviar la actividad porque no hay asignatura seleccionada.", "danger")
+        return redirect(url_for('home'))
+
     if request.method == "GET":
-        return render_template("enviaractividad.html", show_form=True)
+        return render_template("enviaractividad.html", show_form=True, asignatura=asig)
 
     try:
         # --- Recibir datos ---
+        asig = request.args.get("asig")
         numero_control = request.form.get("numero_control")
         actividad_num = request.form.get("actividad_num")
         pdf_file = request.files.get("pdf_file")
@@ -255,7 +262,8 @@ def enviaractividad():
                 user["carrera"],                # 6
                 user["semestre"],               # 7
                 user["grupo"],                  # 8
-                pdf_url,                        # 9
+                pdf_url,
+                asig,# 9
                 created_at                      # 10
             )
 
