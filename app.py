@@ -262,7 +262,7 @@ def enviaractividad():
                 asig,# 9
                 created_at                      # 10
             )
-
+            
             session_db.commit()
 
         except Exception as db_err:
