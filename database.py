@@ -66,7 +66,12 @@ def load_pg_from_db2():
     try:
       with engine.connect() as conn:
           #result = conn.execute(text("SELECT * FROM planInocAgro ORDER BY created_at DESC"))
-          result = conn.execute(text("SELECT * FROM mat1 WHERE asig = :asig"))
+          query = text("""
+              SELECT * 
+              FROM mat1 
+              WHERE asig = :asig
+          """)
+          result = conn.execute(query, {"asig": asignatura})
           pg = result.mappings().all()
           return pg
     except Exception as e:
