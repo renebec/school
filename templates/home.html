@@ -219,17 +219,8 @@
         {% for pdf in pdfs %}
             <li>
                 <a href="{{ pdf['pdf_url'] }}" target="_blank">descargar PDF</a>
-                {% if pdf['pdf_url'] %}
-                    {% set partes = pdf['pdf_url'].split('actividad_') %}
-                    {% if partes|length > 1 %}
-                        {% set nombre = partes[1].rsplit('.', 1)[0] %}
-                        (Subido: {{ nombre }} - {{ pdf['created_at'] }})
-                    {% else %}
-                        (Subido: {{ pdf['created_at'] }})
-                    {% endif %}
-                {% else %}
-                    (Subido: {{ pdf['created_at'] }})
-                {% endif %}
+                {% set nombre = pdf['pdf_url'].split('actividades_pdf')[-1].rsplit('.', 1)[0] %}
+                ({{ nombre }} - {{ pdf['created_at'][:10] }})
             </li>
         {% endfor %}
         </ul>
