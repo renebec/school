@@ -219,7 +219,8 @@
         {% for pdf in pdfs %}
             <li>
                 <a href="{{ pdf['pdf_url'] }}" target="_blank">descargar PDF</a>
-                (Subido: actividad_{{ pdf['pdf_url'].split('actividad_')[1] }})
+                (Subido: actividad_{{ pdf['pdf_url'].split('actividad_')[1] }}
+                - {{ pdf['created_at'] }})
             </li>
         {% endfor %}
         </ul>
