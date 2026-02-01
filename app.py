@@ -72,7 +72,7 @@ def hello_pm1():
     es_profesor = session.get("es_profesor", False)
     asig = session.get("asig")
     if not asig:
-        flash("No hay asignatura seleccionada en sesión.", "warning")
+        flash("No se seleccionó ninguna asignatura.", "warning")
         pg = []
     else:
         pg = load_pg_from_db2(asig)
@@ -681,7 +681,7 @@ def login():
             session.permanent = True
             session['username'] = user['username']
             session['numero_control'] = user['numero_control']   # ← FALTABA ESTO
-            session["asig"] = user.get("asig")
+            session["asig"] = asig
             session['last_activity'] = time.time()
 
             # Detectar profesor (si el 4to caracter es letra)
