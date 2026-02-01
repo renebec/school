@@ -70,7 +70,7 @@ def hello_pm1():
     username = session.get("username")
     numero_control = session.get("numero_control")
     es_profesor = session.get("es_profesor", False)
-
+    asig = session.get("asig")
     # Validar que haya sesión
     if not username:
         flash("Debe iniciar sesión.", "danger")
@@ -642,6 +642,7 @@ def login():
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
+        asig = request.form['asig']
         print(f"Trying login for user: {username}")
 
         try:
