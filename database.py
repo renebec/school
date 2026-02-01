@@ -62,7 +62,7 @@ def load_pg_from_db():
       print(f"DB ERROR: {e}")
       return None
 
-def load_pg_from_db2():
+def load_pg_from_db2(asig):
     try:
       with engine.connect() as conn:
           #result = conn.execute(text("SELECT * FROM planInocAgro ORDER BY created_at DESC"))
@@ -71,7 +71,7 @@ def load_pg_from_db2():
               FROM mat1 
               WHERE asig = :asig
           """)
-          result = conn.execute(query, {"asig": asignatura})
+          result = conn.execute(query, {"asig": asig})
           pg = result.mappings().all()
           return pg
     except Exception as e:
