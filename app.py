@@ -179,7 +179,7 @@ def enviaractividad():
     asig = session.get('asignatura_actual')
     if not asig:
         flash("No se puede enviar la actividad porque no hay asignatura seleccionada.", "danger")
-        return redirect(url_for('home'))
+        return redirect(url_for('hello_pm1'))
 
     if request.method == "GET":
         return render_template("enviaractividad.html", show_form=True, asignatura=asig)
