@@ -218,10 +218,9 @@
         <ul>
         {% for pdf in pdfs %}
             <li>
-                <a href="{{ pdf.pdf_url }}" target="_blank">descargar PDF</a>
-                (Subido: {{ pdf.created_at }})
+                <a href="{{ pdf['pdf_url'] }}" target="_blank">descargar PDF</a>
+                (Subido: {{ pdf['created_at'] }})
             </li>
-
         {% endfor %}
         </ul>
         {% else %}
