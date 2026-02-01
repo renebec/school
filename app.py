@@ -186,7 +186,7 @@ def enviaractividad():
 
     try:
         # --- Recibir datos ---
-        asig = request.args.get("asig")
+
         numero_control = request.form.get("numero_control")
         actividad_num = request.form.get("actividad_num")
         pdf_file = request.files.get("pdf_file")
