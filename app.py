@@ -82,10 +82,10 @@ def hello_pm1():
     try:
         # 4. Cargar PDFs según el tipo de usuario
         if es_profesor:
-            pg = load_pg_from_db2()
+            pg = load_pg_from_db2(asig)
             pdfs = load_all_pdfs(session_db)
         else:
-            pg = load_pg_from_db2()
+            pg = load_pg_from_db2(asig)
             pdfs = load_user_pdfs(session_db, numero_control)
 
     except Exception as e:
