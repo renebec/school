@@ -166,7 +166,7 @@ def insert_actividad(session, numero_control, actividad_num, apellido_paterno, a
 
 def load_all_pdfs(session_db, asig):
     query = text("""
-        SELECT pdf_url, created_at, numero_control
+        SELECT pdf_url, created_at, numero_control, asig
         FROM actividades
         WHERE asig = :asig
         ORDER BY created_at DESC, numero_control DESC
@@ -177,7 +177,7 @@ def load_all_pdfs(session_db, asig):
 
 def load_user_pdfs(session_db, numero_control, asig):
     query = text("""
-        SELECT pdf_url, created_at, numero_control
+        SELECT pdf_url, created_at, numero_control, asig
         FROM actividades
         WHERE numero_control = :numero_control
         AND asig = :asig
