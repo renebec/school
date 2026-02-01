@@ -176,7 +176,7 @@ def enviaractividad():
         flash('Su sesión ha expirado. Por favor, inicie sesión nuevamente.', 'danger')
         return redirect(url_for('login'))
 
-    asig = session.get('asignatura_actual')
+    asig = session.get('asig')
     if not asig:
         flash("No se puede enviar la actividad porque no hay asignatura seleccionada.", "danger")
         return redirect(url_for('hello_pm1'))
