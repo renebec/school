@@ -98,7 +98,7 @@ def hello_pm1():
 
 
     print("ASIG en sesión:", asig)
-    print("PG:", pg)
+
     for fila in pg:
         print(fila['asig'], fila['parcial'])
 
@@ -701,6 +701,9 @@ def login():
             return render_template('login.html')
 
     return render_template('login.html')
+
+
+
 
 @app.route('/download_pdf/<int:id>')
 def download_pdf(id):
