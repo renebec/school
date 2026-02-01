@@ -676,7 +676,7 @@ def login():
             session.permanent = True
             session['username'] = user['username']
             session['numero_control'] = user['numero_control']   # ← FALTABA ESTO
-
+            session["asig"] = user.get("asig")
             session['last_activity'] = time.time()
 
             # Detectar profesor (si el 4to caracter es letra)
