@@ -218,6 +218,52 @@
         transform: rotate(90deg);
       }
 
+
+
+
+
+
+      /* Menú lateral flotante */
+      .floating-dev-menu {
+        position: fixed;
+        top: 50%;
+        left: 15px;
+        transform: translateY(-50%);
+        display: none;
+        flex-direction: column;
+        gap: 10px;
+        z-index: 999;
+      }
+
+      /* Botones */
+      .floating-dev-menu a {
+        background: #222;
+        color: white;
+        text-decoration: none;
+        padding: 10px 14px;
+        border-radius: 6px;
+        font-size: 14px;
+        transition: all 0.3s ease;
+      }
+
+      .floating-dev-menu a:hover {
+        background: #444;
+        transform: translateX(6px);
+      }
+
+      /* Scroll suave */
+      html {
+        scroll-behavior: smooth;
+      }
+
+
+      @media (max-width: 768px) {
+        .floating-dev-menu {
+          display: none !important;
+        }
+      }
+      
+
     </style>
 </head>
        <img class="mt-5" id="banner" src="https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExdjg0MXp6MGN2M3dnYnozZW5pYmFlYnM1c3E5c2IybWU5YWVxNTI3dSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/xUPGcuomRFMUcsB9nO/giphy.gif">
@@ -299,7 +345,32 @@
             moreText3.style.display = "inline";
           }
         }
+
+
+          const desarrollo = document.getElementById("Desa");
+          const devMenu = document.getElementById("devMenu");
+
+          window.addEventListener("scroll", () => {
+            const rect = desarrollo.getBoundingClientRect();
+
+            if (rect.top <= 100 && rect.bottom >= 200) {
+              devMenu.style.display = "flex";
+            } else {
+              devMenu.style.display = "none";
+            }
+          });
+
+
+
+
+
+      
     </script>
+
+
+
+
+  
     <main class="container">
 
         <nav class="navbar fixed-top bg-white shadow-sm mb-4">
