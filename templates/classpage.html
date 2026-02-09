@@ -368,18 +368,18 @@
         }
 
 
-          const desarrollo = document.getElementById("Desa");
-          const devMenu = document.getElementById("devMenu");
+        const desarrollo = document.getElementById("Desa");
+        const devMenu = document.getElementById("devMenu");
 
-          window.addEventListener("scroll", () => {
-            const rect = desarrollo.getBoundingClientRect();
+        window.addEventListener("scroll", () => {
+          const rect = desarrollo.getBoundingClientRect();
 
-            if (rect.top <= 100 && rect.bottom >= 200) {
-              devMenu.style.display = "flex";
-            } else {
-              devMenu.style.display = "none";
-            }
-          });
+          if (rect.top <= 100 && rect.bottom >= 200) {
+            devMenu.style.display = "flex";
+          } else {
+            devMenu.style.display = "none";
+          }
+        });
 
 
 
