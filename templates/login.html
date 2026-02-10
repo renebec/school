@@ -30,8 +30,20 @@
     .iframe-wrapper {
       position: relative;
       width: 100%;
-      padding-top: 56.25%; /* 16:9 */
+      padding-top: 60%;
       overflow: hidden;
+    }
+
+    @media (min-width: 992px) {
+      .iframe-wrapper {
+        padding-top: 45%;
+      }
+    }
+
+    @media (min-width: 1400px) {
+      .iframe-wrapper {
+        padding-top: 35%;
+      }
     }
 
     .iframe-wrapper iframe {
