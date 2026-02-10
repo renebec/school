@@ -7,6 +7,10 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
   <style>
+    html, body {
+      max-width: 100%;
+      overflow-x: hidden;
+    }
     .container{
         margin-left:auto;
         margin-right:auto;
@@ -33,15 +37,14 @@
       margin: 0 auto;
     }
 
-    .iframe-wrapper iframe {
-      width: 100%;
-      height: 220px;   /* desktop */
-      border: none;
-    }
+    @media (max-width: 480px) {
+      .iframe-wrapper {
+        max-width: 100%;
+      }
 
-    @media (max-width: 460px) {
       .iframe-wrapper iframe {
-        height: 220px; /* móvil */
+        width: 100%;
+        height: 220px;
       }
     }
 
@@ -124,6 +127,7 @@
               </iframe>
             </div>
           </div>
+        </div>
 
     </div>
 
