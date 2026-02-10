@@ -33,13 +33,21 @@
 
     .iframe-wrapper {
       width: 100%;
-      max-width: 1200px;
+      max-width: 992px;
       margin: 0 auto;
     }
 
-    @media (max-width: 420px) {
+    @media (max-width: 380px) {
       .iframe-wrapper {
         max-width: 100%;
+      }
+
+      /* Desktop y pantallas grandes */
+      @media (min-width: 992px) {
+        .iframe-wrapper {
+          width: 70%;
+          max-width: 1100px; /* límite elegante */
+        }
       }
 
       .iframe-wrapper iframe {
