@@ -28,35 +28,20 @@
     }
 
     .iframe-wrapper {
-      position: relative;
       width: 100%;
-      padding-top: 60%;
-      overflow: hidden;
-    }
-
-    @media (min-width: 768px) {
-      .iframe-wrapper {
-        padding-top: 45%;
-      }
-    }
-
-    @media (min-width: 1400px) {
-      .iframe-wrapper {
-        padding-top: 35%;
-      }
+      max-width: 1400px;
+      margin: 0 auto;
     }
 
     .iframe-wrapper iframe {
-      position: absolute;
-      inset: 0;
       width: 100%;
-      height: 100%;
-      border: 0;
+      height: 700px;   /* desktop */
+      border: none;
     }
 
     @media (max-width: 768px) {
-      img {
-        width: 100%;
+      .iframe-wrapper iframe {
+        height: 360px; /* móvil */
       }
     }
 
@@ -133,9 +118,9 @@
 
 
         <div class="row">
-          <div class="col-12 col-lg-6 mb-4">
+          <div class="col-12 col-xl-10 mx-auto mb-4">
             <div class="iframe-wrapper">
-              <iframe src="https://thingspeak.com/channels/2860984/charts/1?bgcolor=%23fada1a&color=%23d62020&dynamic=true&results=300&round=1&timescale=30&title=Temperatura+%C2%B0C&type=line&xaxis=tiempo&yaxis=Temperatura" loading="lazy" max-width="100%"">
+              <iframe src="https://thingspeak.com/channels/2860984/charts/1?bgcolor=%23fada1a&color=%23d62020&dynamic=true&results=300&round=1&timescale=30&title=Temperatura+%C2%B0C&type=line&xaxis=tiempo&yaxis=Temperatura" loading="lazy">
               </iframe>
             </div>
           </div>
