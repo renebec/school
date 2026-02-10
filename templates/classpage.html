@@ -140,6 +140,12 @@
                 margin-bottom:1px;
             }
 
+           .instrumento{
+                padding:10px;
+                background-color:rgba(190,120, 120, 0.8);
+                margin-bottom:1px;
+            }
+
             .emoji{
                 background-color: none;
                 font-size: 25px
@@ -546,16 +552,26 @@
 
       <br>
         <br>
+        <div class:'instrumento'>
+          <h4>
+              Instrumento:
+          </h4>
+          {% if i['instrument'] %}  
+          <!-- <a class='referencia' href= '{{i["fuentes"] | safe}}' target="_blank"> i['fuentes'] </a><br>-->
+            <a class='instrumento' href="{{i['instrument']}}" target="_blank"> Instrumento </a><br>
+          {% endif %}  
+        </div>
         <br>
         <br>
         <div class:'referencia'>
           <h4>
               Fuentes de información:
           </h4>
-        {% if i['fuentes'] %}  
-        <!-- <a class='referencia' href= '{{i["fuentes"] | safe}}' target="_blank"> i['fuentes'] </a><br>-->
-          <a class='referencia' href="{{i['fuentes']}}" target="_blank"> Referencia 1 </a><br>
-        {% endif %}  
+          {% if i['fuentes'] %}  
+          <!-- <a class='referencia' href= '{{i["fuentes"] | safe}}' target="_blank"> i['fuentes'] </a><br>-->
+            <a class='referencia' href="{{i['fuentes']}}" target="_blank"> Referencia 1 </a><br>
+          {% endif %}  
+        </div>
     </main>
     <footer>
         <p class="mt-3 mb-5 text-center">&copy; 2025 HRBC</p>
