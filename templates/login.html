@@ -32,22 +32,23 @@
     }
 
     .iframe-wrapper {
+      position: relative;
       width: 100%;
-      min-width:380px;
-      max-width: 720px;
-      max-height: 510px;
-      margin:0 auto;
+      padding-top: 40%; /* 4:3 */
+      overflow: hidden;
+    }
+
+    .iframe-wrapper iframe {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      border: 0;
     }
 
     @media (max-width: 390px) {
       .iframe-wrapper {
         max-width: 100%;
-      }
-
-
-      .iframe-wrapper iframe {
-        display:block;
-        border:none;
       }
     }
 
@@ -121,13 +122,29 @@
       <hr>
 
 
-        <div class="row">
-          <div class="col-12 col-lg-12 mx-auto mb-4">
-            <div class="iframe-wrapper">
-              <iframe max-width="420px" max-height="320px" src="https://thingspeak.com/channels/2860984/charts/1?bgcolor=%23fada1a&color=%23d62020&dynamic=true&results=300&round=1&timescale=30&title=Temperatura+%C2%B0C&type=line&xaxis=tiempo&yaxis=Temperatura&width=410&height=310" loading="lazy">
-              </iframe>
+        <div class="row justify-content-between">
             </div>
-          </div>
+    
+    
+            <div class="row">
+            <div class="col-12 col-lg-6 mb-4">
+            <div class="iframe-wrapper">
+            <iframe src="https://thingspeak.com/channels/2860984/charts/1?bgcolor=%23fada1a&color=%23d62020&dynamic=true&results=300&round=1&timescale=30&title=Temperatura+%C2%B0C&type=line&xaxis=tiempo&yaxis=Temperatura" loading="lazy">
+            </iframe>
+            </div>
+            </div>
+    
+            <div class="d-block d-md-none">
+            <!-- Solo visible en móviles -->
+            <br><br><br>
+            </div>
+    
+            <div class="col-12 col-lg-6 mb-4">
+            <div class="iframe-wrapper">
+            <iframe src="https://thingspeak.com/channels/2860984/charts/2?bgcolor=%23aeddad&color=%23d62020&dynamic=true&results=300&round=1&timescale=30&title=%25+Humedad+del+aire&type=line&xaxis=tiempo&yaxis=Humedad" loading="lazy">
+            </iframe>
+            </div>
+            </div>
         </div>
         <br><br><br><br><br><br><br><br><br>
         <br><br><br><br><br><br><br><br><br>
