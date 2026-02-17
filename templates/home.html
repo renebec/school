@@ -42,6 +42,19 @@
     </script>
     <style>
 
+        .file-name-break {
+            /* inline-size es genial, pero width es más compatible */
+            width: 100%;             
+            overflow-wrap: anywhere; 
+            word-break: break-all;   
+            white-space: normal;
+
+            /* Opcional: mejora la estética */
+            display: inline-block;
+            color: #2c3e50;
+            font-family: monospace; /* Los nombres de archivos suelen verse mejor así */
+        }
+
         #btnCerrar {
 
             position: sticky;
@@ -237,7 +250,9 @@
         <ul>
         {% for pdf in pdfs %}
             <li>
-                <a href="{{ pdf['pdf_url'] }}" target="_blank">descargar PDF</a>
+                <div class="file-name-break">
+                    <a href="{{ pdf['pdf_url'] }}" target="_blank">descargar PDF</a>
+                </div>
                 <!--
                 (Subido: {{ pdf['pdf_url'] }} - {{ pdf['created_at'] }})
                 -->
