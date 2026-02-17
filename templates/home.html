@@ -43,17 +43,21 @@
     <style>
 
         .file-name-break {
-            /* inline-size es genial, pero width es más compatible */
-            width: 100%;             
-            overflow-wrap: anywhere; 
-            word-break: break-all;   
-            white-space: normal;
-
-            /* Opcional: mejora la estética */
-            display: inline-block;
-            color: #2c3e50;
-            font-family: monospace; /* Los nombres de archivos suelen verse mejor así */
+            width: 100%;
+            max-width: 100%;       /* Evita que se salga de la pantalla */
+            word-break: break-all;  /* Rompe el nombre largo de la DB en cualquier letra */
+            overflow-wrap: anywhere;
+            display: block;         /* Permite que el ancho funcione correctamente */
         }
+
+        .file-details {
+            font-size: 0.9em;
+            color: #666;
+            display: inline-block;  /* Ayuda a que el navegador gestione mejor el bloque de texto */
+            margin-top: 5px;
+        }
+
+¿
 
         #btnCerrar {
 
@@ -249,14 +253,15 @@
         {% if pdfs %}
         <ul>
         {% for pdf in pdfs %}
-            <li>
-                <div class="file-name-break">
-                    <a href="{{ pdf['pdf_url'] }}" target="_blank">descargar PDF</a>
+            <li style="margin-bottom: 15px;"> <div class="file-name-break">
+                    <a href="{{ pdf['pdf_url'] }}" target="_blank" class="btn-descarga">
+                        Descargar PDF
+                    </a>
+                    <br>
+                    <span class="file-details">
+                        ({{ pdf['pdf_url'].split('actividad_')[1].rsplit('.', 1)[0] }} - {{ pdf['created_at'] }})
+                    </span>
                 </div>
-                <!--
-                (Subido: {{ pdf['pdf_url'] }} - {{ pdf['created_at'] }})
-                -->
-                ({{ pdf['pdf_url'].split('actividad_')[1].rsplit('.', 1)[0] }} - {{ pdf['created_at'] }})
             </li>
         {% endfor %}
         </ul>
