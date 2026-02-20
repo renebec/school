@@ -175,7 +175,7 @@
         {% if messages %}
           <div class="container mt-3">
             {% for category, message in messages %}
-              <div class="alert alert-{{ 'danger' if category == 'danger' else 'success' }}" role="alert">
+                  <div class="alert alert-{{ category }}" role="alert">
                 {{ message }}
               </div>
             {% endfor %}
