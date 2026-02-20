@@ -113,7 +113,7 @@ def hello_pm1():
             if user:
                 user_info = user.get("info")  # Aquí guardamos el texto del campo "info"
                 if user_info:  # si hay mensaje, se muestra como flash verde
-                    flash(user_info, "danger")
+                    flash(user_info, "warning")
                     info=user_info   # 🔹 Pasamos la variable al template
     
     except Exception as e:
