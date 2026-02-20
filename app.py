@@ -80,6 +80,25 @@ def hello_pm1():
     # 3. Conexión a DB
     session_db = get_db_session()
 
+    # SECCIÓN EN PRUEBA INICIA
+
+    # 🔹 Obtener info del usuario
+    user_info = None
+    user = get_user_from_database(username)
+    if user:
+        user_info = user.get("info")  # Aquí guardamos el texto del campo "info"
+        if user_info:  # si hay mensaje, se muestra como flash verde
+            flash(user_info, "danger")
+    return render_template(
+        "home.html",
+        username=username,
+        numero_control=numero_control,
+        is_master=is_master,
+        info=user_info   # 🔹 Pasamos la variable al template
+
+    # SECCIÓN EN PRUEBA TERMINA
+    
+
     try:
         # 4. Cargar PDFs según el tipo de usuario
         if es_profesor:
