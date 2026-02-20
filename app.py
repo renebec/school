@@ -83,18 +83,18 @@ def hello_pm1():
     # SECCIÓN EN PRUEBA INICIA
 
     # 🔹 Obtener info del usuario
-    user_info = None
-    user = get_user_from_database(username)
-    if user:
-        user_info = user.get("info")  # Aquí guardamos el texto del campo "info"
-        if user_info:  # si hay mensaje, se muestra como flash verde
-            flash(user_info, "danger")
-    return render_template(
-        "home.html",
-        username=username,
-        numero_control=numero_control,
-        is_master=is_master,
-        info=user_info   # 🔹 Pasamos la variable al template
+    #user_info = None
+    #user = get_user_from_database(username)
+    #if user:
+    #    user_info = user.get("info")  # Aquí guardamos el texto del campo "info"
+     #   if user_info:  # si hay mensaje, se muestra como flash verde
+     #       flash(user_info, "danger")
+    #return render_template(
+    #    "home.html",
+     #   username=username,
+     #   numero_control=numero_control,
+     #   is_master=is_master,
+     #   info=user_info   # 🔹 Pasamos la variable al template
 
     # SECCIÓN EN PRUEBA TERMINA
     
@@ -107,6 +107,10 @@ def hello_pm1():
         else:
             pg = load_pg_from_db2(asig)
             pdfs = load_user_pdfs(session_db, numero_control, asig)
+            user_info = user.get("info")  # Aquí guardamos el texto del campo "info"
+            if user_info:  # si hay mensaje, se muestra como flash verde
+                flash(user_info, "danger")
+                info=user_info   # 🔹 Pasamos la variable al template
 
     except Exception as e:
         print("❌ Error al cargar PDFs:", e)
