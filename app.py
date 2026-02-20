@@ -111,11 +111,11 @@ def hello_pm1():
             user_info = None
             user = get_user_from_database(username)
             if user:
-            user_info = user.get("info")  # Aquí guardamos el texto del campo "info"
-            if user_info:  # si hay mensaje, se muestra como flash verde
-                flash(user_info, "danger")
-                info=user_info   # 🔹 Pasamos la variable al template
-
+                user_info = user.get("info")  # Aquí guardamos el texto del campo "info"
+                if user_info:  # si hay mensaje, se muestra como flash verde
+                    flash(user_info, "danger")
+                    info=user_info   # 🔹 Pasamos la variable al template
+    
     except Exception as e:
         print("❌ Error al cargar PDFs:", e)
         flash("Error al cargar los archivos.", "danger")
