@@ -107,6 +107,10 @@ def hello_pm1():
         else:
             pg = load_pg_from_db2(asig)
             pdfs = load_user_pdfs(session_db, numero_control, asig)
+
+            user_info = None
+            user = get_user_from_database(username)
+            if user:
             user_info = user.get("info")  # Aquí guardamos el texto del campo "info"
             if user_info:  # si hay mensaje, se muestra como flash verde
                 flash(user_info, "danger")
