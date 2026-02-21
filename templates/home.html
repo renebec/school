@@ -244,7 +244,7 @@
               <button type="submit" class="btn btn-warning">Subir una planeación</button>
         </a>
         <br><br>
-        <h3>Todos los PDFs cargados</h3>
+        <h3>PDFs recientes (3 días max)</h3>
         {% else %}
         <h3>Tus PDFs</h3>
 
@@ -255,7 +255,7 @@
         {% for pdf in pdfs %}
             <li style="margin-bottom: 15px;"> <div class="file-name-break">
                     <a href="{{ pdf['pdf_url'] }}" target="_blank" class="btn-descarga">
-                        Descargar PDF
+                        mostrar PDF
                     </a>
                     <br>
                     <span class="file-details">
