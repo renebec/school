@@ -720,7 +720,7 @@ def login():
             session['es_profesor'] = len(nc) >= 4 and nc[3].isalpha()
 
             #flash(f'{username} inició sesión correctamente', 'success')
-            flash(f'{username} _TE RECUERDO QUE DEBES SEGUIR REGISTRANDO LAS TEMPERATURAS DIARIAMENTE_Más adelante necesitaremos esos  datos', 'success')
+            flash(f'{username} _Bienvenido', 'success')
             return redirect(url_for('hello_pm1'))
 
         except Exception as e:
