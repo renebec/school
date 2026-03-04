@@ -204,6 +204,7 @@ def enviaractividad():
         return redirect(url_for('login'))
 
     asig = session.get('asig')
+    print(f"DEBUG: La asignatura recuperada de la sesión es: {asig}")
     if not asig:
         flash("No se puede enviar la actividad porque no hay asignatura seleccionada.", "danger")
         return redirect(url_for('hello_pm1'))
@@ -278,7 +279,7 @@ def enviaractividad():
             insert_actividad(
                 session_db,
                 numero_control,                 # 1
-                actividad_num,                  # 2
+                actividad_num,  
                 user["apellido_paterno"],       # 3
                 user["apellido_materno"],       # 4
                 user["nombres"],                # 5
