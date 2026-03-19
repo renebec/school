@@ -169,7 +169,7 @@ def load_all_pdfs(session_db, asig):
         SELECT carrera, pdf_url, created_at, numero_control, asig
         FROM actividades
         WHERE asig = :asig
-        AND created_at >= NOW() - INTERVAL 8 DAY
+        AND created_at >= NOW() - INTERVAL 5 DAY
         ORDER BY created_at DESC, numero_control DESC
     """)
     result = session_db.execute(query, {"asig": asig}).mappings().all()  # <-- mapeo
