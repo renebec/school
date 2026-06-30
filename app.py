@@ -12,6 +12,7 @@ import tempfile
 from weasyprint import HTML, CSS
 import pymysql
 from werkzeug.utils import secure_filename
+from flask import send_file
 
 from database import load_pg_from_db, load_pgn_from_db,  register_user, get_db_session, insert_actividad, load_plan_from_db, insert_plan,  load_pg_from_db2, is_preregistered, load_all_pdfs, load_user_pdfs, get_user_from_database
 
@@ -58,6 +59,22 @@ app.config['MAX_CONTENT_LENGTH'] = 25 * 1024 * 1024  # 25 MB
 app.secret_key = os.environ.get("SECRET_KEY", "dev-secret")
 app.permanent_session_lifetime = timedelta(minutes=60)
 
+
+
+@app.route('/descargar_csv1')
+def descargar_csv():
+    ruta_archivo = "static/datos_meteorologicos.csv"
+    return send_file(ruta_archivo, as_attachment=True, download_name="datos_meteorologicos.csv")
+
+@app.route('/descargar_csv2')
+def descargar_csv():
+    ruta_archivo = "static/datos_meteorologicos_asimetricos.csv"
+    return send_file(ruta_archivo, as_attachment=True, download_name="datos_meteorologicos_asimetricos.csv")
+
+@app.route('/descargar_csv3')
+def descargar_csv():
+    ruta_archivo = "static/datos_correlacion.csv"
+    return send_file(ruta_archivo, as_attachment=True, download_name="datos_correlacion.csv")
 
 @app.route("/")
 def hello_pm1():
