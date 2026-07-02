@@ -66,6 +66,8 @@ def descargar_archivo_dinamico(nombre_archivo):
         "datos_meteorologicos.csv",
         "datos_meteorologicos_asimetricos.csv",
         "datos_correlacion.csv"
+        "registro_calificaciones.xlsx"
+        "datos_suelo_heatmap.xlsx"
     ]
 
     if nombre_archivo in archivos_permitidos:
@@ -75,6 +77,7 @@ def descargar_archivo_dinamico(nombre_archivo):
         # Si alguien intenta inventar un nombre de archivo, da error 404 (No encontrado)
         return abort(404)
 
+    
 
 @app.route("/")
 def hello_pm1():
