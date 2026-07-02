@@ -65,8 +65,8 @@ def descargar_archivo_dinamico(nombre_archivo):
     archivos_permitidos = [
         "datos_meteorologicos.csv",
         "datos_meteorologicos_asimetricos.csv",
-        "datos_correlacion.csv"
-        "registro_calificaciones.xlsx"
+        "datos_correlacion.csv",
+        "registro_calificaciones.xlsx",
         "datos_suelo_heatmap.xlsx"
     ]
 
