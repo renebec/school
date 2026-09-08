@@ -338,6 +338,32 @@ def enviaractividad():
         return redirect(url_for("enviaractividad"))
 
 
+
+@app.route('/docente/actividades', methods=['GET'])
+def ver_actividades_docente():
+    if not session.get('es_profesor'):
+        flash("Acceso denegado.", "danger")
+        return redirect(url_for('hello_pm1'))
+
+    asig = session.get('asig')
+
+    # Capturar filtros opcionales de la URL (ej: ?carrera=Sistemas&semestre=2&grupo=A)
+    carrera = request.args.get('carrera')
+    semestre = request.args.get('semestre')
+    grupo = request.args.get('grupo')
+
+    db_session = get_db_session()
+    try:
+        # Llamamos a la función de filtrado
+        pdfs = load_filtered_pdfs(db_session, asig, carrera, semestre, grupo)
+    finally:
+        db_session.close()
+
+    return render_template('docente_dashboard.html', pdfs=pdfs)
+
+
+
+
 #para que el docente suba una planeación (anexo PDF de instrumentos) y registrarla en la DB
 @app.route("/plan_carga", methods=["GET", "POST"])
 def plan_carga():

@@ -244,6 +244,53 @@
               <button type="submit" class="btn btn-warning">Subir una planeación</button>
         </a>
         <br><br>
+
+        <form method="GET" action="{{ url_for('hello_pm1') }}" class="row g-3 mb-4 p-3 border rounded bg-light">
+            <h5 class="text-secondary mb-3">Filtrar entregas de alumnos</h5>
+
+            <div class="col-md-4">
+                <label for="carrera" class="form-label">Carrera</label>
+                <select name="carrera" class="form-select">
+                    <option value="">Todas las carreras</option>
+                    <option value="TAP" {% if request.args.get('carrera') == 'TAP' %}selected{% endif %}>TAP</option>
+                    <option value="SPA" {% if request.args.get('carrera') == 'SPA' %}selected{% endif %}>SPA</option>
+                    <option value="SPP" {% if request.args.get('carrera') == 'SPP' %}selected{% endif %}>SPP</option>
+                    <option value="CIB" {% if request.args.get('carrera') == 'CIB' %}selected{% endif %}>CIB</option>
+                    <option value="Sistemas" {% if request.args.get('carrera') == 'Sistemas' %}selected{% endif %}>Sistemas</option>
+                    </select>
+            </div>
+
+            <div class="col-md-3">
+                <label for="semestre" class="form-label">Semestre</label>
+                <select name="semestre" class="form-select">
+                    <option value="">Todos</option>
+                    <option value="1" {% if request.args.get('semestre') == '1' %}selected{% endif %}>1</option>
+                    <option value="2" {% if request.args.get('semestre') == '2' %}selected{% endif %}>2</option>
+                    <option value="3" {% if request.args.get('semestre') == '3' %}selected{% endif %}>3</option>
+                    <option value="4" {% if request.args.get('semestre') == '4' %}selected{% endif %}>4</option>
+                    <option value="5" {% if request.args.get('semestre') == '5' %}selected{% endif %}>5</option>
+                    <option value="6" {% if request.args.get('semestre') == '6' %}selected{% endif %}>6</option>
+                </select>
+            </div>
+
+            <div class="col-md-3">
+                <label for="grupo" class="form-label">Grupo</label>
+                <select name="grupo" class="form-select">
+                    <option value="">Todos</option>
+                    <option value="A" {% if request.args.get('grupo') == 'A' %}selected{% endif %}>A</option>
+                    <option value="B" {% if request.args.get('grupo') == 'B' %}selected{% endif %}>B</option>
+                    <option value="C" {% if request.args.get('grupo') == 'C' %}selected{% endif %}>C</option>
+                    <option value="D" {% if request.args.get('grupo') == 'D' %}selected{% endif %}>D</option>
+                    <option value="E" {% if request.args.get('grupo') == 'E' %}selected{% endif %}>E</option>
+                    <option value="F" {% if request.args.get('grupo') == 'F' %}selected{% endif %}>F</option>
+                </select>
+            </div>
+
+            <div class="col-md-2 d-flex align-items-end">
+                <button type="submit" class="btn btn-primary w-100">Filtrar</button>
+            </div>
+        </form>
+        <br><br>
         <h3>PDFs cargados</h3>
         {% else %}
         <h3>Tus PDFs</h3>
