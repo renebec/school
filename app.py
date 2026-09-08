@@ -742,7 +742,7 @@ def login():
                 """)
                 inscripcion = db_session.execute(
                     query_verificacion, 
-                    {"nc": nc, "asig": asig_seleccionada}
+                    {"nc": nc, "asig": asig}
                 ).fetchone()
 
                 if not inscripcion:
