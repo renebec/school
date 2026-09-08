@@ -164,17 +164,17 @@ def insert_actividad(session, numero_control, actividad_num, apellido_paterno, a
         return False
 
 
-def load_all_pdfs(session_db, asig):
-    query = text("""
-        SELECT carrera, pdf_url, created_at, numero_control, asig
-        FROM actividades
-        WHERE asig = :asig
-        AND created_at >= NOW() - INTERVAL 120 DAY
-        ORDER BY created_at DESC, numero_control DESC
-    """)
-    result = session_db.execute(query, {"asig": asig}).mappings().all()  # <-- mapeo
-    pdfs = result  # Cada dict tiene keys: 'pdf_url', 'created_at', 'numero_control'
-    return pdfs
+#def load_all_pdfs(session_db, asig):
+#    query = text("""
+#        SELECT carrera, pdf_url, created_at, numero_control, asig
+#        FROM actividades
+#        WHERE asig = :asig
+#        AND created_at >= NOW() - INTERVAL 120 DAY
+#        ORDER BY created_at DESC, numero_control DESC
+#    """)
+#    result = session_db.execute(query, {"asig": asig}).mappings().all()  # <-- mapeo
+#    pdfs = result  # Cada dict tiene keys: 'pdf_url', 'created_at', 'numero_control'
+#    return pdfs
 
 def load_user_pdfs(session_db, numero_control, asig):
     query = text("""
@@ -195,7 +195,7 @@ def load_filtered_pdfs(session_db, asig, carrera=None, semestre=None, grupo=None
         sql = """
             SELECT * FROM actividades
             WHERE asig = :asig
-            AND created_at >= NOW() - INTERVAL 11 DAY
+            AND created_at >= NOW() - INTERVAL 320 DAY
         """
 
         params = {"asig": asig}

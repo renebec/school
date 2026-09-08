@@ -91,10 +91,7 @@ def hello_pm1():
     numero_control = session.get("numero_control")
     es_profesor = session.get("es_profesor", False)
     asig = session.get("asig")
-    # 1. CAPTURAR LOS FILTROS DESDE EL HTML (GET)
-    carrera = request.args.get('carrera')
-    semestre = request.args.get('semestre')
-    grupo = request.args.get('grupo')
+
     
     # Validar que haya sesión
     if not username:
