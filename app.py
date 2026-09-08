@@ -728,6 +728,29 @@ def login():
                 flash('Contraseña equivocada. Intente de nuevo.', 'danger')
                 return render_template('login.html')
 
+            # -------------------------------------------------------------
+            # AQUÍ ES DONDE COLOCAS EL FILTRO DE ASIGNATURAS NUEVO
+            # -------------------------------------------------------------
+            nc = user['numero_control']
+            es_profesor = len(nc) >= 4 and nc[3].isalpha()
+
+            if not es_profesor:
+                # Verificamos si el alumno está inscrito en esa materia
+                query_verificacion = text("""
+                    SELECT 1 FROM alumno_asignaturas 
+                    WHERE numero_control = :nc AND asig = :asig
+                """)
+                inscripcion = db_session.execute(
+                    query_verificacion, 
+                    {"nc": nc, "asig": asig_seleccionada}
+                ).fetchone()
+
+                if not inscripcion:
+                    db_session.close()
+                    flash("No estás inscrito en esta asignatura. Selecciona la materia correcta.", "danger")
+                    return render_template('login.html')
+            # -------------------------------------------------------------
+
             # Login exitoso
             print("User found:", user)
             session.permanent = True
