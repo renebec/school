@@ -191,34 +191,39 @@ def load_user_pdfs(session_db, numero_control, asig):
 
 
 
+def load_filtered_pdfs(session_db, asig, carrera=None, semestre=None, grupo=None, dias=7):
+    # Aseguramos que 'dias' sea un número entero válido (por seguridad)
+    try:
+        dias = int(dias)
+    except (TypeError, ValueError):
+        dias = 7
 
-def load_filtered_pdfs(session_db, asig, carrera=None, semestre=None, grupo=None):
-        sql = """
-            SELECT * FROM actividades
-            WHERE asig = :asig
-            AND created_at >= NOW() - INTERVAL 320 DAY
-        """
+    # Usamos f-string para inyectar el número de días de forma segura en el intervalo de SQL
+    sql = f"""
+        SELECT * FROM actividades
+        WHERE asig = :asig
+        AND created_at >= NOW() - INTERVAL {dias} DAY
+    """
 
-        params = {"asig": asig}
+    params = {"asig": asig}
 
-        # Filtramos directamente sobre las columnas de la tabla actividades
-        if carrera and carrera.strip() != "":
-            sql += " AND carrera = :carrera"
-            params["carrera"] = carrera
+    if carrera and carrera.strip() != "":
+        sql += " AND carrera = :carrera"
+        params["carrera"] = carrera
 
-        if semestre and semestre.strip() != "":
-            sql += " AND semestre = :semestre"
-            params["semestre"] = semestre
+    if semestre and semestre.strip() != "":
+        sql += " AND semestre = :semestre"
+        params["semestre"] = semestre
 
-        if grupo and grupo.strip() != "":
-            sql += " AND grupo = :grupo"
-            params["grupo"] = grupo
+    if grupo and grupo.strip() != "":
+        sql += " AND grupo = :grupo"
+        params["grupo"] = grupo
 
-        sql += " ORDER BY created_at DESC"
+    sql += " ORDER BY created_at DESC"
 
-        query = text(sql)
-        result = session_db.execute(query, params).mappings().all()
-        return result
+    query = text(sql)
+    result = session_db.execute(query, params).mappings().all()
+    return result
 
 
 

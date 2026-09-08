@@ -96,6 +96,9 @@ def hello_pm1():
     carrera = request.args.get('carrera')
     semestre = request.args.get('semestre')
     grupo = request.args.get('grupo')
+    dias = request.args.get('dias', '7')  # 120 días por defecto
+
+    
 
     
     # Validar que haya sesión
@@ -130,7 +133,7 @@ def hello_pm1():
         if es_profesor:
             pg = load_pg_from_db2(asig)
             #pdfs = load_all_pdfs(session_db, asig)
-            pdfs = load_filtered_pdfs(session_db, asig, carrera, semestre, grupo)
+            pdfs = load_filtered_pdfs(session_db, asig, carrera, semestre, grupo, dias)
         else:
             pg = load_pg_from_db2(asig)
             pdfs = load_user_pdfs(session_db, numero_control, asig)
