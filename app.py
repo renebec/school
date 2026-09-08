@@ -357,6 +357,11 @@ def ver_actividades_docente():
     try:
         # Llamamos a la función de filtrado
         pdfs = load_filtered_pdfs(db_session, asig, carrera, semestre, grupo)
+    except Exception as e:
+        # 🔍 ESTO IMPRIMIRÁ EL ERROR EXACTO EN TU TERMINAL DE PYTHON
+        print("🔥 ERROR REAL AL CARGAR PDFS:", e)
+        flash("Error al cargar los archivos.", "danger")
+        pdfs = []  # Devolvemos una lista vacía para que la página no truene al renderizar
     finally:
         db_session.close()
 
