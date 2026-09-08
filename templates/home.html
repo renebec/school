@@ -260,9 +260,16 @@
                     </a>
                     <br>
                     
+
+
                     <span class="file-details">
-                        ({{ pdf['pdf_url'].split('actividad_')[1].rsplit('.', 1)[0] }} - {{ pdf['created_at'] }})
+                        {% set dias_permitidos = 3 %}
+                        {# Nota: Esto asume que pdf['created_at'] es un objeto de fecha compatible con Jinja/Python #}
+                        {% if (current_time - pdf['created_at']).days <= 3 %}
+                            ({{ pdf['pdf_url'].split('actividad_')[1].rsplit('.', 1)[0] }} - {{ pdf['created_at'] }})
+                        {% endif %}
                     </span>
+ 
                     
                 </div>
             </li>
