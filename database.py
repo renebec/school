@@ -192,36 +192,32 @@ def load_user_pdfs(session_db, numero_control, asig):
 
 
 def load_filtered_pdfs(session_db, asig, carrera=None, semestre=None, grupo=None):
-    # Base de la consulta uniendo actividades con users para obtener carrera, semestre y grupo
-    sql = """
-        SELECT a.pdf_url, a.created_at, a.numero_control, a.asig,
-               u.nombres, u.apellido_paterno, u.apellido_materno, 
-               u.carrera, u.semestre, u.grupo
-        FROM actividades a
-        JOIN users u ON a.numero_control = u.numero_control
-        WHERE a.asig = :asig
-        AND a.created_at >= NOW() - INTERVAL 120 DAY
-    """
+        sql = """
+            SELECT * FROM actividades
+            WHERE asig = :asig
+            AND created_at >= NOW() - INTERVAL 11 DAY
+        """
 
-    # Diccionario de parámetros básicos
-    params = {"asig": asig}
+        params = {"asig": asig}
 
-    # Agregamos filtros dinámicos solo si el profesor los seleccionó
-    if carrera:
-        sql += " AND u.carrera = :carrera"
-        params["carrera"] = carrera
-    if semestre:
-        sql += " AND u.semestre = :semestre"
-        params["semestre"] = semestre
-    if grupo:
-        sql += " AND u.grupo = :grupo"
-        params["grupo"] = grupo
+        # Filtramos directamente sobre las columnas de la tabla actividades
+        if carrera and carrera.strip() != "":
+            sql += " AND carrera = :carrera"
+            params["carrera"] = carrera
 
-    sql += " ORDER BY a.created_at DESC, a.numero_control DESC"
+        if semestre and semestre.strip() != "":
+            sql += " AND semestre = :semestre"
+            params["semestre"] = semestre
 
-    query = text(sql)
-    result = session_db.execute(query, params).mappings().all()
-    return result
+        if grupo and grupo.strip() != "":
+            sql += " AND grupo = :grupo"
+            params["grupo"] = grupo
+
+        sql += " ORDER BY created_at DESC"
+
+        query = text(sql)
+        result = session_db.execute(query, params).mappings().all()
+        return result
 
 
 
