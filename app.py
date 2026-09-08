@@ -106,6 +106,8 @@ def hello_pm1():
         flash("Debe iniciar sesión.", "danger")
         return redirect(url_for("login"))
 
+    
+
     # 3. Conexión a DB
     session_db = get_db_session()
 
@@ -136,7 +138,7 @@ def hello_pm1():
             pdfs = load_filtered_pdfs(session_db, asig, carrera, semestre, grupo, dias)
         else:
             pg = load_pg_from_db2(asig)
-            pdfs = load_user_pdfs(session_db, numero_control, asig)
+            pdfs = load_user_pdfs(session_db, numero_control, asig, dias)
 
             user_info = None
             user = get_user_from_database(username)

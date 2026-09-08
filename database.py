@@ -177,14 +177,36 @@ def insert_actividad(session, numero_control, actividad_num, apellido_paterno, a
 #    pdfs = result  # Cada dict tiene keys: 'pdf_url', 'created_at', 'numero_control'
 #    return pdfs
 
-def load_user_pdfs(session_db, numero_control, asig):
-    query = text("""
+#def load_user_pdfs(session_db, numero_control, asig):
+#    query = text("""
+#        SELECT pdf_url, created_at, numero_control, asig
+#        FROM actividades
+#        WHERE numero_control = :numero_control
+#        AND asig = :asig
+#        ORDER BY created_at DESC, numero_control DESC
+#    """)
+#    result = session_db.execute(query, {"numero_control": numero_control, "asig": asig}).mappings().all()
+#    pdfs = result
+#    return pdfs
+
+def load_user_pdfs(session_db, numero_control, asig, dias=7):
+    # Aseguramos que 'dias' sea un número entero válido por seguridad
+    try:
+        dias = int(dias)
+    except (TypeError, ValueError):
+        dias = 7
+
+    # Usamos f-string para inyectar el número de días en el intervalo de la consulta
+    sql = f"""
         SELECT pdf_url, created_at, numero_control, asig
         FROM actividades
         WHERE numero_control = :numero_control
         AND asig = :asig
+        AND created_at >= NOW() - INTERVAL {dias} DAY
         ORDER BY created_at DESC, numero_control DESC
-    """)
+    """
+
+    query = text(sql)
     result = session_db.execute(query, {"numero_control": numero_control, "asig": asig}).mappings().all()
     pdfs = result
     return pdfs
