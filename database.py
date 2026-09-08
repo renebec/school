@@ -4,6 +4,7 @@ from sqlalchemy.orm import sessionmaker
 from datetime import datetime
 import pytz
 import pymysql
+from sqlalchemy import text
 
 
 
