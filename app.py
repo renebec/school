@@ -92,6 +92,11 @@ def hello_pm1():
     es_profesor = session.get("es_profesor", False)
     asig = session.get("asig")
 
+    # 📌 1. CAPTURA LOS FILTROS PRIMERO AQUÍ:
+    carrera = request.args.get('carrera')
+    semestre = request.args.get('semestre')
+    grupo = request.args.get('grupo')
+
     
     # Validar que haya sesión
     if not username:
