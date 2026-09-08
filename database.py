@@ -169,7 +169,7 @@ def load_all_pdfs(session_db, asig):
         SELECT carrera, pdf_url, created_at, numero_control, asig
         FROM actividades
         WHERE asig = :asig
-        AND created_at >= NOW() - INTERVAL 1800 DAY
+        AND created_at >= NOW() - INTERVAL 120 DAY
         ORDER BY created_at DESC, numero_control DESC
     """)
     result = session_db.execute(query, {"asig": asig}).mappings().all()  # <-- mapeo
@@ -200,7 +200,7 @@ def load_filtered_pdfs(session_db, asig, carrera=None, semestre=None, grupo=None
         FROM actividades a
         JOIN users u ON a.numero_control = u.numero_control
         WHERE a.asig = :asig
-        AND a.created_at >= NOW() - INTERVAL 11 DAY
+        AND a.created_at >= NOW() - INTERVAL 120 DAY
     """
 
     # Diccionario de parámetros básicos
