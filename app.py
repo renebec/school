@@ -124,7 +124,8 @@ def hello_pm1():
         # 4. Cargar PDFs según el tipo de usuario
         if es_profesor:
             pg = load_pg_from_db2(asig)
-            pdfs = load_all_pdfs(session_db, asig)
+            #pdfs = load_all_pdfs(session_db, asig)
+            pdfs = load_filtered_pdfs(session_db, asig, carrera, semestre, grupo)
         else:
             pg = load_pg_from_db2(asig)
             pdfs = load_user_pdfs(session_db, numero_control, asig)
