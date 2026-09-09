@@ -307,11 +307,10 @@
 
         <form method="GET" action="{{ url_for('hello_pm1') }}" class="row g-3 mb-4 p-3 border rounded bg-light">
             <h5 class="text-secondary mb-3">Filtrar actividades</h5>
-
-           
+          
             <div class="col-md-2">
-                <label for="dias" class="form-label">Rango</label>
-                <select name="dias" class="form-select">
+                <label for="dias2" class="form-label">Rango</label>
+                <select name="dias2" class="form-select">
                     <option value="7" {% if request.args.get('dias2') == '7' %}selected{% endif %}>Últimos 7 días</option>
                     <option value="15" {% if request.args.get('dias2') == '15' %}selected{% endif %}>Últimos 15 días</option>
                     <option value="30" {% if request.args.get('dias2') == '30' or not request.args.get('dias2') %}selected{% endif %}>Últimos 30 días</option>
