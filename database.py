@@ -479,9 +479,11 @@ def load_pg_from_db():
     try:
       with engine.connect() as conn:
           result = conn.execute(text("SELECT * FROM mat1"))
-          pg = result.mappings().all()
+          pg = [row.plan for row in result]
+
+          print("Planes cargados:", pg)
           return pg
-          print(pg)
+
     except Exception as e:
       print(f"DB ERROR: {e}")
       return None
