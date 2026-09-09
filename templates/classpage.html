@@ -584,4 +584,590 @@
 
           
 </body>
+</html><!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NEM{{i.plan}}</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous">
+
+
+    <style>
+
+       .mapa {
+         display: flex;
+         justify-content: center;
+         margin-top: 30px;
+       }
+       .nodo {
+         border: 2px solid #2a6f97;
+         padding: 10px 15px;
+         border-radius: 8px;
+         background-color: #e7f0f8;
+         text-align: center;
+       }
+       .rama {
+         display: flex;
+         justify-content: center;
+         margin: 20px;
+       }
+       .subnodo {
+         border: 1px solid #4a8ab8;
+         padding: 8px 12px;
+         border-radius: 6px;
+         background-color: #fafcff;
+         margin: 0 10px;
+         text-align: center;
+       }
+       .linea {
+         border-top: 2px solid #2a6f97;
+         width: 50px;
+         margin: auto;
+       }
+
+
+      
+
+       #btnCerrar {
+
+            margin-right:10px;
+         background-color:red;
+
+       }
+
+        #banner {
+            display:block;
+            margin-left:auto;
+            margin-right:auto;
+            width:100%;
+            height: 240px;
+            object-fit:cover;
+        }
+        .container{
+            margin-left:auto;
+            margin-right:auto;
+            text-align:justify;
+
+        }
+        .apertura{
+            padding:10px;
+            background-color:rgba(50, 250, 37, 0.25);
+        }
+        .desarrollo{
+            padding:10px;
+            background-color:rgba(247, 234, 47, 0.3);
+        }
+
+        .cierre{
+            padding:10px;
+            background-color:rgba(250, 117, 221, 0.25);
+            color:#B51767;
+        }
+
+        .home-link1 {
+            position: fixed;
+            top: 30px;
+            right: 1px;
+            background-color: black;
+            color: yellow;
+            padding: 2px 5px;
+            text-decoration: none;
+            border-radius: 2px;
+            z-index: 1100; /* Ensures it stays on top */
+        }
+        .home-link:hover {
+            background-color: #CCFAFA;
+            color: #A0A0D0;
+        }
+
+        .navtxt{
+            color:rgb(120,120,120);
+            background-color: white;
+            padding: 1px;
+        }
+        .actividad {
+            background-color: rgba(161, 37, 250, 0.7);
+            margin: 10px;
+            padding: 5px;
+            color:#FED8F8;
+        }
+        .laboratorio {
+            background-color: rgb(220,220,220);
+            margin: 10px;
+            padding: 5px;
+        }
+        .img{
+            max-width:50%%;
+            min-width:50%;
+            height:auto;
+        }
+
+
+            a:link, a:visited {
+              background-color: #1A8F7B;
+              color: white;
+              padding-top: 1px;
+              padding-bottom: 1px;
+              padding-left: 5px;
+              padding-right: 5px;
+              text-align: center;
+              text-decoration: none;
+              display: inline-block;
+            }
+
+            a:hover, a:active {
+              background-color: #08CFAC;
+            }
+
+            .referencia{
+                padding:10px;
+                background-color:rgba(190,120, 120, 0.8);
+                margin-bottom:1px;
+            }
+
+           .instrumento{
+                padding:10px;
+                background-color:rgba(190,120, 120, 0.8);
+                margin-bottom:1px;
+            }
+
+            .emoji{
+                background-color: none;
+                font-size: 25px
+        }
+
+        .zoom:hover {
+          transform: scale(2); /* (150% zoom -  */
+          margin-left:25%;
+        }
+
+
+        .zoom2:hover {
+          transform: scale(3); 
+          margin-right:50%;
+        }
+
+        button{
+        background:purple;
+        color:white;
+        }
+
+        #more0 {display: none;background:none}
+        #more1 {display: none;background:none}
+        #more2 {display: none;background:none}
+        #more3 {display: none;background:none}
+
+        #banner {
+            display:block;
+            margin-left:auto;
+            margin-right:auto;
+            width:100%;
+            height: 240px;
+            object-fit:cover;
+        }
+
+          /* Navbar Styling */
+          .navbar2 {
+            background-color: #333;
+
+            top: 50px;
+            width: 100%;
+            z-index: 1000;
+            position: sticky;
+          }
+
+          .nav-list2 {
+            list-style: none;
+            display: flex;
+            justify-content: center;
+          }
+
+          .nav-list2 li {
+            margin: 0 1px;
+          }
+
+          .nav-list2 a {
+            display: block;
+            padding: 2px 2px;
+            color: white;
+            text-decoration: none;
+            transition: background-color 0.3s;
+          }
+
+          .nav-list2 a:hover {
+            background-color: #575757;
+          }
+
+      .flash.success {
+        color: green;
+      }
+      .flash.danger {
+        color: red;
+      }
+
+      .rotate-right {
+        transform: rotate(90deg);
+      }
+
+
+
+
+
+
+      /* Menú lateral flotante */
+      .floating-dev-menu {
+        position: fixed;
+        top: 50%;
+        left: 15px;
+        transform: translateY(-50%);
+        display: none;
+        flex-direction: column;
+        gap: 10px;
+        z-index: 999;
+      }
+
+      /* Botones */
+      .floating-dev-menu a {
+        background: #222;
+        color: white;
+        text-decoration: none;
+        padding: 10px 14px;
+        border-radius: 6px;
+        font-size: 14px;
+        transition: all 0.3s ease;
+      }
+
+      .floating-dev-menu a:hover {
+        background: #444;
+        transform: translateX(6px);
+      }
+
+      /* Scroll suave */
+      html {
+        scroll-behavior: smooth;
+      }
+
+
+      @media (max-width: 768px) {
+        .floating-dev-menu {
+          display: none !important;
+        }
+      }
+
+      .img{
+          display:block;
+          max-width:100%;
+          height: auto;
+      }
+
+      .img-container {
+        width: 100%;
+        max-width: 600px; /* opcional */
+      }
+      .img-container img {
+        width: 100%;
+        height: auto;
+      }
+
+      @media (max-width: 768px) {
+        img {
+          width: 100%;
+        }
+      }
+      
+
+    </style>
+</head>
+       <img class="mt-5" id="banner" src="https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExdjg0MXp6MGN2M3dnYnozZW5pYmFlYnM1c3E5c2IybWU5YWVxNTI3dSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/xUPGcuomRFMUcsB9nO/giphy.gif">
+    <!-- Top Navigation Bar -->
+      <nav class="navbar2">
+        <ul class="nav-list2">
+          <li><a href="{{ url_for('hello_pm1') }}">Inicio</a></li>
+          <li><a href="#Aper">Apertura</a></li>
+          <li><a href="#Desa">Desarrollo</a></li>
+          <li><a href="#Cierr">Cierre</a></li>
+          <li><a href="{{ url_for('logout') }}" class="btn btn-outline-danger btn-sm" id="btnCerrar">Cerrar Sesión</a></li>
+        </ul>
+      </nav>
+           <!--"https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExanhlbHFqMGJoN3BsaGVtM3dyamUwbDE2eWE4aHNmd3ZqN3NlN3ZwZyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/l1J9yYblNRmcHXNok/giphy.gif"> 
+    -->
+
+<body>
+    <script>
+        function myFunction0() {
+          var dots0 = document.getElementById("dots0");
+          var moreText0 = document.getElementById("more0");
+          var btnText0 = document.getElementById("myBtn0");
+
+          if (dots0.style.display === "none") {
+            dots0.style.display = "inline";
+            btnText0.innerHTML = "Mostrar todo";
+            moreText0.style.display = "none";
+          } else {
+            dots0.style.display = "none";
+            btnText0.innerHTML = "Mostrar menos";
+            moreText0.style.display = "inline";
+          }
+        }
+
+        function myFunction1() {
+          var dots1 = document.getElementById("dots1");
+          var moreText1 = document.getElementById("more1");
+          var btnText1 = document.getElementById("myBtn1");
+
+          if (dots1.style.display === "none") {
+            dots1.style.display = "inline";
+            btnText1.innerHTML = "Mostrar todo";
+            moreText1.style.display = "none";
+          } else {
+            dots1.style.display = "none";
+            btnText1.innerHTML = "Mostrar menos";
+            moreText1.style.display = "inline";
+          }
+        }
+
+        function myFunction2() {
+          var dots2 = document.getElementById("dots2");
+          var moreText2 = document.getElementById("more2");
+          var btnText2 = document.getElementById("myBtn2");
+
+          if (dots2.style.display === "none") {
+            dots2.style.display = "inline";
+            btnText2.innerHTML = "Mostrar todo";
+            moreText2.style.display = "none";
+          } else {
+            dots2.style.display = "none";
+            btnText2.innerHTML = "Mostrar menos";
+            moreText2.style.display = "inline";
+          }
+        }
+
+        function myFunction3() {
+          var dots3 = document.getElementById("dots3");
+          var moreText3 = document.getElementById("more3");
+          var btnText3 = document.getElementById("myBtn3");
+
+          if (dots3.style.display === "none") {
+            dots3.style.display = "inline";
+            btnText3.innerHTML = "Mostrar todo";
+            moreText3.style.display = "none";
+          } else {
+            dots3.style.display = "none";
+            btnText3.innerHTML = "Mostrar menos";
+            moreText3.style.display = "inline";
+          }
+        }
+
+
+        const desarrollo = document.getElementById("Desa");
+        const devMenu = document.getElementById("devMenu");
+
+        window.addEventListener("scroll", () => {
+          const rect = desarrollo.getBoundingClientRect();
+
+          if (rect.top <= 100 && rect.bottom >= 200) {
+            devMenu.style.display = "flex";
+          } else {
+            devMenu.style.display = "none";
+          }
+        });
+
+
+
+
+
+      
+    </script>
+
+
+
+
+  
+    <main class="container">
+
+        <nav class="navbar fixed-top bg-white shadow-sm mb-4">
+            <span class="navbar-brand mb-0 h1 navtxt">
+                <div class="container-fluid row align-items-center">
+                  {% if session.username %}
+                        <text class='col-9'>Plan {{i['plan']}} user: {{session.username}}</text>
+                  {% endif %}
+                        <div class="col-3 text-end">
+
+                        </div>
+                </div>
+            </span>
+        </nav>
+
+        <div height: 56px>
+
+        </div>
+        <br>
+
+    <div class="mt-3 mb-3">
+
+        {% set tiempo = 0 %}
+                {% set tiempo = tiempo + i['apDur'] + i['deDur'] + i['ciDur'] %}
+
+        <h3>Plan {{i['plan']}}</h3>
+        {{i['temas'] | safe}}<br>
+<!-- ANUNCIO EN CONSTRUCCIÓN 
+      <text style="font-size:130px">
+        &#128679;
+      </text>
+
+      <br>
+      <text style="color:rgb(259,100,100);font-weight:bold;font-size:31px">En construcción...</text>
+-->
+    <br>
+    </div>
+
+                <div>
+                    {% if i['descargas'] %}
+                    Recursos<br>
+                      <a href="{{ url_for('static', filename=i.descargas) }}" download>
+                        Descargar archivo: {{ i['descargas'] }}
+                      </a>
+                    {% endif %}
+                </div>
+
+
+
+
+
+        <div id='Aper'><br><br><br>
+        </div>
+        <div class="apertura" >
+    <h2 style="color:green;">Apertura ({{i['apDur']/60}} hrs)</h2>
+    {{i['apHTML'] | safe}}
+            <br><br>
+<!-- ANUNCIO EN CONSTRUCCIÓN 
+          <text style="font-size:130px">
+            &#128679;
+          </text>
+
+          <br>
+          <text style="color:rgb(259,100,100);font-weight:bold;font-size:30px">En construcción...</text>
+          <br>
+-->
+<!--            {% if i['caso'] %}
+            <p style="font-weight:bold; ">Caso {{i['id']}}:</p>
+            {{i['caso']  | safe}}
+            <br><br>
+            {% endif %}
+    <img class="mt-3 mb-3 zoom" src="{{i['src1']}}">
+-->     </div>
+
+
+
+
+        <div id='Desa'><br><br><br>
+        </div>
+        <div class="desarrollo">
+    <h2 style="color:orange;">Desarrollo ({{i['deDur']/60}} hrs)</h2>
+
+    {{i['deHTML'] | safe}}
+          <br><br>
+<!-- ANUNCIO EN CONSTRUCCIÓN 
+          <text style="font-size:130px">
+            &#128679;
+          </text>
+
+          <br>
+          <text style="color:rgb(259,100,100);font-weight:bold;font-size:30px">En construcción...</text>
+          <br>
+
+
+
+                  <br>
+                  <!-- ANUNCIO EN CONSTRUCCIÓN
+                  <text style="font-size:130px">
+                    &#128679;
+                  </text>
+
+                  <br>
+                  <text style="color:rgb(259,100,100);font-weight:bold;font-size:30px">En construcción...</text>
+                  <br>
+-->
+                </div>
+        </div>
+
+
+
+
+        <div id='Cierr'><br><br><br></div>
+        <div class="cierre">
+            <h2 style="color:#B51767;">Cierre ({{i['ciDur']/60}} hrs)</h2>
+
+            {{i['ciHTML'] | safe}}</br>
+
+          <br>
+          <!-- ANUNCIO EN CONSTRUCCIÓN 
+          <text style="font-size:130px">
+            &#128679;
+          </text>
+          <br>
+          <text style="color:rgb(259,100,100);font-weight:bold;font-size:30px">En construcción...</text>
+          <br>
+          -->
+
+
+
+
+
+
+
+      <br>
+      <br>
+      <br>
+        <br>
+        <br><br>
+<!--
+        {% if i['retroalimentacion'] %}
+            {{ i['retroalimentacion'] | safe}}
+        {% endif %} <br><br>
+-->
+
+<br>
+        </div>
+      <div class="parPond">
+        <br>
+        <br>
+        <br>
+       <!-- <h4 style="color:#B5e7A7;">Ponderación para el parcial ({{i['parPond']}} %)</h4>-->
+
+      <br>
+        <br>
+        <div class:'instrumento'>
+          <h4>
+              Instrumento:
+          </h4>
+          {% if i['instrument'] %}  
+          <!-- <a class='referencia' href= '{{i["fuentes"] | safe}}' target="_blank"> i['fuentes'] </a><br>-->
+            <a class='instrumento' href="{{i['instrument']}}" target="_blank"> Instrumento </a><br>
+          {% endif %}  
+        </div>
+        <br>
+        <br>
+        <div class:'referencia'>
+          <h4>
+              Fuentes de información:
+          </h4>
+          {% if i['fuentes'] %}  
+          <!-- <a class='referencia' href= '{{i["fuentes"] | safe}}' target="_blank"> i['fuentes'] </a><br>-->
+            <a class='referencia' href="{{i['fuentes']}}" target="_blank"> Fuente 1 </a><br>
+          {% endif %} 
+          <br>
+          {% if i['fuentes2'] %}  
+          <!-- <a class='referencia' href= '{{i["fuentes"] | safe}}' target="_blank"> i['fuentes'] </a><br>-->
+            <a class='referencia' href="{{i['fuentes2']}}" target="_blank"> Fuente 2 </a><br>
+          {% endif %} 
+        </div>
+    </main>
+    <footer>
+        <p class="mt-3 mb-5 text-center">&copy; 2026 HRBC</p>
+    </footer>
+
+          
+</body>
 </html>
