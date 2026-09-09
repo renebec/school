@@ -885,6 +885,2374 @@
                     <option value="7" {% if request.args.get('dias') == '7' %}selected{% endif %}>Últimos 7 días</option>
                     <option value="15" {% if request.args.get('dias') == '15' %}selected{% endif %}>Últimos 15 días</option>
                     <option value="30" {% if request.args.get('dias') == '30' or not request.args.get('dias') %}selected{% endif %}>Últimos 30 días</option>
+                    <option value="195" {% if request.args.get('dias') == '195' %}selected{% endif %}>Semestre</option>
+                </select>
+            </div>
+
+            <div class="col-md-2 d-flex align-items-end">
+                <button type="submit" class="btn btn-primary w-100">Filtrar</button>
+            </div>
+        </form>
+        <br><br>
+        <h3>PDFs cargados</h3>
+        {% else %}
+
+        <form method="GET" action="{{ url_for('hello_pm1') }}" class="row g-3 mb-4 p-3 border rounded bg-light">
+            <h5 class="text-secondary mb-3">Filtrar actividades</h5>
+          
+            <div class="col-md-2">
+                <label for="dias2" class="form-label">Rango</label>
+                <select name="dias2" class="form-select">
+                    <option value="7" {% if request.args.get('dias2') == '7' %}selected{% endif %}>Últimos 7 días</option>
+                    <option value="15" {% if request.args.get('dias2') == '15' %}selected{% endif %}>Últimos 15 días</option>
+                    <option value="30" {% if request.args.get('dias2') == '30' or not request.args.get('dias2') %}selected{% endif %}>Últimos 30 días</option>
+                    <option value="195" {% if request.args.get('dias2') == '195' %}selected{% endif %}>Semestre</option>
+                </select>
+            </div>
+
+            <div class="col-md-2 d-flex align-items-end">
+                <button type="submit" class="btn btn-primary w-100">Filtrar</button>
+            </div>
+        </form>
+        <br><br>
+
+        
+        <h3>Tus PDFs</h3>
+
+        {% endif %}
+
+        {% if pdfs %}
+
+        
+        
+        <ul>
+        {% for pdf in pdfs %}
+            <li style="margin-bottom: 15px;"> 
+                <div class="file-name-break">
+                    <a href="{{ pdf['pdf_url'] }}" target="_blank" class="btn-descarga">
+                        mostrar PDF
+                    </a>
+                    <br>
+                    
+                    <span class="file-details">
+                        ({{ pdf['pdf_url'].split('actividad_')[1].rsplit('.', 1)[0] }} - {{ pdf['created_at'] }})
+                    </span>
+ 
+                    
+                </div>
+            </li>
+        {% endfor %}
+        </ul>
+        {% else %}
+            {% if es_profesor %}
+                <p>No se encontraron registros.</p>
+            {% else %}
+                <p>No se encontraron registros.</p>
+            {% endif %}
+        {% endif %}
+
+
+        <div>            
+            {% set item = (pg | selectattr('parcial', 'equalto', 'PARCIAL 1') |                 first) %}
+
+            {% if item %}
+                <h2 class="text-center mt-4 mb-2" style="padding-                                           bottom:16px;color:rgb(100,100,100);">
+                    {{item['parcial']}}
+            </h2>
+            {% endif %}
+        </div>
+
+        <div>
+            {% for i in pg %}
+                {% if i['parcial'] == 'PARCIAL 1' %}
+                    {% include 'temasitem.html' %}
+                {% endif %}
+
+            {% endfor %}
+        </div>
+
+        <text class='partial-footer-total'>Parcial 1</text>
+        <div>
+
+            {% set ns = namespace(total=0) %}
+
+            {% for i in pg %}
+                {% if i['parcial'] == 'PARCIAL 1' %}
+                    {% set apertura = i['apPond'] | int %}
+                    {% set desarrollo = i['dePond'] | int %}
+
+                    {% set cierre = i['ciPond'] | int %}
+                    {% set parcial_sum = apertura + desarrollo + cierre %}
+                    {% set ns.total = ns.total + parcial_sum %}
+                {% endif %}
+            {% endfor %}
+
+            <text class='partial-footer-total'>Total ponderado: {{ ns.total }}% </text>
+                <br>
+
+            {% set ts = namespace(total=0) %}
+
+            {% for i in pg %}
+                {% if i['parcial'] == 'PARCIAL 1' %}
+                    {% set tapertura = i['apDur'] | int %}
+                    {% set tdesarrollo = i['deDur'] | int %}
+
+                    {% set tcierre = i['ciDur'] | int %}
+                    {% set tparcial_sum = tapertura + tdesarrollo + tcierre %}
+                    {% set ts.total = ts.total + tparcial_sum %}
+                {% endif %}
+            {% endfor %}
+
+            <text class='partial-footer-total'>Total tiempo: {{ ts.total/60 }} hrs</text>
+        </div>   
+
+        <div>                     
+                {% set item = (pg | selectattr('parcial', 'equalto', 'PARCIAL 2') |                 first) %}
+
+                {% if item %}
+                <h2 class="text-center mt-4 mb-2" style="padding-                                       bottom:16px;color:rgb(100,100,100);">
+                    {{item['parcial']}}
+                </h2>
+                {% endif %}
+        </div>
+        <br>
+
+
+        <div>
+            {% for i in pg %}
+                {% if i['parcial'] == 'PARCIAL 2' %}
+                    {% include 'temasitem.html' %}
+                {% endif %}
+            {% endfor %}
+        </div>
+        <text class= 'partial-footer-total'>Parcial 2</text>
+        <div>
+            {% set ns = namespace(total=0) %}
+
+            {% for i in pg %}
+                {% if i['parcial'] == 'PARCIAL 2' %}
+                    {% set apertura = i['apPond'] | int %}
+                    {% set desarrollo = i['dePond'] | int %}
+
+                    {% set cierre = i['ciPond'] | int %}
+                    {% set parcial_sum = apertura + desarrollo + cierre %}
+                    {% set ns.total = ns.total + parcial_sum %}
+                {% endif %}
+            {% endfor %}
+
+            <text class= 'partial-footer-total'>Total ponderado: {{ ns.total }}% 
+            </text>        
+            <br>
+
+            {% set ns = namespace(total=0) %}
+
+            {% for i in pg %}
+                {% if i['parcial'] == 'PARCIAL 2' %}
+                    {% set tapertura = i['apDur'] | int %}
+                    {% set tdesarrollo = i['deDur'] | int %}
+
+                    {% set tcierre = i['ciDur'] | int %}
+                    {% set parcial_sum = tapertura + tdesarrollo + tcierre %}
+                    {% set ns.total = ns.total + parcial_sum %}
+                {% endif %}
+            {% endfor %}
+
+            <text class='partial-footer-total'>Total tiempo: {{ ns.total/60 }} hrs</text>
+        </div>
+
+        <div>                     
+        {% set item = (pg | selectattr('parcial', 'equalto', 'PARCIAL 3') | first)          %}
+                {% if item %}
+                <h2 class="text-center mt-4 mb-2" style="padding-bottom:16px;color:rgb(100,100,100);">
+                    {{item['parcial']}}
+                </h2>
+                {% endif %}
+        </div>
+        <br>
+
+        <div>
+            {% for i in pg %}
+                {% if i['parcial'] == 'PARCIAL 3' %}
+                    {% include 'temasitem.html' %}
+                {% endif %}
+            {% endfor %}
+        </div>
+        <text class= 'partial-footer-total'>Parcial 3</text>
+        <div>
+            {% set ns = namespace(total=0) %}
+
+            {% for i in pg %}
+                {% if i['parcial'] == 'PARCIAL 3' %}
+                    {% set apertura = i['apPond'] | int %}
+                    {% set desarrollo = i['dePond'] | int %}
+
+                    {% set cierre = i['ciPond'] | int %}
+                    {% set parcial_sum = apertura + desarrollo + cierre %}
+                    {% set ns.total = ns.total + parcial_sum %}
+                {% endif %}
+            {% endfor %}
+
+            <text class='partial-footer-total'>Total ponderado: {{ ns.total }}%</text>             
+            <br>
+
+            {% set ns = namespace(total=0) %}
+
+            {% for i in pg %}
+                {% if i['parcial'] == 'PARCIAL 3' %}
+                    {% set tapertura = i['apDur'] | int %}
+                    {% set tdesarrollo = i['deDur'] | int %}
+
+                    {% set tcierre = i['ciDur'] | int %}
+                    {% set parcial_sum = tapertura + tdesarrollo + tcierre %}
+                    {% set ns.total = ns.total + parcial_sum %}
+                {% endif %}
+            {% endfor %}
+
+            <text class='partial-footer-total'>Total tiempo: {{ ns.total/60 }}                         hrs</text>
+        </div>
+
+
+
+<!--recursamientos -->
+
+
+        <div>                     
+            {% set item = (pg | selectattr('parcial', 'equalto', 'Recursamiento emergente') | first)          %}
+                    {% if item %}
+                    <h2 class="text-center mt-4 mb-2" style="padding-bottom:16px;color:rgb(100,100,100);">
+                        {{item['parcial']}}
+                    </h2>
+                    {% endif %}
+            </div>
+            <br>
+
+        <div>
+            {% for i in pg %}
+                {% if i['parcial'] == 'Recursamiento emergente' %}
+            
+                    {% include 'temasitem.html' %}
+                {% endif %}
+            {% endfor %}
+        </div>
+        <text class= 'partial-footer-total'>Recursamiento emergente</text>
+        <div>
+            {% set ns = namespace(total=0) %}
+
+            {% for i in pg %}
+                {% if i['parcial'] == 'Recursamiento emergente' %}
+                    {% set apertura = i['apPond'] | int %}
+                    {% set desarrollo = i['dePond'] | int %}
+
+                    {% set cierre = i['ciPond'] | int %}
+                    {% set parcial_sum = apertura + desarrollo + cierre %}
+                    {% set ns.total = ns.total + parcial_sum %}
+                {% endif %}
+            {% endfor %}
+
+            <text class='partial-footer-total'>Total ponderado: {{ ns.total }}%</text>             
+            <br>
+
+            {% set ns = namespace(total=0) %}
+
+            {% for i in pg %}
+                {% if i['parcial'] == 'Recursamiento emergente' %}
+                    {% set tapertura = i['apDur'] | int %}
+                    {% set tdesarrollo = i['deDur'] | int %}
+
+                    {% set tcierre = i['ciDur'] | int %}
+                    {% set parcial_sum = tapertura + tdesarrollo + tcierre %}
+                    {% set ns.total = ns.total + parcial_sum %}
+                {% endif %}
+            {% endfor %}
+
+            <text class='partial-footer-total'>Total tiempo: {{ ns.total/60 }}                         hrs</text>
+        </div>
+
+
+
+
+
+        
+        <!--BOTON CONTACTO -->
+        <div style="text-align:center;">
+            <a class="btn btn-primary btn-lg"  type="button"                                       href="mailto:mc.renebec@gmail.com?                                        subject=Pregunta%20sobre%20el%20curso%20de%20Pensamiento%20Matemático%20I&body=Nombre%3A%20%3C%20escriba%20aqu%C3%AD%20su%20nombre%20completo%20%3E%0D%0ADatos%3A%20%3C%20escriba%20sus%20datos%20de%20Semestre%2C%20Grupo%20y%20Carrera%20%3E%0D%0APregunta%3A%20%3C%20escriba%20aqu%C3%AD%20su%20pregunta%20o%20comentario%20%3E%0D%0A">Contacto</a>
+        </div>
+        </main>
+        <footer>
+        <p class="mt-3 mb-5 text-center">&copy; 2026_HRBC</p>
+        </footer>
+</body>
+</html><!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+    <link             href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,400;0,700;1,400;1,700&display=swap"
+          rel="stylesheet">
+    <script>
+        function updateDateTime() {
+            // Get the current date and time in Central Mexico
+            let options = {
+                timeZone: "America/Mexico_City",
+                year: "numeric",
+                month: "long",
+                day: "numeric",
+                hour: "2-digit",
+                minute: "2-digit",
+                second: "2-digit",
+                hour12: true
+            };
+
+            let currentDateTime = new Date().toLocaleString("es-MX", options);
+
+            // Format the date and time as "9 de abril de 2025, 09:40:00"
+            const dateTimeElement = document.getElementById('date-time');
+            if (dateTimeElement) {
+                dateTimeElement.innerHTML = currentDateTime;
+            }
+        }
+
+        // Update the time every second
+        setInterval(updateDateTime, 1000);
+
+        // Initial call to set the time immediately
+        updateDateTime();
+
+
+    </script>
+    <style>
+
+        .file-name-break {
+            width: 100%;
+            max-width: 100%;       /* Evita que se salga de la pantalla */
+            word-break: break-all;  /* Rompe el nombre largo de la DB en cualquier letra */
+            overflow-wrap: anywhere;
+            display: block;         /* Permite que el ancho funcione correctamente */
+        }
+
+        .file-details {
+            font-size: 0.9em;
+            color: #666;
+            display: inline-block;  /* Ayuda a que el navegador gestione mejor el bloque de texto */
+            margin-top: 5px;
+        }
+
+¿
+
+        #btnCerrar {
+
+            position: sticky;
+            top:0;
+            margin-top:0px;
+            margin-left:75%;
+            z-index: 1000;
+        }
+
+        #banner {
+            display:block;
+            margin-left:auto;
+            margin-right:auto;
+            width:100%;
+            height: 240px;
+            object-fit:cover;
+        }
+        body {
+
+            margin-left: auto;
+            margin-right: auto;
+            text-align:justify;
+        }
+
+        .partial-footer-total {
+            color:#AA99e1;
+            font-size:14px;
+        }
+
+        .navtxt{
+            color:rgb(100,100,100);
+        }
+
+        .btn-sm {
+            width:100px;
+        }
+
+        .noexist {
+
+        }
+        .container{
+            margin-left:auto;
+            margin-right:auto;
+            text-align:justify;
+        }
+        .apertura{
+            padding:10px;
+            background-color:rgba(50, 250, 37, 0.25);
+        }
+        .desarrollo{
+            padding:10px;
+            background-color:rgba(247, 234, 47, 0.3);
+        }
+
+        .cierre{
+            padding:10px;
+            background-color:rgba(250, 117, 221, 0.25);
+            color:#B51767;
+        }
+        .banner2 {
+              display:block;
+              margin-left:auto;
+              margin-right:auto;
+              width:100%;
+              max-width:550px;
+              height:240px;
+              object-fit:contain;
+              object-position: 0px -0px;
+          }
+
+
+        .img{
+            display:block;
+            max-width:100%;
+            height: auto;
+        }
+
+        .img-container {
+          width: 100%;
+          max-width: 600px; /* opcional */
+        }
+        .img-container img {
+          width: 100%;
+          height: auto;
+        }
+
+        @media (max-width: 768px) {
+          img {
+            width: 100%;
+          }
+        }
+
+
+    </style>
+
+    </head>
+        <nav class="navbar fixed-top bg-white shadow-sm mb-4">
+            <div class="container-fluid d-flex justify-content-between row">
+                {% if session.username %}
+                <span class="navbar-brand mb-0 h1 navtxt col-7">NEM user: {{session.username}}</span>
+                {% endif %}
+            </div>
+            <a href="{{ url_for('logout') }}" class="btn btn-danger btn-sm col-5" id="btnCerrar">Cerrar Sesión</a>
+        </nav>
+
+
+
+        <img class="mt-5" id="banner" src= "https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExczVjMG5xeXByZnAydHNsdWRuejBvdGltMms2aWkzdWg3czc1bm1nMyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/zqtOYPQZ8Kb5pMlH8p/giphy.gif">
+
+
+
+    
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+          <div class="container mt-3">
+            {% for category, message in messages %}
+                  <div class="alert alert-{{ category }}" role="alert">
+                      {{ message | replace('_', '<br>') | safe }}
+              </div>
+            {% endfor %}
+          </div>
+        {% endif %}
+      {% endwith %}
+
+    <div style="text-align:left;padding-left:20px;">
+        <text style="font-size:11px;color:#04AA6D;" id="date-time"></text>&nbsp;
+        <text style="font-size:11px;color:#04AA6D;">, </text>
+        <text style="font-size:11px;color:#04AA6D;" id="time"></text>
+    </div>
+<body>
+    <header>
+        <div> 
+
+            
+
+  
+ 
+            <!--{% set item = (pg 
+            | selectattr('carrera', 'equalto', 'TA') 
+            | selectattr('semestre', 'equalto', 1) 
+            | first) %}-->
+            {% set item = (pg | selectattr('parcial', 'equalto', 'PARCIAL 1') |                 first) %}
+
+            {% if item %} 
+            <h1 class="text-center mt-4 mb-2" style="color:rgb(100,100,100);">
+                {{item['asig']}}
+            </h1>
+            {% endif %} 
+        </div>
+    </header>
+
+
+    <main class="container">
+        <p style="text-align:right;color:rgb(150,150,150);">@ by M.C. Héctor René Becerril Cejudo</p>
+
+        <br>
+        <br>
+        <h4>¡Bienvenidos!</h4>
+        <img src="https://img.freepik.com/vector-premium/grupo-jovenes-alegres-dibujados-mano-celebrando-felicidad_1316704-33049.jpg">
+        
+<!--        <a href="https://dgetaycm.sep.gob.mx/Con%C3%B3cenos/2" target="_blank">Acerca de DGETAyCM</a>&#128072;<br>
+        <a href="https://renebec.github.io/mapdgetaycm/" target="_blank">Mapa de planteles</a>&#128072;
+ -->       
+        <h2 class="text-center mt-4 mb-2" style="color:rgb(100,100,100);">
+        </h2>
+
+        {% set item = (pg | selectattr('parcial', 'equalto', 'PARCIAL 1') |                 first) %}
+        {% if item is defined and item.meta | default(false) %}
+
+        <p class="lead">
+            {{ item.meta }}
+        </p>
+        {% endif %}
+<br><br>
+        <p class="lead">   
+            <i style="color:rgb(150,150,150);font-size:16px">M.C. Héctor René Becerril Cejudo</i><br><i style="color:rgb(150,150,150);font-size:16px">Texcoco, México.</i>
+        </p>
+
+
+
+        {% if es_profesor %}
+        <a  href="{{ url_for('plan_carga') }}">
+              <button type="submit" class="btn btn-warning">Subir una planeación</button>
+        </a>
+        <br><br>
+
+        <form method="GET" action="{{ url_for('hello_pm1') }}" class="row g-3 mb-4 p-3 border rounded bg-light">
+            <h5 class="text-secondary mb-3">Filtrar entregas de alumnos</h5>
+
+            <div class="col-md-4">
+                <label for="carrera" class="form-label">Carrera</label>
+                <select name="carrera" class="form-select">
+                    <option value="">Todas las carreras</option>
+                    <option value="TAP" {% if request.args.get('carrera') == 'TAP' %}selected{% endif %}>TAP</option>
+                    <option value="SPA" {% if request.args.get('carrera') == 'SPA' %}selected{% endif %}>SPA</option>
+                    <option value="SPP" {% if request.args.get('carrera') == 'SPP' %}selected{% endif %}>SPP</option>
+                    <option value="CIB" {% if request.args.get('carrera') == 'CIB' %}selected{% endif %}>CIB</option>
+                    <option value="BASICO" {% if request.args.get('carrera') == 'BASICO' %}selected{% endif %}>BASICO</option>
+                    <option value="Sistemas" {% if request.args.get('carrera') == 'Sistemas' %}selected{% endif %}>Sistemas</option>
+                    </select>
+            </div>
+
+            <div class="col-md-3">
+                <label for="semestre" class="form-label">Semestre</label>
+                <select name="semestre" class="form-select">
+                    <option value="">Todos</option>
+                    <option value="1" {% if request.args.get('semestre') == '1' %}selected{% endif %}>1</option>
+                    <option value="2" {% if request.args.get('semestre') == '2' %}selected{% endif %}>2</option>
+                    <option value="3" {% if request.args.get('semestre') == '3' %}selected{% endif %}>3</option>
+                    <option value="4" {% if request.args.get('semestre') == '4' %}selected{% endif %}>4</option>
+                    <option value="5" {% if request.args.get('semestre') == '5' %}selected{% endif %}>5</option>
+                    <option value="6" {% if request.args.get('semestre') == '6' %}selected{% endif %}>6</option>
+                </select>
+            </div>
+
+            <div class="col-md-3">
+                <label for="grupo" class="form-label">Grupo</label>
+                <select name="grupo" class="form-select">
+                    <option value="">Todos</option>
+                    <option value="A" {% if request.args.get('grupo') == 'A' %}selected{% endif %}>A</option>
+                    <option value="B" {% if request.args.get('grupo') == 'B' %}selected{% endif %}>B</option>
+                    <option value="C" {% if request.args.get('grupo') == 'C' %}selected{% endif %}>C</option>
+                    <option value="D" {% if request.args.get('grupo') == 'D' %}selected{% endif %}>D</option>
+                    <option value="E" {% if request.args.get('grupo') == 'E' %}selected{% endif %}>E</option>
+                    <option value="F" {% if request.args.get('grupo') == 'F' %}selected{% endif %}>F</option>
+                </select>
+            </div>
+
+            <div class="col-md-2">
+                <label for="dias" class="form-label">Rango</label>
+                <select name="dias" class="form-select">
+                    <option value="7" {% if request.args.get('dias') == '7' %}selected{% endif %}>Últimos 7 días</option>
+                    <option value="15" {% if request.args.get('dias') == '15' %}selected{% endif %}>Últimos 15 días</option>
+                    <option value="30" {% if request.args.get('dias') == '30' or not request.args.get('dias') %}selected{% endif %}>Últimos 30 días</option>
+                    <option value="200" {% if request.args.get('dias') == '200' %}selected{% endif %}>Semestre</option>
+                </select>
+            </div>
+
+            <div class="col-md-2 d-flex align-items-end">
+                <button type="submit" class="btn btn-primary w-100">Filtrar</button>
+            </div>
+        </form>
+        <br><br>
+        <h3>PDFs cargados</h3>
+        {% else %}
+
+        <form method="GET" action="{{ url_for('hello_pm1') }}" class="row g-3 mb-4 p-3 border rounded bg-light">
+            <h5 class="text-secondary mb-3">Filtrar actividades</h5>
+          
+            <div class="col-md-2">
+                <label for="dias2" class="form-label">Rango</label>
+                <select name="dias2" class="form-select">
+                    <option value="7" {% if request.args.get('dias2') == '7' %}selected{% endif %}>Últimos 7 días</option>
+                    <option value="15" {% if request.args.get('dias2') == '15' %}selected{% endif %}>Últimos 15 días</option>
+                    <option value="30" {% if request.args.get('dias2') == '30' or not request.args.get('dias2') %}selected{% endif %}>Últimos 30 días</option>
+                    <option value="180" {% if request.args.get('dias2') == '180' %}selected{% endif %}>Semestre</option>
+                </select>
+            </div>
+
+            <div class="col-md-2 d-flex align-items-end">
+                <button type="submit" class="btn btn-primary w-100">Filtrar</button>
+            </div>
+        </form>
+        <br><br>
+
+        
+        <h3>Tus PDFs</h3>
+
+        {% endif %}
+
+        {% if pdfs %}
+
+        
+        
+        <ul>
+        {% for pdf in pdfs %}
+            <li style="margin-bottom: 15px;"> 
+                <div class="file-name-break">
+                    <a href="{{ pdf['pdf_url'] }}" target="_blank" class="btn-descarga">
+                        mostrar PDF
+                    </a>
+                    <br>
+                    
+                    <span class="file-details">
+                        ({{ pdf['pdf_url'].split('actividad_')[1].rsplit('.', 1)[0] }} - {{ pdf['created_at'] }})
+                    </span>
+ 
+                    
+                </div>
+            </li>
+        {% endfor %}
+        </ul>
+        {% else %}
+            {% if es_profesor %}
+                <p>No se encontraron registros.</p>
+            {% else %}
+                <p>No se encontraron registros.</p>
+            {% endif %}
+        {% endif %}
+
+
+        <div>            
+            {% set item = (pg | selectattr('parcial', 'equalto', 'PARCIAL 1') |                 first) %}
+
+            {% if item %}
+                <h2 class="text-center mt-4 mb-2" style="padding-                                           bottom:16px;color:rgb(100,100,100);">
+                    {{item['parcial']}}
+            </h2>
+            {% endif %}
+        </div>
+
+        <div>
+            {% for i in pg %}
+                {% if i['parcial'] == 'PARCIAL 1' %}
+                    {% include 'temasitem.html' %}
+                {% endif %}
+
+            {% endfor %}
+        </div>
+
+        <text class='partial-footer-total'>Parcial 1</text>
+        <div>
+
+            {% set ns = namespace(total=0) %}
+
+            {% for i in pg %}
+                {% if i['parcial'] == 'PARCIAL 1' %}
+                    {% set apertura = i['apPond'] | int %}
+                    {% set desarrollo = i['dePond'] | int %}
+
+                    {% set cierre = i['ciPond'] | int %}
+                    {% set parcial_sum = apertura + desarrollo + cierre %}
+                    {% set ns.total = ns.total + parcial_sum %}
+                {% endif %}
+            {% endfor %}
+
+            <text class='partial-footer-total'>Total ponderado: {{ ns.total }}% </text>
+                <br>
+
+            {% set ts = namespace(total=0) %}
+
+            {% for i in pg %}
+                {% if i['parcial'] == 'PARCIAL 1' %}
+                    {% set tapertura = i['apDur'] | int %}
+                    {% set tdesarrollo = i['deDur'] | int %}
+
+                    {% set tcierre = i['ciDur'] | int %}
+                    {% set tparcial_sum = tapertura + tdesarrollo + tcierre %}
+                    {% set ts.total = ts.total + tparcial_sum %}
+                {% endif %}
+            {% endfor %}
+
+            <text class='partial-footer-total'>Total tiempo: {{ ts.total/60 }} hrs</text>
+        </div>   
+
+        <div>                     
+                {% set item = (pg | selectattr('parcial', 'equalto', 'PARCIAL 2') |                 first) %}
+
+                {% if item %}
+                <h2 class="text-center mt-4 mb-2" style="padding-                                       bottom:16px;color:rgb(100,100,100);">
+                    {{item['parcial']}}
+                </h2>
+                {% endif %}
+        </div>
+        <br>
+
+
+        <div>
+            {% for i in pg %}
+                {% if i['parcial'] == 'PARCIAL 2' %}
+                    {% include 'temasitem.html' %}
+                {% endif %}
+            {% endfor %}
+        </div>
+        <text class= 'partial-footer-total'>Parcial 2</text>
+        <div>
+            {% set ns = namespace(total=0) %}
+
+            {% for i in pg %}
+                {% if i['parcial'] == 'PARCIAL 2' %}
+                    {% set apertura = i['apPond'] | int %}
+                    {% set desarrollo = i['dePond'] | int %}
+
+                    {% set cierre = i['ciPond'] | int %}
+                    {% set parcial_sum = apertura + desarrollo + cierre %}
+                    {% set ns.total = ns.total + parcial_sum %}
+                {% endif %}
+            {% endfor %}
+
+            <text class= 'partial-footer-total'>Total ponderado: {{ ns.total }}% 
+            </text>        
+            <br>
+
+            {% set ns = namespace(total=0) %}
+
+            {% for i in pg %}
+                {% if i['parcial'] == 'PARCIAL 2' %}
+                    {% set tapertura = i['apDur'] | int %}
+                    {% set tdesarrollo = i['deDur'] | int %}
+
+                    {% set tcierre = i['ciDur'] | int %}
+                    {% set parcial_sum = tapertura + tdesarrollo + tcierre %}
+                    {% set ns.total = ns.total + parcial_sum %}
+                {% endif %}
+            {% endfor %}
+
+            <text class='partial-footer-total'>Total tiempo: {{ ns.total/60 }} hrs</text>
+        </div>
+
+        <div>                     
+        {% set item = (pg | selectattr('parcial', 'equalto', 'PARCIAL 3') | first)          %}
+                {% if item %}
+                <h2 class="text-center mt-4 mb-2" style="padding-bottom:16px;color:rgb(100,100,100);">
+                    {{item['parcial']}}
+                </h2>
+                {% endif %}
+        </div>
+        <br>
+
+        <div>
+            {% for i in pg %}
+                {% if i['parcial'] == 'PARCIAL 3' %}
+                    {% include 'temasitem.html' %}
+                {% endif %}
+            {% endfor %}
+        </div>
+        <text class= 'partial-footer-total'>Parcial 3</text>
+        <div>
+            {% set ns = namespace(total=0) %}
+
+            {% for i in pg %}
+                {% if i['parcial'] == 'PARCIAL 3' %}
+                    {% set apertura = i['apPond'] | int %}
+                    {% set desarrollo = i['dePond'] | int %}
+
+                    {% set cierre = i['ciPond'] | int %}
+                    {% set parcial_sum = apertura + desarrollo + cierre %}
+                    {% set ns.total = ns.total + parcial_sum %}
+                {% endif %}
+            {% endfor %}
+
+            <text class='partial-footer-total'>Total ponderado: {{ ns.total }}%</text>             
+            <br>
+
+            {% set ns = namespace(total=0) %}
+
+            {% for i in pg %}
+                {% if i['parcial'] == 'PARCIAL 3' %}
+                    {% set tapertura = i['apDur'] | int %}
+                    {% set tdesarrollo = i['deDur'] | int %}
+
+                    {% set tcierre = i['ciDur'] | int %}
+                    {% set parcial_sum = tapertura + tdesarrollo + tcierre %}
+                    {% set ns.total = ns.total + parcial_sum %}
+                {% endif %}
+            {% endfor %}
+
+            <text class='partial-footer-total'>Total tiempo: {{ ns.total/60 }}                         hrs</text>
+        </div>
+
+
+
+<!--recursamientos -->
+
+
+        <div>                     
+            {% set item = (pg | selectattr('parcial', 'equalto', 'Recursamiento emergente') | first)          %}
+                    {% if item %}
+                    <h2 class="text-center mt-4 mb-2" style="padding-bottom:16px;color:rgb(100,100,100);">
+                        {{item['parcial']}}
+                    </h2>
+                    {% endif %}
+            </div>
+            <br>
+
+        <div>
+            {% for i in pg %}
+                {% if i['parcial'] == 'Recursamiento emergente' %}
+            
+                    {% include 'temasitem.html' %}
+                {% endif %}
+            {% endfor %}
+        </div>
+        <text class= 'partial-footer-total'>Recursamiento emergente</text>
+        <div>
+            {% set ns = namespace(total=0) %}
+
+            {% for i in pg %}
+                {% if i['parcial'] == 'Recursamiento emergente' %}
+                    {% set apertura = i['apPond'] | int %}
+                    {% set desarrollo = i['dePond'] | int %}
+
+                    {% set cierre = i['ciPond'] | int %}
+                    {% set parcial_sum = apertura + desarrollo + cierre %}
+                    {% set ns.total = ns.total + parcial_sum %}
+                {% endif %}
+            {% endfor %}
+
+            <text class='partial-footer-total'>Total ponderado: {{ ns.total }}%</text>             
+            <br>
+
+            {% set ns = namespace(total=0) %}
+
+            {% for i in pg %}
+                {% if i['parcial'] == 'Recursamiento emergente' %}
+                    {% set tapertura = i['apDur'] | int %}
+                    {% set tdesarrollo = i['deDur'] | int %}
+
+                    {% set tcierre = i['ciDur'] | int %}
+                    {% set parcial_sum = tapertura + tdesarrollo + tcierre %}
+                    {% set ns.total = ns.total + parcial_sum %}
+                {% endif %}
+            {% endfor %}
+
+            <text class='partial-footer-total'>Total tiempo: {{ ns.total/60 }}                         hrs</text>
+        </div>
+
+
+
+
+
+        
+        <!--BOTON CONTACTO -->
+        <div style="text-align:center;">
+            <a class="btn btn-primary btn-lg"  type="button"                                       href="mailto:mc.renebec@gmail.com?                                        subject=Pregunta%20sobre%20el%20curso%20de%20Pensamiento%20Matemático%20I&body=Nombre%3A%20%3C%20escriba%20aqu%C3%AD%20su%20nombre%20completo%20%3E%0D%0ADatos%3A%20%3C%20escriba%20sus%20datos%20de%20Semestre%2C%20Grupo%20y%20Carrera%20%3E%0D%0APregunta%3A%20%3C%20escriba%20aqu%C3%AD%20su%20pregunta%20o%20comentario%20%3E%0D%0A">Contacto</a>
+        </div>
+        </main>
+        <footer>
+        <p class="mt-3 mb-5 text-center">&copy; 2026_HRBC</p>
+        </footer>
+</body>
+</html><!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+    <link             href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,400;0,700;1,400;1,700&display=swap"
+          rel="stylesheet">
+    <script>
+        function updateDateTime() {
+            // Get the current date and time in Central Mexico
+            let options = {
+                timeZone: "America/Mexico_City",
+                year: "numeric",
+                month: "long",
+                day: "numeric",
+                hour: "2-digit",
+                minute: "2-digit",
+                second: "2-digit",
+                hour12: true
+            };
+
+            let currentDateTime = new Date().toLocaleString("es-MX", options);
+
+            // Format the date and time as "9 de abril de 2025, 09:40:00"
+            const dateTimeElement = document.getElementById('date-time');
+            if (dateTimeElement) {
+                dateTimeElement.innerHTML = currentDateTime;
+            }
+        }
+
+        // Update the time every second
+        setInterval(updateDateTime, 1000);
+
+        // Initial call to set the time immediately
+        updateDateTime();
+
+
+    </script>
+    <style>
+
+        .file-name-break {
+            width: 100%;
+            max-width: 100%;       /* Evita que se salga de la pantalla */
+            word-break: break-all;  /* Rompe el nombre largo de la DB en cualquier letra */
+            overflow-wrap: anywhere;
+            display: block;         /* Permite que el ancho funcione correctamente */
+        }
+
+        .file-details {
+            font-size: 0.9em;
+            color: #666;
+            display: inline-block;  /* Ayuda a que el navegador gestione mejor el bloque de texto */
+            margin-top: 5px;
+        }
+
+¿
+
+        #btnCerrar {
+
+            position: sticky;
+            top:0;
+            margin-top:0px;
+            margin-left:75%;
+            z-index: 1000;
+        }
+
+        #banner {
+            display:block;
+            margin-left:auto;
+            margin-right:auto;
+            width:100%;
+            height: 240px;
+            object-fit:cover;
+        }
+        body {
+
+            margin-left: auto;
+            margin-right: auto;
+            text-align:justify;
+        }
+
+        .partial-footer-total {
+            color:#AA99e1;
+            font-size:14px;
+        }
+
+        .navtxt{
+            color:rgb(100,100,100);
+        }
+
+        .btn-sm {
+            width:100px;
+        }
+
+        .noexist {
+
+        }
+        .container{
+            margin-left:auto;
+            margin-right:auto;
+            text-align:justify;
+        }
+        .apertura{
+            padding:10px;
+            background-color:rgba(50, 250, 37, 0.25);
+        }
+        .desarrollo{
+            padding:10px;
+            background-color:rgba(247, 234, 47, 0.3);
+        }
+
+        .cierre{
+            padding:10px;
+            background-color:rgba(250, 117, 221, 0.25);
+            color:#B51767;
+        }
+        .banner2 {
+              display:block;
+              margin-left:auto;
+              margin-right:auto;
+              width:100%;
+              max-width:550px;
+              height:240px;
+              object-fit:contain;
+              object-position: 0px -0px;
+          }
+
+
+        .img{
+            display:block;
+            max-width:100%;
+            height: auto;
+        }
+
+        .img-container {
+          width: 100%;
+          max-width: 600px; /* opcional */
+        }
+        .img-container img {
+          width: 100%;
+          height: auto;
+        }
+
+        @media (max-width: 768px) {
+          img {
+            width: 100%;
+          }
+        }
+
+
+    </style>
+
+    </head>
+        <nav class="navbar fixed-top bg-white shadow-sm mb-4">
+            <div class="container-fluid d-flex justify-content-between row">
+                {% if session.username %}
+                <span class="navbar-brand mb-0 h1 navtxt col-7">NEM user: {{session.username}}</span>
+                {% endif %}
+            </div>
+            <a href="{{ url_for('logout') }}" class="btn btn-danger btn-sm col-5" id="btnCerrar">Cerrar Sesión</a>
+        </nav>
+
+
+
+        <img class="mt-5" id="banner" src= "https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExczVjMG5xeXByZnAydHNsdWRuejBvdGltMms2aWkzdWg3czc1bm1nMyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/zqtOYPQZ8Kb5pMlH8p/giphy.gif">
+
+
+
+    
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+          <div class="container mt-3">
+            {% for category, message in messages %}
+                  <div class="alert alert-{{ category }}" role="alert">
+                      {{ message | replace('_', '<br>') | safe }}
+              </div>
+            {% endfor %}
+          </div>
+        {% endif %}
+      {% endwith %}
+
+    <div style="text-align:left;padding-left:20px;">
+        <text style="font-size:11px;color:#04AA6D;" id="date-time"></text>&nbsp;
+        <text style="font-size:11px;color:#04AA6D;">, </text>
+        <text style="font-size:11px;color:#04AA6D;" id="time"></text>
+    </div>
+<body>
+    <header>
+        <div> 
+
+            
+
+  
+ 
+            <!--{% set item = (pg 
+            | selectattr('carrera', 'equalto', 'TA') 
+            | selectattr('semestre', 'equalto', 1) 
+            | first) %}-->
+            {% set item = (pg | selectattr('parcial', 'equalto', 'PARCIAL 1') |                 first) %}
+
+            {% if item %} 
+            <h1 class="text-center mt-4 mb-2" style="color:rgb(100,100,100);">
+                {{item['asig']}}
+            </h1>
+            {% endif %} 
+        </div>
+    </header>
+
+
+    <main class="container">
+        <p style="text-align:right;color:rgb(150,150,150);">@ by M.C. Héctor René Becerril Cejudo</p>
+
+        <br>
+        <br>
+        <h4>¡Bienvenidos!</h4>
+        <img src="https://img.freepik.com/vector-premium/grupo-jovenes-alegres-dibujados-mano-celebrando-felicidad_1316704-33049.jpg">
+        
+<!--        <a href="https://dgetaycm.sep.gob.mx/Con%C3%B3cenos/2" target="_blank">Acerca de DGETAyCM</a>&#128072;<br>
+        <a href="https://renebec.github.io/mapdgetaycm/" target="_blank">Mapa de planteles</a>&#128072;
+ -->       
+        <h2 class="text-center mt-4 mb-2" style="color:rgb(100,100,100);">
+        </h2>
+
+        {% set item = (pg | selectattr('parcial', 'equalto', 'PARCIAL 1') |                 first) %}
+        {% if item is defined and item.meta | default(false) %}
+
+        <p class="lead">
+            {{ item.meta }}
+        </p>
+        {% endif %}
+<br><br>
+        <p class="lead">   
+            <i style="color:rgb(150,150,150);font-size:16px">M.C. Héctor René Becerril Cejudo</i><br><i style="color:rgb(150,150,150);font-size:16px">Texcoco, México.</i>
+        </p>
+
+
+
+        {% if es_profesor %}
+        <a  href="{{ url_for('plan_carga') }}">
+              <button type="submit" class="btn btn-warning">Subir una planeación</button>
+        </a>
+        <br><br>
+
+        <form method="GET" action="{{ url_for('hello_pm1') }}" class="row g-3 mb-4 p-3 border rounded bg-light">
+            <h5 class="text-secondary mb-3">Filtrar entregas de alumnos</h5>
+
+            <div class="col-md-4">
+                <label for="carrera" class="form-label">Carrera</label>
+                <select name="carrera" class="form-select">
+                    <option value="">Todas las carreras</option>
+                    <option value="TAP" {% if request.args.get('carrera') == 'TAP' %}selected{% endif %}>TAP</option>
+                    <option value="SPA" {% if request.args.get('carrera') == 'SPA' %}selected{% endif %}>SPA</option>
+                    <option value="SPP" {% if request.args.get('carrera') == 'SPP' %}selected{% endif %}>SPP</option>
+                    <option value="CIB" {% if request.args.get('carrera') == 'CIB' %}selected{% endif %}>CIB</option>
+                    <option value="BASICO" {% if request.args.get('carrera') == 'BASICO' %}selected{% endif %}>BASICO</option>
+                    <option value="Sistemas" {% if request.args.get('carrera') == 'Sistemas' %}selected{% endif %}>Sistemas</option>
+                    </select>
+            </div>
+
+            <div class="col-md-3">
+                <label for="semestre" class="form-label">Semestre</label>
+                <select name="semestre" class="form-select">
+                    <option value="">Todos</option>
+                    <option value="1" {% if request.args.get('semestre') == '1' %}selected{% endif %}>1</option>
+                    <option value="2" {% if request.args.get('semestre') == '2' %}selected{% endif %}>2</option>
+                    <option value="3" {% if request.args.get('semestre') == '3' %}selected{% endif %}>3</option>
+                    <option value="4" {% if request.args.get('semestre') == '4' %}selected{% endif %}>4</option>
+                    <option value="5" {% if request.args.get('semestre') == '5' %}selected{% endif %}>5</option>
+                    <option value="6" {% if request.args.get('semestre') == '6' %}selected{% endif %}>6</option>
+                </select>
+            </div>
+
+            <div class="col-md-3">
+                <label for="grupo" class="form-label">Grupo</label>
+                <select name="grupo" class="form-select">
+                    <option value="">Todos</option>
+                    <option value="A" {% if request.args.get('grupo') == 'A' %}selected{% endif %}>A</option>
+                    <option value="B" {% if request.args.get('grupo') == 'B' %}selected{% endif %}>B</option>
+                    <option value="C" {% if request.args.get('grupo') == 'C' %}selected{% endif %}>C</option>
+                    <option value="D" {% if request.args.get('grupo') == 'D' %}selected{% endif %}>D</option>
+                    <option value="E" {% if request.args.get('grupo') == 'E' %}selected{% endif %}>E</option>
+                    <option value="F" {% if request.args.get('grupo') == 'F' %}selected{% endif %}>F</option>
+                </select>
+            </div>
+
+            <div class="col-md-2">
+                <label for="dias" class="form-label">Rango</label>
+                <select name="dias" class="form-select">
+                    <option value="7" {% if request.args.get('dias') == '7' %}selected{% endif %}>Últimos 7 días</option>
+                    <option value="15" {% if request.args.get('dias') == '15' %}selected{% endif %}>Últimos 15 días</option>
+                    <option value="30" {% if request.args.get('dias') == '30' or not request.args.get('dias') %}selected{% endif %}>Últimos 30 días</option>
+                    <option value="200" {% if request.args.get('dias') == '200' %}selected{% endif %}>Semestre</option>
+                </select>
+            </div>
+
+            <div class="col-md-2 d-flex align-items-end">
+                <button type="submit" class="btn btn-primary w-100">Filtrar</button>
+            </div>
+        </form>
+        <br><br>
+        <h3>PDFs cargados</h3>
+        {% else %}
+
+        <form method="GET" action="{{ url_for('hello_pm1') }}" class="row g-3 mb-4 p-3 border rounded bg-light">
+            <h5 class="text-secondary mb-3">Filtrar actividades</h5>
+          
+            <div class="col-md-2">
+                <label for="dias2" class="form-label">Rango</label>
+                <select name="dias2" class="form-select">
+                    <option value="7" {% if request.args.get('dias2') == '7' %}selected{% endif %}>Últimos 7 días</option>
+                    <option value="15" {% if request.args.get('dias2') == '15' %}selected{% endif %}>Últimos 15 días</option>
+                    <option value="30" {% if request.args.get('dias2') == '30' or not request.args.get('dias2') %}selected{% endif %}>Últimos 30 días</option>
+                    <option value="180" {% if request.args.get('dias2') == '180' %}selected{% endif %}>Semestre</option>
+                </select>
+            </div>
+
+            <div class="col-md-2 d-flex align-items-end">
+                <button type="submit" class="btn btn-primary w-100">Filtrar</button>
+            </div>
+        </form>
+        <br><br>
+
+        
+        <h3>Tus PDFs</h3>
+
+        {% endif %}
+
+        {% if pdfs %}
+
+        
+        
+        <ul>
+        {% for pdf in pdfs %}
+            <li style="margin-bottom: 15px;"> 
+                <div class="file-name-break">
+                    <a href="{{ pdf['pdf_url'] }}" target="_blank" class="btn-descarga">
+                        mostrar PDF
+                    </a>
+                    <br>
+                    
+                    <span class="file-details">
+                        ({{ pdf['pdf_url'].split('actividad_')[1].rsplit('.', 1)[0] }} - {{ pdf['created_at'] }})
+                    </span>
+ 
+                    
+                </div>
+            </li>
+        {% endfor %}
+        </ul>
+        {% else %}
+            {% if es_profesor %}
+                <p>No se encontraron registros.</p>
+            {% else %}
+                <p>No se encontraron registros.</p>
+            {% endif %}
+        {% endif %}
+
+
+        <div>            
+            {% set item = (pg | selectattr('parcial', 'equalto', 'PARCIAL 1') |                 first) %}
+
+            {% if item %}
+                <h2 class="text-center mt-4 mb-2" style="padding-                                           bottom:16px;color:rgb(100,100,100);">
+                    {{item['parcial']}}
+            </h2>
+            {% endif %}
+        </div>
+
+        <div>
+            {% for i in pg %}
+                {% if i['parcial'] == 'PARCIAL 1' %}
+                    {% include 'temasitem.html' %}
+                {% endif %}
+
+            {% endfor %}
+        </div>
+
+        <text class='partial-footer-total'>Parcial 1</text>
+        <div>
+
+            {% set ns = namespace(total=0) %}
+
+            {% for i in pg %}
+                {% if i['parcial'] == 'PARCIAL 1' %}
+                    {% set apertura = i['apPond'] | int %}
+                    {% set desarrollo = i['dePond'] | int %}
+
+                    {% set cierre = i['ciPond'] | int %}
+                    {% set parcial_sum = apertura + desarrollo + cierre %}
+                    {% set ns.total = ns.total + parcial_sum %}
+                {% endif %}
+            {% endfor %}
+
+            <text class='partial-footer-total'>Total ponderado: {{ ns.total }}% </text>
+                <br>
+
+            {% set ts = namespace(total=0) %}
+
+            {% for i in pg %}
+                {% if i['parcial'] == 'PARCIAL 1' %}
+                    {% set tapertura = i['apDur'] | int %}
+                    {% set tdesarrollo = i['deDur'] | int %}
+
+                    {% set tcierre = i['ciDur'] | int %}
+                    {% set tparcial_sum = tapertura + tdesarrollo + tcierre %}
+                    {% set ts.total = ts.total + tparcial_sum %}
+                {% endif %}
+            {% endfor %}
+
+            <text class='partial-footer-total'>Total tiempo: {{ ts.total/60 }} hrs</text>
+        </div>   
+
+        <div>                     
+                {% set item = (pg | selectattr('parcial', 'equalto', 'PARCIAL 2') |                 first) %}
+
+                {% if item %}
+                <h2 class="text-center mt-4 mb-2" style="padding-                                       bottom:16px;color:rgb(100,100,100);">
+                    {{item['parcial']}}
+                </h2>
+                {% endif %}
+        </div>
+        <br>
+
+
+        <div>
+            {% for i in pg %}
+                {% if i['parcial'] == 'PARCIAL 2' %}
+                    {% include 'temasitem.html' %}
+                {% endif %}
+            {% endfor %}
+        </div>
+        <text class= 'partial-footer-total'>Parcial 2</text>
+        <div>
+            {% set ns = namespace(total=0) %}
+
+            {% for i in pg %}
+                {% if i['parcial'] == 'PARCIAL 2' %}
+                    {% set apertura = i['apPond'] | int %}
+                    {% set desarrollo = i['dePond'] | int %}
+
+                    {% set cierre = i['ciPond'] | int %}
+                    {% set parcial_sum = apertura + desarrollo + cierre %}
+                    {% set ns.total = ns.total + parcial_sum %}
+                {% endif %}
+            {% endfor %}
+
+            <text class= 'partial-footer-total'>Total ponderado: {{ ns.total }}% 
+            </text>        
+            <br>
+
+            {% set ns = namespace(total=0) %}
+
+            {% for i in pg %}
+                {% if i['parcial'] == 'PARCIAL 2' %}
+                    {% set tapertura = i['apDur'] | int %}
+                    {% set tdesarrollo = i['deDur'] | int %}
+
+                    {% set tcierre = i['ciDur'] | int %}
+                    {% set parcial_sum = tapertura + tdesarrollo + tcierre %}
+                    {% set ns.total = ns.total + parcial_sum %}
+                {% endif %}
+            {% endfor %}
+
+            <text class='partial-footer-total'>Total tiempo: {{ ns.total/60 }} hrs</text>
+        </div>
+
+        <div>                     
+        {% set item = (pg | selectattr('parcial', 'equalto', 'PARCIAL 3') | first)          %}
+                {% if item %}
+                <h2 class="text-center mt-4 mb-2" style="padding-bottom:16px;color:rgb(100,100,100);">
+                    {{item['parcial']}}
+                </h2>
+                {% endif %}
+        </div>
+        <br>
+
+        <div>
+            {% for i in pg %}
+                {% if i['parcial'] == 'PARCIAL 3' %}
+                    {% include 'temasitem.html' %}
+                {% endif %}
+            {% endfor %}
+        </div>
+        <text class= 'partial-footer-total'>Parcial 3</text>
+        <div>
+            {% set ns = namespace(total=0) %}
+
+            {% for i in pg %}
+                {% if i['parcial'] == 'PARCIAL 3' %}
+                    {% set apertura = i['apPond'] | int %}
+                    {% set desarrollo = i['dePond'] | int %}
+
+                    {% set cierre = i['ciPond'] | int %}
+                    {% set parcial_sum = apertura + desarrollo + cierre %}
+                    {% set ns.total = ns.total + parcial_sum %}
+                {% endif %}
+            {% endfor %}
+
+            <text class='partial-footer-total'>Total ponderado: {{ ns.total }}%</text>             
+            <br>
+
+            {% set ns = namespace(total=0) %}
+
+            {% for i in pg %}
+                {% if i['parcial'] == 'PARCIAL 3' %}
+                    {% set tapertura = i['apDur'] | int %}
+                    {% set tdesarrollo = i['deDur'] | int %}
+
+                    {% set tcierre = i['ciDur'] | int %}
+                    {% set parcial_sum = tapertura + tdesarrollo + tcierre %}
+                    {% set ns.total = ns.total + parcial_sum %}
+                {% endif %}
+            {% endfor %}
+
+            <text class='partial-footer-total'>Total tiempo: {{ ns.total/60 }}                         hrs</text>
+        </div>
+
+
+
+<!--recursamientos -->
+
+
+        <div>                     
+            {% set item = (pg | selectattr('parcial', 'equalto', 'Recursamiento emergente') | first)          %}
+                    {% if item %}
+                    <h2 class="text-center mt-4 mb-2" style="padding-bottom:16px;color:rgb(100,100,100);">
+                        {{item['parcial']}}
+                    </h2>
+                    {% endif %}
+            </div>
+            <br>
+
+        <div>
+            {% for i in pg %}
+                {% if i['parcial'] == 'Recursamiento emergente' %}
+            
+                    {% include 'temasitem.html' %}
+                {% endif %}
+            {% endfor %}
+        </div>
+        <text class= 'partial-footer-total'>Recursamiento emergente</text>
+        <div>
+            {% set ns = namespace(total=0) %}
+
+            {% for i in pg %}
+                {% if i['parcial'] == 'Recursamiento emergente' %}
+                    {% set apertura = i['apPond'] | int %}
+                    {% set desarrollo = i['dePond'] | int %}
+
+                    {% set cierre = i['ciPond'] | int %}
+                    {% set parcial_sum = apertura + desarrollo + cierre %}
+                    {% set ns.total = ns.total + parcial_sum %}
+                {% endif %}
+            {% endfor %}
+
+            <text class='partial-footer-total'>Total ponderado: {{ ns.total }}%</text>             
+            <br>
+
+            {% set ns = namespace(total=0) %}
+
+            {% for i in pg %}
+                {% if i['parcial'] == 'Recursamiento emergente' %}
+                    {% set tapertura = i['apDur'] | int %}
+                    {% set tdesarrollo = i['deDur'] | int %}
+
+                    {% set tcierre = i['ciDur'] | int %}
+                    {% set parcial_sum = tapertura + tdesarrollo + tcierre %}
+                    {% set ns.total = ns.total + parcial_sum %}
+                {% endif %}
+            {% endfor %}
+
+            <text class='partial-footer-total'>Total tiempo: {{ ns.total/60 }}                         hrs</text>
+        </div>
+
+
+
+
+
+        
+        <!--BOTON CONTACTO -->
+        <div style="text-align:center;">
+            <a class="btn btn-primary btn-lg"  type="button"                                       href="mailto:mc.renebec@gmail.com?                                        subject=Pregunta%20sobre%20el%20curso%20de%20Pensamiento%20Matemático%20I&body=Nombre%3A%20%3C%20escriba%20aqu%C3%AD%20su%20nombre%20completo%20%3E%0D%0ADatos%3A%20%3C%20escriba%20sus%20datos%20de%20Semestre%2C%20Grupo%20y%20Carrera%20%3E%0D%0APregunta%3A%20%3C%20escriba%20aqu%C3%AD%20su%20pregunta%20o%20comentario%20%3E%0D%0A">Contacto</a>
+        </div>
+        </main>
+        <footer>
+        <p class="mt-3 mb-5 text-center">&copy; 2026_HRBC</p>
+        </footer>
+</body>
+</html><!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+    <link             href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,400;0,700;1,400;1,700&display=swap"
+          rel="stylesheet">
+    <script>
+        function updateDateTime() {
+            // Get the current date and time in Central Mexico
+            let options = {
+                timeZone: "America/Mexico_City",
+                year: "numeric",
+                month: "long",
+                day: "numeric",
+                hour: "2-digit",
+                minute: "2-digit",
+                second: "2-digit",
+                hour12: true
+            };
+
+            let currentDateTime = new Date().toLocaleString("es-MX", options);
+
+            // Format the date and time as "9 de abril de 2025, 09:40:00"
+            const dateTimeElement = document.getElementById('date-time');
+            if (dateTimeElement) {
+                dateTimeElement.innerHTML = currentDateTime;
+            }
+        }
+
+        // Update the time every second
+        setInterval(updateDateTime, 1000);
+
+        // Initial call to set the time immediately
+        updateDateTime();
+
+
+    </script>
+    <style>
+
+        .file-name-break {
+            width: 100%;
+            max-width: 100%;       /* Evita que se salga de la pantalla */
+            word-break: break-all;  /* Rompe el nombre largo de la DB en cualquier letra */
+            overflow-wrap: anywhere;
+            display: block;         /* Permite que el ancho funcione correctamente */
+        }
+
+        .file-details {
+            font-size: 0.9em;
+            color: #666;
+            display: inline-block;  /* Ayuda a que el navegador gestione mejor el bloque de texto */
+            margin-top: 5px;
+        }
+
+¿
+
+        #btnCerrar {
+
+            position: sticky;
+            top:0;
+            margin-top:0px;
+            margin-left:75%;
+            z-index: 1000;
+        }
+
+        #banner {
+            display:block;
+            margin-left:auto;
+            margin-right:auto;
+            width:100%;
+            height: 240px;
+            object-fit:cover;
+        }
+        body {
+
+            margin-left: auto;
+            margin-right: auto;
+            text-align:justify;
+        }
+
+        .partial-footer-total {
+            color:#AA99e1;
+            font-size:14px;
+        }
+
+        .navtxt{
+            color:rgb(100,100,100);
+        }
+
+        .btn-sm {
+            width:100px;
+        }
+
+        .noexist {
+
+        }
+        .container{
+            margin-left:auto;
+            margin-right:auto;
+            text-align:justify;
+        }
+        .apertura{
+            padding:10px;
+            background-color:rgba(50, 250, 37, 0.25);
+        }
+        .desarrollo{
+            padding:10px;
+            background-color:rgba(247, 234, 47, 0.3);
+        }
+
+        .cierre{
+            padding:10px;
+            background-color:rgba(250, 117, 221, 0.25);
+            color:#B51767;
+        }
+        .banner2 {
+              display:block;
+              margin-left:auto;
+              margin-right:auto;
+              width:100%;
+              max-width:550px;
+              height:240px;
+              object-fit:contain;
+              object-position: 0px -0px;
+          }
+
+
+        .img{
+            display:block;
+            max-width:100%;
+            height: auto;
+        }
+
+        .img-container {
+          width: 100%;
+          max-width: 600px; /* opcional */
+        }
+        .img-container img {
+          width: 100%;
+          height: auto;
+        }
+
+        @media (max-width: 768px) {
+          img {
+            width: 100%;
+          }
+        }
+
+
+    </style>
+
+    </head>
+        <nav class="navbar fixed-top bg-white shadow-sm mb-4">
+            <div class="container-fluid d-flex justify-content-between row">
+                {% if session.username %}
+                <span class="navbar-brand mb-0 h1 navtxt col-7">NEM user: {{session.username}}</span>
+                {% endif %}
+            </div>
+            <a href="{{ url_for('logout') }}" class="btn btn-danger btn-sm col-5" id="btnCerrar">Cerrar Sesión</a>
+        </nav>
+
+
+
+        <img class="mt-5" id="banner" src= "https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExczVjMG5xeXByZnAydHNsdWRuejBvdGltMms2aWkzdWg3czc1bm1nMyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/zqtOYPQZ8Kb5pMlH8p/giphy.gif">
+
+
+
+    
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+          <div class="container mt-3">
+            {% for category, message in messages %}
+                  <div class="alert alert-{{ category }}" role="alert">
+                      {{ message | replace('_', '<br>') | safe }}
+              </div>
+            {% endfor %}
+          </div>
+        {% endif %}
+      {% endwith %}
+
+    <div style="text-align:left;padding-left:20px;">
+        <text style="font-size:11px;color:#04AA6D;" id="date-time"></text>&nbsp;
+        <text style="font-size:11px;color:#04AA6D;">, </text>
+        <text style="font-size:11px;color:#04AA6D;" id="time"></text>
+    </div>
+<body>
+    <header>
+        <div> 
+
+            
+
+  
+ 
+            <!--{% set item = (pg 
+            | selectattr('carrera', 'equalto', 'TA') 
+            | selectattr('semestre', 'equalto', 1) 
+            | first) %}-->
+            {% set item = (pg | selectattr('parcial', 'equalto', 'PARCIAL 1') |                 first) %}
+
+            {% if item %} 
+            <h1 class="text-center mt-4 mb-2" style="color:rgb(100,100,100);">
+                {{item['asig']}}
+            </h1>
+            {% endif %} 
+        </div>
+    </header>
+
+
+    <main class="container">
+        <p style="text-align:right;color:rgb(150,150,150);">@ by M.C. Héctor René Becerril Cejudo</p>
+
+        <br>
+        <br>
+        <h4>¡Bienvenidos!</h4>
+        <img src="https://img.freepik.com/vector-premium/grupo-jovenes-alegres-dibujados-mano-celebrando-felicidad_1316704-33049.jpg">
+        
+<!--        <a href="https://dgetaycm.sep.gob.mx/Con%C3%B3cenos/2" target="_blank">Acerca de DGETAyCM</a>&#128072;<br>
+        <a href="https://renebec.github.io/mapdgetaycm/" target="_blank">Mapa de planteles</a>&#128072;
+ -->       
+        <h2 class="text-center mt-4 mb-2" style="color:rgb(100,100,100);">
+        </h2>
+
+        {% set item = (pg | selectattr('parcial', 'equalto', 'PARCIAL 1') |                 first) %}
+        {% if item is defined and item.meta | default(false) %}
+
+        <p class="lead">
+            {{ item.meta }}
+        </p>
+        {% endif %}
+<br><br>
+        <p class="lead">   
+            <i style="color:rgb(150,150,150);font-size:16px">M.C. Héctor René Becerril Cejudo</i><br><i style="color:rgb(150,150,150);font-size:16px">Texcoco, México.</i>
+        </p>
+
+
+
+        {% if es_profesor %}
+        <a  href="{{ url_for('plan_carga') }}">
+              <button type="submit" class="btn btn-warning">Subir una planeación</button>
+        </a>
+        <br><br>
+
+        <form method="GET" action="{{ url_for('hello_pm1') }}" class="row g-3 mb-4 p-3 border rounded bg-light">
+            <h5 class="text-secondary mb-3">Filtrar entregas de alumnos</h5>
+
+            <div class="col-md-4">
+                <label for="carrera" class="form-label">Carrera</label>
+                <select name="carrera" class="form-select">
+                    <option value="">Todas las carreras</option>
+                    <option value="TAP" {% if request.args.get('carrera') == 'TAP' %}selected{% endif %}>TAP</option>
+                    <option value="SPA" {% if request.args.get('carrera') == 'SPA' %}selected{% endif %}>SPA</option>
+                    <option value="SPP" {% if request.args.get('carrera') == 'SPP' %}selected{% endif %}>SPP</option>
+                    <option value="CIB" {% if request.args.get('carrera') == 'CIB' %}selected{% endif %}>CIB</option>
+                    <option value="BASICO" {% if request.args.get('carrera') == 'BASICO' %}selected{% endif %}>BASICO</option>
+                    <option value="Sistemas" {% if request.args.get('carrera') == 'Sistemas' %}selected{% endif %}>Sistemas</option>
+                    </select>
+            </div>
+
+            <div class="col-md-3">
+                <label for="semestre" class="form-label">Semestre</label>
+                <select name="semestre" class="form-select">
+                    <option value="">Todos</option>
+                    <option value="1" {% if request.args.get('semestre') == '1' %}selected{% endif %}>1</option>
+                    <option value="2" {% if request.args.get('semestre') == '2' %}selected{% endif %}>2</option>
+                    <option value="3" {% if request.args.get('semestre') == '3' %}selected{% endif %}>3</option>
+                    <option value="4" {% if request.args.get('semestre') == '4' %}selected{% endif %}>4</option>
+                    <option value="5" {% if request.args.get('semestre') == '5' %}selected{% endif %}>5</option>
+                    <option value="6" {% if request.args.get('semestre') == '6' %}selected{% endif %}>6</option>
+                </select>
+            </div>
+
+            <div class="col-md-3">
+                <label for="grupo" class="form-label">Grupo</label>
+                <select name="grupo" class="form-select">
+                    <option value="">Todos</option>
+                    <option value="A" {% if request.args.get('grupo') == 'A' %}selected{% endif %}>A</option>
+                    <option value="B" {% if request.args.get('grupo') == 'B' %}selected{% endif %}>B</option>
+                    <option value="C" {% if request.args.get('grupo') == 'C' %}selected{% endif %}>C</option>
+                    <option value="D" {% if request.args.get('grupo') == 'D' %}selected{% endif %}>D</option>
+                    <option value="E" {% if request.args.get('grupo') == 'E' %}selected{% endif %}>E</option>
+                    <option value="F" {% if request.args.get('grupo') == 'F' %}selected{% endif %}>F</option>
+                </select>
+            </div>
+
+            <div class="col-md-2">
+                <label for="dias" class="form-label">Rango</label>
+                <select name="dias" class="form-select">
+                    <option value="7" {% if request.args.get('dias') == '7' %}selected{% endif %}>Últimos 7 días</option>
+                    <option value="15" {% if request.args.get('dias') == '15' %}selected{% endif %}>Últimos 15 días</option>
+                    <option value="30" {% if request.args.get('dias') == '30' or not request.args.get('dias') %}selected{% endif %}>Últimos 30 días</option>
+                    <option value="200" {% if request.args.get('dias') == '200' %}selected{% endif %}>Semestre</option>
+                </select>
+            </div>
+
+            <div class="col-md-2 d-flex align-items-end">
+                <button type="submit" class="btn btn-primary w-100">Filtrar</button>
+            </div>
+        </form>
+        <br><br>
+        <h3>PDFs cargados</h3>
+        {% else %}
+
+        <form method="GET" action="{{ url_for('hello_pm1') }}" class="row g-3 mb-4 p-3 border rounded bg-light">
+            <h5 class="text-secondary mb-3">Filtrar actividades</h5>
+          
+            <div class="col-md-2">
+                <label for="dias2" class="form-label">Rango</label>
+                <select name="dias2" class="form-select">
+                    <option value="7" {% if request.args.get('dias2') == '7' %}selected{% endif %}>Últimos 7 días</option>
+                    <option value="15" {% if request.args.get('dias2') == '15' %}selected{% endif %}>Últimos 15 días</option>
+                    <option value="30" {% if request.args.get('dias2') == '30' or not request.args.get('dias2') %}selected{% endif %}>Últimos 30 días</option>
+                    <option value="180" {% if request.args.get('dias2') == '180' %}selected{% endif %}>Semestre</option>
+                </select>
+            </div>
+
+            <div class="col-md-2 d-flex align-items-end">
+                <button type="submit" class="btn btn-primary w-100">Filtrar</button>
+            </div>
+        </form>
+        <br><br>
+
+        
+        <h3>Tus PDFs</h3>
+
+        {% endif %}
+
+        {% if pdfs %}
+
+        
+        
+        <ul>
+        {% for pdf in pdfs %}
+            <li style="margin-bottom: 15px;"> 
+                <div class="file-name-break">
+                    <a href="{{ pdf['pdf_url'] }}" target="_blank" class="btn-descarga">
+                        mostrar PDF
+                    </a>
+                    <br>
+                    
+                    <span class="file-details">
+                        ({{ pdf['pdf_url'].split('actividad_')[1].rsplit('.', 1)[0] }} - {{ pdf['created_at'] }})
+                    </span>
+ 
+                    
+                </div>
+            </li>
+        {% endfor %}
+        </ul>
+        {% else %}
+            {% if es_profesor %}
+                <p>No se encontraron registros.</p>
+            {% else %}
+                <p>No se encontraron registros.</p>
+            {% endif %}
+        {% endif %}
+
+
+        <div>            
+            {% set item = (pg | selectattr('parcial', 'equalto', 'PARCIAL 1') |                 first) %}
+
+            {% if item %}
+                <h2 class="text-center mt-4 mb-2" style="padding-                                           bottom:16px;color:rgb(100,100,100);">
+                    {{item['parcial']}}
+            </h2>
+            {% endif %}
+        </div>
+
+        <div>
+            {% for i in pg %}
+                {% if i['parcial'] == 'PARCIAL 1' %}
+                    {% include 'temasitem.html' %}
+                {% endif %}
+
+            {% endfor %}
+        </div>
+
+        <text class='partial-footer-total'>Parcial 1</text>
+        <div>
+
+            {% set ns = namespace(total=0) %}
+
+            {% for i in pg %}
+                {% if i['parcial'] == 'PARCIAL 1' %}
+                    {% set apertura = i['apPond'] | int %}
+                    {% set desarrollo = i['dePond'] | int %}
+
+                    {% set cierre = i['ciPond'] | int %}
+                    {% set parcial_sum = apertura + desarrollo + cierre %}
+                    {% set ns.total = ns.total + parcial_sum %}
+                {% endif %}
+            {% endfor %}
+
+            <text class='partial-footer-total'>Total ponderado: {{ ns.total }}% </text>
+                <br>
+
+            {% set ts = namespace(total=0) %}
+
+            {% for i in pg %}
+                {% if i['parcial'] == 'PARCIAL 1' %}
+                    {% set tapertura = i['apDur'] | int %}
+                    {% set tdesarrollo = i['deDur'] | int %}
+
+                    {% set tcierre = i['ciDur'] | int %}
+                    {% set tparcial_sum = tapertura + tdesarrollo + tcierre %}
+                    {% set ts.total = ts.total + tparcial_sum %}
+                {% endif %}
+            {% endfor %}
+
+            <text class='partial-footer-total'>Total tiempo: {{ ts.total/60 }} hrs</text>
+        </div>   
+
+        <div>                     
+                {% set item = (pg | selectattr('parcial', 'equalto', 'PARCIAL 2') |                 first) %}
+
+                {% if item %}
+                <h2 class="text-center mt-4 mb-2" style="padding-                                       bottom:16px;color:rgb(100,100,100);">
+                    {{item['parcial']}}
+                </h2>
+                {% endif %}
+        </div>
+        <br>
+
+
+        <div>
+            {% for i in pg %}
+                {% if i['parcial'] == 'PARCIAL 2' %}
+                    {% include 'temasitem.html' %}
+                {% endif %}
+            {% endfor %}
+        </div>
+        <text class= 'partial-footer-total'>Parcial 2</text>
+        <div>
+            {% set ns = namespace(total=0) %}
+
+            {% for i in pg %}
+                {% if i['parcial'] == 'PARCIAL 2' %}
+                    {% set apertura = i['apPond'] | int %}
+                    {% set desarrollo = i['dePond'] | int %}
+
+                    {% set cierre = i['ciPond'] | int %}
+                    {% set parcial_sum = apertura + desarrollo + cierre %}
+                    {% set ns.total = ns.total + parcial_sum %}
+                {% endif %}
+            {% endfor %}
+
+            <text class= 'partial-footer-total'>Total ponderado: {{ ns.total }}% 
+            </text>        
+            <br>
+
+            {% set ns = namespace(total=0) %}
+
+            {% for i in pg %}
+                {% if i['parcial'] == 'PARCIAL 2' %}
+                    {% set tapertura = i['apDur'] | int %}
+                    {% set tdesarrollo = i['deDur'] | int %}
+
+                    {% set tcierre = i['ciDur'] | int %}
+                    {% set parcial_sum = tapertura + tdesarrollo + tcierre %}
+                    {% set ns.total = ns.total + parcial_sum %}
+                {% endif %}
+            {% endfor %}
+
+            <text class='partial-footer-total'>Total tiempo: {{ ns.total/60 }} hrs</text>
+        </div>
+
+        <div>                     
+        {% set item = (pg | selectattr('parcial', 'equalto', 'PARCIAL 3') | first)          %}
+                {% if item %}
+                <h2 class="text-center mt-4 mb-2" style="padding-bottom:16px;color:rgb(100,100,100);">
+                    {{item['parcial']}}
+                </h2>
+                {% endif %}
+        </div>
+        <br>
+
+        <div>
+            {% for i in pg %}
+                {% if i['parcial'] == 'PARCIAL 3' %}
+                    {% include 'temasitem.html' %}
+                {% endif %}
+            {% endfor %}
+        </div>
+        <text class= 'partial-footer-total'>Parcial 3</text>
+        <div>
+            {% set ns = namespace(total=0) %}
+
+            {% for i in pg %}
+                {% if i['parcial'] == 'PARCIAL 3' %}
+                    {% set apertura = i['apPond'] | int %}
+                    {% set desarrollo = i['dePond'] | int %}
+
+                    {% set cierre = i['ciPond'] | int %}
+                    {% set parcial_sum = apertura + desarrollo + cierre %}
+                    {% set ns.total = ns.total + parcial_sum %}
+                {% endif %}
+            {% endfor %}
+
+            <text class='partial-footer-total'>Total ponderado: {{ ns.total }}%</text>             
+            <br>
+
+            {% set ns = namespace(total=0) %}
+
+            {% for i in pg %}
+                {% if i['parcial'] == 'PARCIAL 3' %}
+                    {% set tapertura = i['apDur'] | int %}
+                    {% set tdesarrollo = i['deDur'] | int %}
+
+                    {% set tcierre = i['ciDur'] | int %}
+                    {% set parcial_sum = tapertura + tdesarrollo + tcierre %}
+                    {% set ns.total = ns.total + parcial_sum %}
+                {% endif %}
+            {% endfor %}
+
+            <text class='partial-footer-total'>Total tiempo: {{ ns.total/60 }}                         hrs</text>
+        </div>
+
+
+
+<!--recursamientos -->
+
+
+        <div>                     
+            {% set item = (pg | selectattr('parcial', 'equalto', 'Recursamiento emergente') | first)          %}
+                    {% if item %}
+                    <h2 class="text-center mt-4 mb-2" style="padding-bottom:16px;color:rgb(100,100,100);">
+                        {{item['parcial']}}
+                    </h2>
+                    {% endif %}
+            </div>
+            <br>
+
+        <div>
+            {% for i in pg %}
+                {% if i['parcial'] == 'Recursamiento emergente' %}
+            
+                    {% include 'temasitem.html' %}
+                {% endif %}
+            {% endfor %}
+        </div>
+        <text class= 'partial-footer-total'>Recursamiento emergente</text>
+        <div>
+            {% set ns = namespace(total=0) %}
+
+            {% for i in pg %}
+                {% if i['parcial'] == 'Recursamiento emergente' %}
+                    {% set apertura = i['apPond'] | int %}
+                    {% set desarrollo = i['dePond'] | int %}
+
+                    {% set cierre = i['ciPond'] | int %}
+                    {% set parcial_sum = apertura + desarrollo + cierre %}
+                    {% set ns.total = ns.total + parcial_sum %}
+                {% endif %}
+            {% endfor %}
+
+            <text class='partial-footer-total'>Total ponderado: {{ ns.total }}%</text>             
+            <br>
+
+            {% set ns = namespace(total=0) %}
+
+            {% for i in pg %}
+                {% if i['parcial'] == 'Recursamiento emergente' %}
+                    {% set tapertura = i['apDur'] | int %}
+                    {% set tdesarrollo = i['deDur'] | int %}
+
+                    {% set tcierre = i['ciDur'] | int %}
+                    {% set parcial_sum = tapertura + tdesarrollo + tcierre %}
+                    {% set ns.total = ns.total + parcial_sum %}
+                {% endif %}
+            {% endfor %}
+
+            <text class='partial-footer-total'>Total tiempo: {{ ns.total/60 }}                         hrs</text>
+        </div>
+
+
+
+
+
+        
+        <!--BOTON CONTACTO -->
+        <div style="text-align:center;">
+            <a class="btn btn-primary btn-lg"  type="button"                                       href="mailto:mc.renebec@gmail.com?                                        subject=Pregunta%20sobre%20el%20curso%20de%20Pensamiento%20Matemático%20I&body=Nombre%3A%20%3C%20escriba%20aqu%C3%AD%20su%20nombre%20completo%20%3E%0D%0ADatos%3A%20%3C%20escriba%20sus%20datos%20de%20Semestre%2C%20Grupo%20y%20Carrera%20%3E%0D%0APregunta%3A%20%3C%20escriba%20aqu%C3%AD%20su%20pregunta%20o%20comentario%20%3E%0D%0A">Contacto</a>
+        </div>
+        </main>
+        <footer>
+        <p class="mt-3 mb-5 text-center">&copy; 2026_HRBC</p>
+        </footer>
+</body>
+</html><!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+    <link             href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,400;0,700;1,400;1,700&display=swap"
+          rel="stylesheet">
+    <script>
+        function updateDateTime() {
+            // Get the current date and time in Central Mexico
+            let options = {
+                timeZone: "America/Mexico_City",
+                year: "numeric",
+                month: "long",
+                day: "numeric",
+                hour: "2-digit",
+                minute: "2-digit",
+                second: "2-digit",
+                hour12: true
+            };
+
+            let currentDateTime = new Date().toLocaleString("es-MX", options);
+
+            // Format the date and time as "9 de abril de 2025, 09:40:00"
+            const dateTimeElement = document.getElementById('date-time');
+            if (dateTimeElement) {
+                dateTimeElement.innerHTML = currentDateTime;
+            }
+        }
+
+        // Update the time every second
+        setInterval(updateDateTime, 1000);
+
+        // Initial call to set the time immediately
+        updateDateTime();
+
+
+    </script>
+    <style>
+
+        .file-name-break {
+            width: 100%;
+            max-width: 100%;       /* Evita que se salga de la pantalla */
+            word-break: break-all;  /* Rompe el nombre largo de la DB en cualquier letra */
+            overflow-wrap: anywhere;
+            display: block;         /* Permite que el ancho funcione correctamente */
+        }
+
+        .file-details {
+            font-size: 0.9em;
+            color: #666;
+            display: inline-block;  /* Ayuda a que el navegador gestione mejor el bloque de texto */
+            margin-top: 5px;
+        }
+
+¿
+
+        #btnCerrar {
+
+            position: sticky;
+            top:0;
+            margin-top:0px;
+            margin-left:75%;
+            z-index: 1000;
+        }
+
+        #banner {
+            display:block;
+            margin-left:auto;
+            margin-right:auto;
+            width:100%;
+            height: 240px;
+            object-fit:cover;
+        }
+        body {
+
+            margin-left: auto;
+            margin-right: auto;
+            text-align:justify;
+        }
+
+        .partial-footer-total {
+            color:#AA99e1;
+            font-size:14px;
+        }
+
+        .navtxt{
+            color:rgb(100,100,100);
+        }
+
+        .btn-sm {
+            width:100px;
+        }
+
+        .noexist {
+
+        }
+        .container{
+            margin-left:auto;
+            margin-right:auto;
+            text-align:justify;
+        }
+        .apertura{
+            padding:10px;
+            background-color:rgba(50, 250, 37, 0.25);
+        }
+        .desarrollo{
+            padding:10px;
+            background-color:rgba(247, 234, 47, 0.3);
+        }
+
+        .cierre{
+            padding:10px;
+            background-color:rgba(250, 117, 221, 0.25);
+            color:#B51767;
+        }
+        .banner2 {
+              display:block;
+              margin-left:auto;
+              margin-right:auto;
+              width:100%;
+              max-width:550px;
+              height:240px;
+              object-fit:contain;
+              object-position: 0px -0px;
+          }
+
+
+        .img{
+            display:block;
+            max-width:100%;
+            height: auto;
+        }
+
+        .img-container {
+          width: 100%;
+          max-width: 600px; /* opcional */
+        }
+        .img-container img {
+          width: 100%;
+          height: auto;
+        }
+
+        @media (max-width: 768px) {
+          img {
+            width: 100%;
+          }
+        }
+
+
+    </style>
+
+    </head>
+        <nav class="navbar fixed-top bg-white shadow-sm mb-4">
+            <div class="container-fluid d-flex justify-content-between row">
+                {% if session.username %}
+                <span class="navbar-brand mb-0 h1 navtxt col-7">NEM user: {{session.username}}</span>
+                {% endif %}
+            </div>
+            <a href="{{ url_for('logout') }}" class="btn btn-danger btn-sm col-5" id="btnCerrar">Cerrar Sesión</a>
+        </nav>
+
+
+
+        <img class="mt-5" id="banner" src= "https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExczVjMG5xeXByZnAydHNsdWRuejBvdGltMms2aWkzdWg3czc1bm1nMyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/zqtOYPQZ8Kb5pMlH8p/giphy.gif">
+
+
+
+    
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+          <div class="container mt-3">
+            {% for category, message in messages %}
+                  <div class="alert alert-{{ category }}" role="alert">
+                      {{ message | replace('_', '<br>') | safe }}
+              </div>
+            {% endfor %}
+          </div>
+        {% endif %}
+      {% endwith %}
+
+    <div style="text-align:left;padding-left:20px;">
+        <text style="font-size:11px;color:#04AA6D;" id="date-time"></text>&nbsp;
+        <text style="font-size:11px;color:#04AA6D;">, </text>
+        <text style="font-size:11px;color:#04AA6D;" id="time"></text>
+    </div>
+<body>
+    <header>
+        <div> 
+
+            
+
+  
+ 
+            <!--{% set item = (pg 
+            | selectattr('carrera', 'equalto', 'TA') 
+            | selectattr('semestre', 'equalto', 1) 
+            | first) %}-->
+            {% set item = (pg | selectattr('parcial', 'equalto', 'PARCIAL 1') |                 first) %}
+
+            {% if item %} 
+            <h1 class="text-center mt-4 mb-2" style="color:rgb(100,100,100);">
+                {{item['asig']}}
+            </h1>
+            {% endif %} 
+        </div>
+    </header>
+
+
+    <main class="container">
+        <p style="text-align:right;color:rgb(150,150,150);">@ by M.C. Héctor René Becerril Cejudo</p>
+
+        <br>
+        <br>
+        <h4>¡Bienvenidos!</h4>
+        <img src="https://img.freepik.com/vector-premium/grupo-jovenes-alegres-dibujados-mano-celebrando-felicidad_1316704-33049.jpg">
+        
+<!--        <a href="https://dgetaycm.sep.gob.mx/Con%C3%B3cenos/2" target="_blank">Acerca de DGETAyCM</a>&#128072;<br>
+        <a href="https://renebec.github.io/mapdgetaycm/" target="_blank">Mapa de planteles</a>&#128072;
+ -->       
+        <h2 class="text-center mt-4 mb-2" style="color:rgb(100,100,100);">
+        </h2>
+
+        {% set item = (pg | selectattr('parcial', 'equalto', 'PARCIAL 1') |                 first) %}
+        {% if item is defined and item.meta | default(false) %}
+
+        <p class="lead">
+            {{ item.meta }}
+        </p>
+        {% endif %}
+<br><br>
+        <p class="lead">   
+            <i style="color:rgb(150,150,150);font-size:16px">M.C. Héctor René Becerril Cejudo</i><br><i style="color:rgb(150,150,150);font-size:16px">Texcoco, México.</i>
+        </p>
+
+
+
+        {% if es_profesor %}
+        <a  href="{{ url_for('plan_carga') }}">
+              <button type="submit" class="btn btn-warning">Subir una planeación</button>
+        </a>
+        <br><br>
+
+        <form method="GET" action="{{ url_for('hello_pm1') }}" class="row g-3 mb-4 p-3 border rounded bg-light">
+            <h5 class="text-secondary mb-3">Filtrar entregas de alumnos</h5>
+
+            <div class="col-md-4">
+                <label for="carrera" class="form-label">Carrera</label>
+                <select name="carrera" class="form-select">
+                    <option value="">Todas las carreras</option>
+                    <option value="TAP" {% if request.args.get('carrera') == 'TAP' %}selected{% endif %}>TAP</option>
+                    <option value="SPA" {% if request.args.get('carrera') == 'SPA' %}selected{% endif %}>SPA</option>
+                    <option value="SPP" {% if request.args.get('carrera') == 'SPP' %}selected{% endif %}>SPP</option>
+                    <option value="CIB" {% if request.args.get('carrera') == 'CIB' %}selected{% endif %}>CIB</option>
+                    <option value="BASICO" {% if request.args.get('carrera') == 'BASICO' %}selected{% endif %}>BASICO</option>
+                    <option value="Sistemas" {% if request.args.get('carrera') == 'Sistemas' %}selected{% endif %}>Sistemas</option>
+                    </select>
+            </div>
+
+            <div class="col-md-3">
+                <label for="semestre" class="form-label">Semestre</label>
+                <select name="semestre" class="form-select">
+                    <option value="">Todos</option>
+                    <option value="1" {% if request.args.get('semestre') == '1' %}selected{% endif %}>1</option>
+                    <option value="2" {% if request.args.get('semestre') == '2' %}selected{% endif %}>2</option>
+                    <option value="3" {% if request.args.get('semestre') == '3' %}selected{% endif %}>3</option>
+                    <option value="4" {% if request.args.get('semestre') == '4' %}selected{% endif %}>4</option>
+                    <option value="5" {% if request.args.get('semestre') == '5' %}selected{% endif %}>5</option>
+                    <option value="6" {% if request.args.get('semestre') == '6' %}selected{% endif %}>6</option>
+                </select>
+            </div>
+
+            <div class="col-md-3">
+                <label for="grupo" class="form-label">Grupo</label>
+                <select name="grupo" class="form-select">
+                    <option value="">Todos</option>
+                    <option value="A" {% if request.args.get('grupo') == 'A' %}selected{% endif %}>A</option>
+                    <option value="B" {% if request.args.get('grupo') == 'B' %}selected{% endif %}>B</option>
+                    <option value="C" {% if request.args.get('grupo') == 'C' %}selected{% endif %}>C</option>
+                    <option value="D" {% if request.args.get('grupo') == 'D' %}selected{% endif %}>D</option>
+                    <option value="E" {% if request.args.get('grupo') == 'E' %}selected{% endif %}>E</option>
+                    <option value="F" {% if request.args.get('grupo') == 'F' %}selected{% endif %}>F</option>
+                </select>
+            </div>
+
+            <div class="col-md-2">
+                <label for="dias" class="form-label">Rango</label>
+                <select name="dias" class="form-select">
+                    <option value="7" {% if request.args.get('dias') == '7' %}selected{% endif %}>Últimos 7 días</option>
+                    <option value="15" {% if request.args.get('dias') == '15' %}selected{% endif %}>Últimos 15 días</option>
+                    <option value="30" {% if request.args.get('dias') == '30' or not request.args.get('dias') %}selected{% endif %}>Últimos 30 días</option>
                     <option value="200" {% if request.args.get('dias') == '200' %}selected{% endif %}>Semestre</option>
                 </select>
             </div>

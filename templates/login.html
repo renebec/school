@@ -682,4 +682,688 @@
     });
   </script>
 </body>
+</html><!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+  <style>
+    html, body {
+      max-width: 100%;
+      overflow-x: hidden;
+    }
+    .container{
+        margin-left:auto;
+        margin-right:auto;
+        text-align:justify;
+        max-width: 960px;
+    }
+    .img{
+        display:block;
+        max-width:100%;
+        height: auto;
+    }
+
+    .img-container {
+      width: 100%;
+      max-width: 760px; /* opcional */
+    }
+    .img-container img {
+      width: 100%;
+      height: auto;
+    }
+
+    .iframe-wrapper {
+      position: relative;
+      width: 100%;
+      max-height: 360px;
+      padding-top: 60%; /* 4:3 */
+      overflow: hidden;
+    }
+
+    .iframe-wrapper iframe {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      max-height: 340px;
+      border: 0;
+    }
+
+    @media (max-width: 390px) {
+      .iframe-wrapper {
+        max-width: 100%;
+      }
+    }
+
+  </style>
+
+
+<body>
+    <div class="container mt-5">
+      <h4>Ingresa los datos de tu cuenta</h4>
+      <div class="img-container">
+      <img src="https://static.vecteezy.com/system/resources/previews/015/928/710/large_2x/group-of-smiling-teenage-girls-and-boys-with-backpacks-and-books-happy-students-in-casual-clothes-flat-cartoon-illustration-free-vector.jpg">
+      <br><br><br>
+        <!-- FLASH MESSAGES -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+          {% if messages %}
+            {% for category, message in messages %}
+              <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+              </div>
+            {% endfor %}
+          {% endif %}
+        {% endwith %}
+
+
+
+        <form method="POST" action="{{ url_for('login') }}">
+        <!--<form id="myform" method="POST" action="choice">-->
+          <label for="asig" class="form-label">Selecciona una asignatura</label><br>
+          <select name="asig">
+            
+
+            <option value="PENSAMIENTO MATEMÁTICO 1">PENSAMIENTO MATEMÁTICO 1</option>
+            <option value="PENSAMIENTO MATEMÁTICO 2">PENSAMIENTO MATEMÁTICO 2</option>
+            
+            <option value="SPA M1-S1 OPPA">SPA M1-S1 OPPA</option>
+            <option value="SPA M1-S2 DEA">SPA M1-S2 DEA</option>
+            <option value="SPA M1-S3 DPAS">SPA M1-S3 DPAS</option>
+           <!-- <option value="SPA M1-S1 OPPA">TAG M1-S1 MSA</option>-->
+
+           <option value="TAG M1-S1">TAG M1-S1</option>
+            <option value="SPA M2-S1 AQ">SPA M2-S1 AQ</option>
+            <option value="SPA M2-S2 AF">SPA M2-S2 AF</option>
+            <option value="SPA M2-S3 AM">SPA M2-S3 AM</option>
+          </select>
+          <br><br>
+            <div class="mb-3">
+                <label for="username" class="form-label">Usuario</label>
+                <input type="text" class="form-control" id="username" name="username" required>
+            </div>
+            <div class="mb-3">
+                <label for="password" class="form-label">Contraseña</label>
+                <input type="password" class="form-control" id="password" name="password" required>
+            </div>
+          
+          
+            <button type="submit" class="btn btn-primary">Login</button>
+            <br>
+            <br>
+
+            <a>¿No tienes una cuenta?</a>
+            <br>
+
+            <form id="myform" method="POST" action="choice">
+              <label>
+                 ¿Quieres registrarte?<br>
+                <input type="checkbox" name="choice" value="D" class="single-checkbox"> Si
+              </label>
+              <br><br><br>
+
+              <a href="#" id="register-link">Continuar con registro&#128209;</a>
+              <!--<a type="button" href="{{ url_for('register') }}">Haz click para registrarte:</a>-->
+            </form>
+                <br><br>
+        </form>
+
+      <hr>
+
+
+        <div class="row justify-content-between">
+            </div>
+    
+    
+            <div class="row">
+            <div class="col-12 col-lg-6 mb-4">
+            <div class="iframe-wrapper">
+            <iframe src="https://thingspeak.com/channels/2860984/charts/1?bgcolor=%23fada1a&color=%23d62020&dynamic=true&results=300&round=1&timescale=30&title=Temperatura+%C2%B0C&type=line&xaxis=tiempo&yaxis=Temperatura&width=400&height=240" loading="lazy">
+            </iframe>
+            </div>
+            </div>
+    
+            <div class="d-block d-md-none">
+            <!-- Solo visible en móviles -->
+            <br><br><br>
+            </div>
+        </div>
+        <br><br><br><br><br><br><br><br><br>
+        <br><br><br><br><br><br><br><br><br>
+
+    </div>
+
+  
+
+
+
+  <script>
+    document.getElementById("register-link").addEventListener("click", function (e) {
+      e.preventDefault();
+      const checked = document.querySelector('input[name="choice"]:checked');
+      if (checked) {
+        const choice = checked.value;
+        window.location.href = `/register?choice=${choice}`;
+      } else {
+        alert("Por favor, selecciona una opción antes de continuar.");
+      }
+    });
+  </script>
+</body>
+</html><!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+  <style>
+    html, body {
+      max-width: 100%;
+      overflow-x: hidden;
+    }
+    .container{
+        margin-left:auto;
+        margin-right:auto;
+        text-align:justify;
+        max-width: 960px;
+    }
+    .img{
+        display:block;
+        max-width:100%;
+        height: auto;
+    }
+
+    .img-container {
+      width: 100%;
+      max-width: 760px; /* opcional */
+    }
+    .img-container img {
+      width: 100%;
+      height: auto;
+    }
+
+    .iframe-wrapper {
+      position: relative;
+      width: 100%;
+      max-height: 360px;
+      padding-top: 60%; /* 4:3 */
+      overflow: hidden;
+    }
+
+    .iframe-wrapper iframe {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      max-height: 340px;
+      border: 0;
+    }
+
+    @media (max-width: 390px) {
+      .iframe-wrapper {
+        max-width: 100%;
+      }
+    }
+
+  </style>
+
+
+<body>
+    <div class="container mt-5">
+      <h4>Ingresa los datos de tu cuenta</h4>
+      <div class="img-container">
+      <img src="https://static.vecteezy.com/system/resources/previews/015/928/710/large_2x/group-of-smiling-teenage-girls-and-boys-with-backpacks-and-books-happy-students-in-casual-clothes-flat-cartoon-illustration-free-vector.jpg">
+      <br><br><br>
+        <!-- FLASH MESSAGES -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+          {% if messages %}
+            {% for category, message in messages %}
+              <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+              </div>
+            {% endfor %}
+          {% endif %}
+        {% endwith %}
+
+
+
+        <form method="POST" action="{{ url_for('login') }}">
+        <!--<form id="myform" method="POST" action="choice">-->
+          <label for="asig" class="form-label">Selecciona una asignatura</label><br>
+          <select name="asig">
+            
+
+            <option value="PENSAMIENTO MATEMÁTICO 1">PENSAMIENTO MATEMÁTICO 1</option>
+            <option value="PENSAMIENTO MATEMÁTICO 2">PENSAMIENTO MATEMÁTICO 2</option>
+            
+            <option value="SPA M1-S1 OPPA">SPA M1-S1 OPPA</option>
+            <option value="SPA M1-S2 DEA">SPA M1-S2 DEA</option>
+            <option value="SPA M1-S3 DPAS">SPA M1-S3 DPAS</option>
+           <!-- <option value="SPA M1-S1 OPPA">TAG M1-S1 MSA</option>-->
+
+           <option value="TAG M1-S1">TAG M1-S1</option>
+            <option value="SPA M2-S1 AQ">SPA M2-S1 AQ</option>
+            <option value="SPA M2-S2 AF">SPA M2-S2 AF</option>
+            <option value="SPA M2-S3 AM">SPA M2-S3 AM</option>
+          </select>
+          <br><br>
+            <div class="mb-3">
+                <label for="username" class="form-label">Usuario</label>
+                <input type="text" class="form-control" id="username" name="username" required>
+            </div>
+            <div class="mb-3">
+                <label for="password" class="form-label">Contraseña</label>
+                <input type="password" class="form-control" id="password" name="password" required>
+            </div>
+          
+          
+            <button type="submit" class="btn btn-primary">Login</button>
+            <br>
+            <br>
+
+            <a>¿No tienes una cuenta?</a>
+            <br>
+
+            <form id="myform" method="POST" action="choice">
+              <label>
+                 ¿Quieres registrarte?<br>
+                <input type="checkbox" name="choice" value="D" class="single-checkbox"> Si
+              </label>
+              <br><br><br>
+
+              <a href="#" id="register-link">Continuar con registro&#128209;</a>
+              <!--<a type="button" href="{{ url_for('register') }}">Haz click para registrarte:</a>-->
+            </form>
+                <br><br>
+        </form>
+
+      <hr>
+
+
+        <div class="row justify-content-between">
+            </div>
+    
+    
+            <div class="row">
+            <div class="col-12 col-lg-6 mb-4">
+            <div class="iframe-wrapper">
+            <iframe src="https://thingspeak.com/channels/2860984/charts/1?bgcolor=%23fada1a&color=%23d62020&dynamic=true&results=300&round=1&timescale=30&title=Temperatura+%C2%B0C&type=line&xaxis=tiempo&yaxis=Temperatura&width=400&height=240" loading="lazy">
+            </iframe>
+            </div>
+            </div>
+    
+            <div class="d-block d-md-none">
+            <!-- Solo visible en móviles -->
+            <br><br><br>
+            </div>
+        </div>
+        <br><br><br><br><br><br><br><br><br>
+        <br><br><br><br><br><br><br><br><br>
+
+    </div>
+
+  
+
+
+
+  <script>
+    document.getElementById("register-link").addEventListener("click", function (e) {
+      e.preventDefault();
+      const checked = document.querySelector('input[name="choice"]:checked');
+      if (checked) {
+        const choice = checked.value;
+        window.location.href = `/register?choice=${choice}`;
+      } else {
+        alert("Por favor, selecciona una opción antes de continuar.");
+      }
+    });
+  </script>
+</body>
+</html><!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+  <style>
+    html, body {
+      max-width: 100%;
+      overflow-x: hidden;
+    }
+    .container{
+        margin-left:auto;
+        margin-right:auto;
+        text-align:justify;
+        max-width: 960px;
+    }
+    .img{
+        display:block;
+        max-width:100%;
+        height: auto;
+    }
+
+    .img-container {
+      width: 100%;
+      max-width: 760px; /* opcional */
+    }
+    .img-container img {
+      width: 100%;
+      height: auto;
+    }
+
+    .iframe-wrapper {
+      position: relative;
+      width: 100%;
+      max-height: 360px;
+      padding-top: 60%; /* 4:3 */
+      overflow: hidden;
+    }
+
+    .iframe-wrapper iframe {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      max-height: 340px;
+      border: 0;
+    }
+
+    @media (max-width: 390px) {
+      .iframe-wrapper {
+        max-width: 100%;
+      }
+    }
+
+  </style>
+
+
+<body>
+    <div class="container mt-5">
+      <h4>Ingresa los datos de tu cuenta</h4>
+      <div class="img-container">
+      <img src="https://static.vecteezy.com/system/resources/previews/015/928/710/large_2x/group-of-smiling-teenage-girls-and-boys-with-backpacks-and-books-happy-students-in-casual-clothes-flat-cartoon-illustration-free-vector.jpg">
+      <br><br><br>
+        <!-- FLASH MESSAGES -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+          {% if messages %}
+            {% for category, message in messages %}
+              <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+              </div>
+            {% endfor %}
+          {% endif %}
+        {% endwith %}
+
+
+
+        <form method="POST" action="{{ url_for('login') }}">
+        <!--<form id="myform" method="POST" action="choice">-->
+          <label for="asig" class="form-label">Selecciona una asignatura</label><br>
+          <select name="asig">
+            
+
+            <option value="PENSAMIENTO MATEMÁTICO 1">PENSAMIENTO MATEMÁTICO 1</option>
+            <option value="PENSAMIENTO MATEMÁTICO 2">PENSAMIENTO MATEMÁTICO 2</option>
+            
+            <option value="SPA M1-S1 OPPA">SPA M1-S1 OPPA</option>
+            <option value="SPA M1-S2 DEA">SPA M1-S2 DEA</option>
+            <option value="SPA M1-S3 DPAS">SPA M1-S3 DPAS</option>
+           <!-- <option value="SPA M1-S1 OPPA">TAG M1-S1 MSA</option>-->
+
+           <option value="TAG M1-S1">TAG M1-S1</option>
+            <option value="SPA M2-S1 AQ">SPA M2-S1 AQ</option>
+            <option value="SPA M2-S2 AF">SPA M2-S2 AF</option>
+            <option value="SPA M2-S3 AM">SPA M2-S3 AM</option>
+          </select>
+          <br><br>
+            <div class="mb-3">
+                <label for="username" class="form-label">Usuario</label>
+                <input type="text" class="form-control" id="username" name="username" required>
+            </div>
+            <div class="mb-3">
+                <label for="password" class="form-label">Contraseña</label>
+                <input type="password" class="form-control" id="password" name="password" required>
+            </div>
+          
+          
+            <button type="submit" class="btn btn-primary">Login</button>
+            <br>
+            <br>
+
+            <a>¿No tienes una cuenta?</a>
+            <br>
+
+            <form id="myform" method="POST" action="choice">
+              <label>
+                 ¿Quieres registrarte?<br>
+                <input type="checkbox" name="choice" value="D" class="single-checkbox"> Si
+              </label>
+              <br><br><br>
+
+              <a href="#" id="register-link">Continuar con registro&#128209;</a>
+              <!--<a type="button" href="{{ url_for('register') }}">Haz click para registrarte:</a>-->
+            </form>
+                <br><br>
+        </form>
+
+      <hr>
+
+
+        <div class="row justify-content-between">
+            </div>
+    
+    
+            <div class="row">
+            <div class="col-12 col-lg-6 mb-4">
+            <div class="iframe-wrapper">
+            <iframe src="https://thingspeak.com/channels/2860984/charts/1?bgcolor=%23fada1a&color=%23d62020&dynamic=true&results=300&round=1&timescale=30&title=Temperatura+%C2%B0C&type=line&xaxis=tiempo&yaxis=Temperatura&width=400&height=240" loading="lazy">
+            </iframe>
+            </div>
+            </div>
+    
+            <div class="d-block d-md-none">
+            <!-- Solo visible en móviles -->
+            <br><br><br>
+            </div>
+        </div>
+        <br><br><br><br><br><br><br><br><br>
+        <br><br><br><br><br><br><br><br><br>
+
+    </div>
+
+  
+
+
+
+  <script>
+    document.getElementById("register-link").addEventListener("click", function (e) {
+      e.preventDefault();
+      const checked = document.querySelector('input[name="choice"]:checked');
+      if (checked) {
+        const choice = checked.value;
+        window.location.href = `/register?choice=${choice}`;
+      } else {
+        alert("Por favor, selecciona una opción antes de continuar.");
+      }
+    });
+  </script>
+</body>
+</html><!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+  <style>
+    html, body {
+      max-width: 100%;
+      overflow-x: hidden;
+    }
+    .container{
+        margin-left:auto;
+        margin-right:auto;
+        text-align:justify;
+        max-width: 960px;
+    }
+    .img{
+        display:block;
+        max-width:100%;
+        height: auto;
+    }
+
+    .img-container {
+      width: 100%;
+      max-width: 760px; /* opcional */
+    }
+    .img-container img {
+      width: 100%;
+      height: auto;
+    }
+
+    .iframe-wrapper {
+      position: relative;
+      width: 100%;
+      max-height: 360px;
+      padding-top: 60%; /* 4:3 */
+      overflow: hidden;
+    }
+
+    .iframe-wrapper iframe {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      max-height: 340px;
+      border: 0;
+    }
+
+    @media (max-width: 390px) {
+      .iframe-wrapper {
+        max-width: 100%;
+      }
+    }
+
+  </style>
+
+
+<body>
+    <div class="container mt-5">
+      <h4>Ingresa los datos de tu cuenta</h4>
+      <div class="img-container">
+      <img src="https://static.vecteezy.com/system/resources/previews/015/928/710/large_2x/group-of-smiling-teenage-girls-and-boys-with-backpacks-and-books-happy-students-in-casual-clothes-flat-cartoon-illustration-free-vector.jpg">
+      <br><br><br>
+        <!-- FLASH MESSAGES -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+          {% if messages %}
+            {% for category, message in messages %}
+              <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+              </div>
+            {% endfor %}
+          {% endif %}
+        {% endwith %}
+
+
+
+        <form method="POST" action="{{ url_for('login') }}">
+        <!--<form id="myform" method="POST" action="choice">-->
+          <label for="asig" class="form-label">Selecciona una asignatura</label><br>
+          <select name="asig">
+            
+
+            <option value="PENSAMIENTO MATEMÁTICO 1">PENSAMIENTO MATEMÁTICO 1</option>
+            <option value="PENSAMIENTO MATEMÁTICO 2">PENSAMIENTO MATEMÁTICO 2</option>
+            
+            <option value="SPA M1-S1 OPPA">SPA M1-S1 OPPA</option>
+            <option value="SPA M1-S2 DEA">SPA M1-S2 DEA</option>
+            <option value="SPA M1-S3 DPAS">SPA M1-S3 DPAS</option>
+           <!-- <option value="SPA M1-S1 OPPA">TAG M1-S1 MSA</option>-->
+
+           <option value="TAG M1-S1">TAG M1-S1</option>
+            <option value="SPA M2-S1 AQ">SPA M2-S1 AQ</option>
+            <option value="SPA M2-S2 AF">SPA M2-S2 AF</option>
+            <option value="SPA M2-S3 AM">SPA M2-S3 AM</option>
+          </select>
+          <br><br>
+            <div class="mb-3">
+                <label for="username" class="form-label">Usuario</label>
+                <input type="text" class="form-control" id="username" name="username" required>
+            </div>
+            <div class="mb-3">
+                <label for="password" class="form-label">Contraseña</label>
+                <input type="password" class="form-control" id="password" name="password" required>
+            </div>
+          
+          
+            <button type="submit" class="btn btn-primary">Login</button>
+            <br>
+            <br>
+
+            <a>¿No tienes una cuenta?</a>
+            <br>
+
+            <form id="myform" method="POST" action="choice">
+              <label>
+                 ¿Quieres registrarte?<br>
+                <input type="checkbox" name="choice" value="D" class="single-checkbox"> Si
+              </label>
+              <br><br><br>
+
+              <a href="#" id="register-link">Continuar con registro&#128209;</a>
+              <!--<a type="button" href="{{ url_for('register') }}">Haz click para registrarte:</a>-->
+            </form>
+                <br><br>
+        </form>
+
+      <hr>
+
+
+        <div class="row justify-content-between">
+            </div>
+    
+    
+            <div class="row">
+            <div class="col-12 col-lg-6 mb-4">
+            <div class="iframe-wrapper">
+            <iframe src="https://thingspeak.com/channels/2860984/charts/1?bgcolor=%23fada1a&color=%23d62020&dynamic=true&results=300&round=1&timescale=30&title=Temperatura+%C2%B0C&type=line&xaxis=tiempo&yaxis=Temperatura&width=400&height=240" loading="lazy">
+            </iframe>
+            </div>
+            </div>
+    
+            <div class="d-block d-md-none">
+            <!-- Solo visible en móviles -->
+            <br><br><br>
+            </div>
+        </div>
+        <br><br><br><br><br><br><br><br><br>
+        <br><br><br><br><br><br><br><br><br>
+
+    </div>
+
+  
+
+
+
+  <script>
+    document.getElementById("register-link").addEventListener("click", function (e) {
+      e.preventDefault();
+      const checked = document.querySelector('input[name="choice"]:checked');
+      if (checked) {
+        const choice = checked.value;
+        window.location.href = `/register?choice=${choice}`;
+      } else {
+        alert("Por favor, selecciona una opción antes de continuar.");
+      }
+    });
+  </script>
+</body>
 </html>

@@ -88,4 +88,94 @@
     </div>
 
 
+</div><div class="border-bottom row" style="margin-bottom:16px;padding-bottom:5px;">
+    <div class="col-9">
+
+        <h4 style="margin-bottom:4px;">                                 
+            Unidad {{i['plan']}}
+        </h4>
+
+        <h4 style="margin-bottom:4px;color:rgb(155,155,155);text-align:left;">                                 
+
+        </h4>
+
+        {% if not es_profesor %}
+        <!-- Botón que redirige al formulario exclusivo -->
+        <a href="{{ url_for('enviaractividad', asig=i['asig']) }}"">
+              <button>Enviar una actividad</button>
+        </a><br>
+        {% endif %}
+
+        <div>
+            {% set tiempo = 0 %}
+            Período: {{i['imparte']}}<br>
+            {% set apertura = i['apDur'] | int %}
+            {% set desarrollo = i['deDur'] | int %}
+            {% set cierre = i['ciDur'] | int %}
+            {% set tiempo = tiempo + i['apDur'] + i['deDur']  + i['ciDur'] %}
+            Duración: {{tiempo/60}} hrs
+        </div>
+        <div> 
+            {% set eva = 0 %}
+            {% set apertura = i['apPond'] | int %}
+            {% set desarrollo = i['dePond'] | int %}
+            {% set cierre = i['ciPond'] | int %}
+            {% set eva = eva + apertura + desarrollo + cierre %}
+
+        Evaluación: {{eva}} %
+        </div>
+        <div>
+            Contenido: {{i['temas']}}
+        </div>
+
+        <div>
+            {% if i['descargas'] %}
+            Recursos<br>
+              <a href="{{ url_for('static', filename=i.descargas) }}" download>
+                Descargar archivo: {{ i['descargas'] }} &#128072;
+              </a>
+            {% endif %}
+        </div>
+<!--
+        <div>
+            Caso: {{i['Caso']}}
+        </div>
+
+        <div>
+            Resuelve: {{i['Resuelve']}}
+        </div>
+        -->
+    </div>
+
+    <div class="col-3"> 
+        <a href= "{{ url_for('show_pg', pg_id=i['id']) }}" type="button" class= "btn btn-outline-primary"> Entrar</a>
+    </div>
+
+    {% if es_profesor %}
+        <div class="row">
+
+
+            <!--
+            <div class="col-3">
+                <a href= "{{ url_for('show_plan', id=i['id']) }}" type="button"> Ver planeación</a>
+            </div>
+            -->
+            <a href="{{ url_for('show_plan', id=i['id']) }}">
+                  <button>Ver planeación</button>
+            </a>
+        </div>
+    {% endif %}
+
+
+        <!--
+        {% for tema in temas %}
+        <a href= "{{ url_for('show_tema', tema_id=loop.index0) }}" type="button" class= "btn btn-outline-primary"> Ir al Tema</a>
+        {% endfor %}
+
+
+        <button type="button" class="btn btn-outline-primary">Apply</button>
+        -->
+    </div>
+
+
 </div>
