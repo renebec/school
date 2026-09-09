@@ -479,7 +479,7 @@ def load_pg_from_db():
     try:
       with engine.connect() as conn:
           result = conn.execute(text("SELECT * FROM mat1"))
-          pg = [row.plan for row in result]
+          pg = result.mappings().all()
 
           print("Planes cargados:", pg)
           return pg
