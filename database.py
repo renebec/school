@@ -267,6 +267,7 @@ def insert_plan(
     if created_at is None:
         created_at = datetime.now(pytz.timezone("America/Mexico_City"))
 
+    plan = f"{asig}_{plan}"
 
     # Preparación de parámetros para INSERT y UPDATE
     params = {

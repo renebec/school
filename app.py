@@ -395,8 +395,9 @@ def plan_carga():
         try:
             print("📥 POST recibido")
             print("Campos en el formulario:", request.form.keys())
-            plan = request.form['plan']
+            plan1 = request.form['plan']
             asig = request.form['asig']
+            plan = f"{asig}_{plan1}"
             meta = request.form['meta']
             prop = request.form['prop']
             temas = request.form['temas']
@@ -485,6 +486,8 @@ def plan_carga():
 
             # Establecer la fecha y hora actual en zona horaria de México
             created_at = datetime.now(pytz.timezone("America/Mexico_City"))
+
+            
 
             # Insertar en la tabla planInocAgro
             print("📝 Insertando en base de datos...")
