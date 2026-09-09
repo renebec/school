@@ -189,12 +189,12 @@ def insert_actividad(session, numero_control, actividad_num, apellido_paterno, a
 #    pdfs = result
 #    return pdfs
 
-def load_user_pdfs(session_db, numero_control, asig, dias=30):
+def load_user_pdfs(session_db, numero_control, asig, dias2=30):
     # Aseguramos que 'dias' sea un número entero válido por seguridad
     try:
-        dias = int(dias)
+        dias2 = int(dias2)
     except (TypeError, ValueError):
-        dias = 30
+        dias2 = 30
 
     # Usamos f-string para inyectar el número de días en el intervalo de la consulta
     sql = f"""
@@ -202,7 +202,7 @@ def load_user_pdfs(session_db, numero_control, asig, dias=30):
         FROM actividades
         WHERE numero_control = :numero_control
         AND asig = :asig
-        AND created_at >= NOW() - INTERVAL {dias} DAY
+        AND created_at >= NOW() - INTERVAL {dias2} DAY
         ORDER BY created_at DESC, numero_control DESC
     """
 

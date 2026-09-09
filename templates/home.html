@@ -289,11 +289,11 @@
 
             <div class="col-md-2">
                 <label for="dias" class="form-label">Rango</label>
-                <select name="dias" class="form-select">
-                    <option value="7" {% if request.args.get('dias') == '7' %}selected{% endif %}>Últimos 7 días</option>
-                    <option value="15" {% if request.args.get('dias') == '15' %}selected{% endif %}>Últimos 15 días</option>
-                    <option value="30" {% if request.args.get('dias') == '30' or not request.args.get('dias') %}selected{% endif %}>Últimos 30 días</option>
-                    <option value="200" {% if request.args.get('dias') == '200' %}selected{% endif %}>Semestre</option>
+                <select name="dias2" class="form-select">
+                    <option value="7" {% if request.args.get('dias2') == '7' %}selected{% endif %}>Últimos 7 días</option>
+                    <option value="15" {% if request.args.get('dias2') == '15' %}selected{% endif %}>Últimos 15 días</option>
+                    <option value="30" {% if request.args.get('dias2') == '30' or not request.args.get('dias') %}selected{% endif %}>Últimos 30 días</option>
+                    <option value="200" {% if request.args.get('dias2') == '200' %}selected{% endif %}>Semestre</option>
                 </select>
             </div>
 
