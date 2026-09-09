@@ -824,9 +824,9 @@ def login():
 
 
 
-@app.route('/download_pdf/<int:id>')
-def download_pdf(id):
-    plan = load_plan_from_db(id)
+@app.route('/download_pdf/<string:plan>')
+def download_pdf(plan):
+    plan = load_plan_from_db(plan)
     if not plan:
         return "Plan not found", 404
 

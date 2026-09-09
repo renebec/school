@@ -88,11 +88,11 @@ def load_pg_from_db2(asig):
     #otro comentario
 
 
-def load_plan_from_db(id):
+def load_plan_from_db(plan):
     try:
       with engine.connect() as conn:
-          result = conn.execute(text("SELECT * FROM mat1 WHERE id = :val"),
-              {"val":id}
+          result = conn.execute(text("SELECT * FROM mat1 WHERE plan = :val"),
+              {"val":plan}
             )
           row = result.mappings().first()
           return dict(row) if row else None
