@@ -198,8 +198,8 @@ def show_pg(pg_id):
 
 
 #para extraer el contenido de la DB (cada plan) y mostralo en la página
-@app.route('/plan/<int:id>', methods=['GET']) 
-def show_plan(id):
+@app.route('/plan/<string:plan>', methods=['GET']) 
+def show_plan(plan):
     if not check_session_timeout():
         #flash('Su sesión ha expirado. Por favor, inicie sesión nuevamente.', 'danger')
         return redirect(url_for('login'))
@@ -208,7 +208,7 @@ def show_plan(id):
 
 
     # Supongamos que TEMAS es tu estructura de datos (lista o dict)
-    plan = load_plan_from_db(id)
+    plan = load_plan_from_db(plan)
     #item = next((item for item in plan if item['cve'] == id), None)
     item = plan
     if item is None:
@@ -220,9 +220,9 @@ def show_plan(id):
 
 
 #para jsonificar el contenido mostrado en la página
-@app.route("/pgn/<int:id>")
-def show_pgn(id):
-    pgn = load_pgn_from_db(id)
+@app.route("/pgn/<string:plan>")
+def show_pgn(plan):
+    pgn = load_pgn_from_db(plan)
     if pgn:
         return jsonify(pgn)
     else:
