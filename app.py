@@ -861,7 +861,9 @@ def download_pdf(id):
 def logout():
     session.clear()  # removes everything from session
     flash("Has cerrado sesión correctamente.", "success")
-    return redirect(url_for('login'))import pytz
+    return redirect(url_for('login')) 
+
+import pytz
 import os
 from flask import Flask, render_template, jsonify, request, redirect, url_for, flash, session, send_file, make_response
 from flask import session as flask_session
