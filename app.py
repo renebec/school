@@ -180,7 +180,7 @@ def hello_pm1():
 
 
 #para extraer el contenido de la DB (cada pg) y mostralo en la página
-@app.route('/pg/<int:pg_id>') 
+@app.route('/pg/<string:pg_id>') 
 def show_pg(pg_id):
     if not check_session_timeout():
         #flash('Su sesión ha expirado. Por favor, inicie sesión nuevamente.', 'danger')
