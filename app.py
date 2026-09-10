@@ -1,3 +1,5 @@
+from gevent import monkey
+monkey.patch_all()
 import pytz
 import os
 from flask import Flask, render_template, jsonify, request, redirect, url_for, flash, session, send_file, make_response
@@ -13,8 +15,7 @@ from weasyprint import HTML, CSS
 import pymysql
 from werkzeug.utils import secure_filename
 from flask import send_file, abort
-from gevent import monkey
-monkey.patch_all()
+
 
 from database import load_pg_from_db, load_pgn_from_db,  register_user, get_db_session, insert_actividad, load_plan_from_db, insert_plan,  load_pg_from_db2, is_preregistered, load_user_pdfs, get_user_from_database, load_filtered_pdfs
 
