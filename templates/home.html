@@ -337,8 +337,8 @@
         {% for pdf in pdfs %}
             <li style="margin-bottom: 15px;"> 
                 <div class="file-name-break">
-                    <a href="{{ pdf['pdf_url'] }}" target="_blank" class="btn-descarga">
-                        <span class="file-details">
+                    <a href="{{ pdf['pdf_url'] }}" target="_blank" class="btn-descarga file-details">
+                        <span>
                             ({{ pdf['pdf_url'].split('actividad_')[1].rsplit('.', 1)[0] }} - {{ pdf['created_at'] }})
                         </span>
                     </a>
