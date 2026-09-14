@@ -285,6 +285,36 @@
           width: 100%;
         }
       }
+
+      /* Estilo por defecto (Para pantallas chicas / Celulares: Una encima de otra) */
+      .tira-imagenes {
+        display: flex;
+        flex-direction: column; /* Apila las imágenes verticalmente */
+        gap: 15px;              /* Espacio entre cada imagen */
+        width: 100%;
+        max-width: 600px;       /* Opcional: limita el ancho máximo en pantallas grandes */
+        margin: 0 auto;         /* Centra el contenedor */
+      }
+
+      .tira-imagenes img {
+        width: 100%;            /* La imagen ocupa todo el ancho disponible */
+        height: auto;           /* Mantiene su proporción original */
+        border-radius: 8px;     /* Bordes redondeados estéticos */
+        object-fit: cover;
+      }
+
+      /* Media Query: Pantallas medianas y grandes (Computadoras / Tablets a partir de 768px) */
+      @media (min-width: 768px) {
+        .tira-imagenes {
+          flex-direction: row;  /* Cambia la dirección a fila (tira horizontal) */
+          max-width: 100%;      /* Permite que ocupe todo el ancho en pantallas grandes */
+        }
+
+        .tira-imagenes img {
+          flex: 1;              /* Hace que todas las imágenes compartan el mismo espacio por igual */
+          height: 200px;        /* Fija una altura uniforme para la tira horizontal */
+        }
+      }
       
 
     </style>
