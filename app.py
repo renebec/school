@@ -1,12 +1,12 @@
-from gevent import monkey
-monkey.patch_all()
+#from gevent import monkey
+#monkey.patch_all()
 import pytz
 import os
 from flask import Flask, render_template, jsonify, request, redirect, url_for, flash, session, send_file, make_response
 from flask import session as flask_session
 from flask_bcrypt import Bcrypt
-from gevent import monkey; monkey.patch_all()
-from gevent.pywsgi import WSGIServer
+#from gevent import monkey; monkey.patch_all()
+#from gevent.pywsgi import WSGIServer
 from datetime import datetime, timedelta
 import cloudinary
 import cloudinary.uploader
