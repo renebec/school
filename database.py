@@ -34,23 +34,55 @@ def handle_choice():
     return render_template('register.html', choice=choice)
 
 
+#def is_preregistered(numero_control):
+#    """
+#    Return True if numero_control is present in alumnos_preregistrados table.
+#    """
+#    try:
+#        session = get_db_session()
+#        result = session.execute(
+#            text("SELECT 1 FROM alumnos_preregistrados WHERE numero_control = :nc"),
+#            {"nc": numero_control}
+#        )
+#        row = result.first()
+#        session.close()
+#        return row is not None
+#    except Exception as e:
+#        print(f"DB ERROR in is_preregistered: {e}")
+        # maybe safe to reject if DB error
+#        return False
+
+
 def is_preregistered(numero_control):
     """
     Return True if numero_control is present in alumnos_preregistrados table.
     """
+    # Limpiamos espacios por seguridad
+    nc_limpio = str(numero_control).strip()
+
+    # --- LÍNEAS DE DEPURACIÓN ---
+    print(f"=== DEPURANDO PREREGISTRO ===")
+    print(f"Número recibido: '{numero_control}' -> Limpio: '{nc_limpio}'")
+
+    session = None
     try:
         session = get_db_session()
         result = session.execute(
             text("SELECT 1 FROM alumnos_preregistrados WHERE numero_control = :nc"),
-            {"nc": numero_control}
+            {"nc": nc_limpio}
         )
         row = result.first()
-        session.close()
+
+        print(f"Fila encontrada en la BD: {row}")
+        print(f"================================")
+
         return row is not None
     except Exception as e:
         print(f"DB ERROR in is_preregistered: {e}")
-        # maybe safe to reject if DB error
         return False
+    finally:
+        if session:
+            session.close()
 
 
 def load_pg_from_db():
