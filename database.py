@@ -226,7 +226,7 @@ def load_user_pdfs(session_db, numero_control, asig, dias2=3):
     try:
         dias2 = int(dias2)
     except (TypeError, ValueError):
-        dias2 = 30
+        dias2 = 3
 
     # Usamos f-string para inyectar el número de días en el intervalo de la consulta
     sql = f"""
