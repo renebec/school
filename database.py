@@ -221,7 +221,7 @@ def insert_actividad(session, numero_control, actividad_num, apellido_paterno, a
 #    pdfs = result
 #    return pdfs
 
-def load_user_pdfs(session_db, numero_control, asig, dias2=30):
+def load_user_pdfs(session_db, numero_control, asig, dias2=3):
     # Aseguramos que 'dias2' sea un número entero válido por seguridad
     try:
         dias2 = int(dias2)
