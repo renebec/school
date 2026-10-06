@@ -311,7 +311,7 @@
             <div class="col-md-2">
                 <label for="dias2" class="form-label">Rango</label>
                 <select name="dias2" class="form-select">
-                    <option value="7" {% if request.args.get('dias2') == '7' %}selected{% endif %}>Últimos 7 días</option>
+                    <option value="3" {% if request.args.get('dias2') == '3' %}selected{% endif %}>Últimos 3 días</option>
                     <option value="15" {% if request.args.get('dias2') == '15' %}selected{% endif %}>Últimos 15 días</option>
                     <option value="30" {% if request.args.get('dias2') == '30' or not request.args.get('dias2') %}selected{% endif %}>Últimos 30 días</option>
                     <option value="195" {% if request.args.get('dias2') == '195' %}selected{% endif %}>Semestre</option>
