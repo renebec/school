@@ -221,12 +221,12 @@ def insert_actividad(session, numero_control, actividad_num, apellido_paterno, a
 #    pdfs = result
 #    return pdfs
 
-def load_user_pdfs(session_db, numero_control, asig, dias2=3):
+def load_user_pdfs(session_db, numero_control, asig, dias2='3'):
     # Aseguramos que 'dias2' sea un número entero válido por seguridad
     try:
         dias2 = int(dias2)
     except (TypeError, ValueError):
-        dias2 = 3
+        dias2 = '3'
 
     # Usamos f-string para inyectar el número de días en el intervalo de la consulta
     sql = f"""
@@ -245,12 +245,12 @@ def load_user_pdfs(session_db, numero_control, asig, dias2=3):
 
 
 
-def load_filtered_pdfs(session_db, asig, carrera=None, semestre=None, grupo=None, dias=3):
+def load_filtered_pdfs(session_db, asig, carrera=None, semestre=None, grupo=None, dias='3'):
     # Aseguramos que 'dias' sea un número entero válido (por seguridad)
     try:
         dias = int(dias)
     except (TypeError, ValueError):
-        dias = 3
+        dias = '3'
 
     # Usamos f-string para inyectar el número de días de forma segura en el intervalo de SQL
     sql = f"""
